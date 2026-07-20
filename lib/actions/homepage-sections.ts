@@ -57,7 +57,7 @@ function refreshHomepageSections(): void {
 
 export async function createHomepageSectionAction(formData: FormData): Promise<void> {
   await requireAdminSession();
-  const db = getDb();
+  const db = await getDb();
   const [{ value: currentMax }] = await db.select({ value: max(schema.homepageSections.sortOrder) }).from(schema.homepageSections);
   const uniqueSuffix = crypto.randomUUID().slice(0, 8);
 
@@ -85,7 +85,7 @@ export async function updateHomepageSectionAction(formData: FormData): Promise<v
   const id = Number(formData.get("id"));
   if (!Number.isInteger(id)) throw new Error("Geçersiz bileşen kimliği.");
 
-  const db = getDb();
+  const db = await getDb();
   const row = (await db.select().from(schema.homepageSections).where(eq(schema.homepageSections.id, id)))[0];
   if (!row) throw new Error("Bileşen bulunamadı.");
 
@@ -111,7 +111,7 @@ export async function toggleHomepageSectionAction(formData: FormData): Promise<v
   const nextVisible = String(formData.get("nextVisible")) === "true";
   if (!Number.isInteger(id)) throw new Error("Geçersiz bileşen kimliği.");
 
-  const db = getDb();
+  const db = await getDb();
   await db.update(schema.homepageSections).set({ isVisible: nextVisible }).where(eq(schema.homepageSections.id, id));
   refreshHomepageSections();
 }
@@ -121,7 +121,7 @@ export async function deleteHomepageSectionAction(formData: FormData): Promise<v
   const id = Number(formData.get("id"));
   if (!Number.isInteger(id)) throw new Error("Geçersiz bileşen kimliği.");
 
-  const db = getDb();
+  const db = await getDb();
   await db.delete(schema.homepageSections).where(
     and(eq(schema.homepageSections.id, id), eq(schema.homepageSections.isDeletable, true)),
   );
@@ -134,7 +134,7 @@ export async function moveHomepageSectionAction(formData: FormData): Promise<voi
   const direction = String(formData.get("direction"));
   if (!Number.isInteger(id) || !["up", "down"].includes(direction)) throw new Error("Geçersiz sıralama isteği.");
 
-  const db = getDb();
+  const db = await getDb();
   const customRows = await db.select().from(schema.homepageSections)
     .where(eq(schema.homepageSections.isDeletable, true))
     .orderBy(asc(schema.homepageSections.sortOrder));

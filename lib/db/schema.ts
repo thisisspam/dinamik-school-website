@@ -1,9 +1,8 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
-import { sql } from "drizzle-orm";
+import { pgTable, serial, text, integer, boolean, jsonb } from "drizzle-orm/pg-core";
 import type { DepartmentContentBlock } from "@/lib/department-blocks";
 
-export const departments = sqliteTable("departments", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const departments = pgTable("departments", {
+  id: serial("id").primaryKey(),
   slug: text("slug").notNull().unique(),
   shortTitle: text("short_title").notNull(),
   title: text("title").notNull(),
@@ -12,36 +11,36 @@ export const departments = sqliteTable("departments", {
   accent: text("accent").notNull(),
   lead: text("lead").notNull(),
   purpose: text("purpose").notNull(),
-  facts: text("facts", { mode: "json" }).notNull().$type<Array<{ label: string; value: string }>>(),
-  skills: text("skills", { mode: "json" }).notNull().$type<string[]>(),
-  learningAreas: text("learning_areas", { mode: "json" })
+  facts: jsonb("facts").notNull().$type<Array<{ label: string; value: string }>>(),
+  skills: jsonb("skills").notNull().$type<string[]>(),
+  learningAreas: jsonb("learning_areas")
     .notNull()
     .$type<Array<{ title: string; text: string }>>(),
-  careerAreas: text("career_areas", { mode: "json" }).notNull().$type<string[]>(),
-  contentBlocks: text("content_blocks", { mode: "json" }).$type<DepartmentContentBlock[]>(),
-  isVisible: integer("is_visible", { mode: "boolean" }).notNull().default(true),
-  isDeletable: integer("is_deletable", { mode: "boolean" }).notNull().default(false),
+  careerAreas: jsonb("career_areas").notNull().$type<string[]>(),
+  contentBlocks: jsonb("content_blocks").$type<DepartmentContentBlock[]>(),
+  isVisible: boolean("is_visible").notNull().default(true),
+  isDeletable: boolean("is_deletable").notNull().default(false),
   sortOrder: integer("sort_order").notNull().default(0),
 });
 
-export const staff = sqliteTable("staff", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const staff = pgTable("staff", {
+  id: serial("id").primaryKey(),
   name: text("name").notNull(),
   category: text("category").notNull(),
   role: text("role").notNull(),
   sortOrder: integer("sort_order").notNull().default(0),
 });
 
-export const galleryImages = sqliteTable("gallery_images", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const galleryImages = pgTable("gallery_images", {
+  id: serial("id").primaryKey(),
   src: text("src").notNull(),
   alt: text("alt").notNull(),
   caption: text("caption"),
   sortOrder: integer("sort_order").notNull().default(0),
 });
 
-export const siteSettings = sqliteTable("site_settings", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const siteSettings = pgTable("site_settings", {
+  id: serial("id").primaryKey(),
   generalPhone: text("general_phone").notNull(),
   landlinePhone: text("landline_phone").notNull(),
   whatsapp: text("whatsapp").notNull(),
@@ -53,8 +52,8 @@ export const siteSettings = sqliteTable("site_settings", {
   youtubeUrl: text("youtube_url").notNull(),
 });
 
-export const homepageSections = sqliteTable("homepage_sections", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const homepageSections = pgTable("homepage_sections", {
+  id: serial("id").primaryKey(),
   sectionKey: text("section_key").notNull().unique(),
   sectionType: text("section_type").notNull(),
   displayName: text("display_name").notNull(),
@@ -64,13 +63,13 @@ export const homepageSections = sqliteTable("homepage_sections", {
   ctaLabel: text("cta_label"),
   ctaHref: text("cta_href"),
   theme: text("theme").notNull().default("original"),
-  isVisible: integer("is_visible", { mode: "boolean" }).notNull().default(true),
-  isDeletable: integer("is_deletable", { mode: "boolean" }).notNull().default(false),
+  isVisible: boolean("is_visible").notNull().default(true),
+  isDeletable: boolean("is_deletable").notNull().default(false),
   sortOrder: integer("sort_order").notNull().default(0),
 });
 
-export const registrationApplications = sqliteTable("registration_applications", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const registrationApplications = pgTable("registration_applications", {
+  id: serial("id").primaryKey(),
   studentName: text("student_name").notNull(),
   parentName: text("parent_name").notNull(),
   grade: text("grade").notNull(),
@@ -79,10 +78,10 @@ export const registrationApplications = sqliteTable("registration_applications",
   source: text("source").notNull().default("/on-kayit"),
   status: text("status").notNull().default("new"),
   notes: text("notes"),
-  consentAccepted: integer("consent_accepted", { mode: "boolean" }).notNull().default(true),
+  consentAccepted: boolean("consent_accepted").notNull().default(true),
   privacyNoticeVersion: text("privacy_notice_version").notNull().default("legacy-consent"),
-  whatsappConsent: integer("whatsapp_consent", { mode: "boolean" }).notNull().default(false),
-  consentAcceptedAt: text("consent_accepted_at").notNull().default(sql`CURRENT_TIMESTAMP`),
-  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: text("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  whatsappConsent: boolean("whatsapp_consent").notNull().default(false),
+  consentAcceptedAt: text("consent_accepted_at").notNull(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
 });

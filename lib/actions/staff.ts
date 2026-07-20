@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { getDb, schema } from "@/lib/db/client";
 
 export async function createStaffAction(formData: FormData): Promise<void> {
-  const db = getDb();
+  const db = await getDb();
   const existing = await db.select().from(schema.staff);
   const nextOrder = existing.reduce((max, row) => Math.max(max, row.sortOrder), -1) + 1;
 
@@ -23,7 +23,7 @@ export async function createStaffAction(formData: FormData): Promise<void> {
 
 export async function updateStaffAction(formData: FormData): Promise<void> {
   const id = Number(formData.get("id"));
-  const db = getDb();
+  const db = await getDb();
 
   await db
     .update(schema.staff)
@@ -40,7 +40,7 @@ export async function updateStaffAction(formData: FormData): Promise<void> {
 
 export async function deleteStaffAction(formData: FormData): Promise<void> {
   const id = Number(formData.get("id"));
-  const db = getDb();
+  const db = await getDb();
   await db.delete(schema.staff).where(eq(schema.staff.id, id));
 
   revalidatePath("/", "layout");

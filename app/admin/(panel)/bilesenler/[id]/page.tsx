@@ -10,7 +10,7 @@ import { HomepageSectionForm } from "../../../HomepageSectionForm";
 
 export default async function AdminEditHomepageSectionPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const db = getDb();
+  const db = await getDb();
   const row = (await db.select().from(schema.homepageSections).where(eq(schema.homepageSections.id, Number(id))))[0];
   if (!row) notFound();
 

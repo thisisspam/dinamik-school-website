@@ -37,13 +37,13 @@ export type HomepageSection = {
 };
 
 export async function getGalleryImages(): Promise<GalleryImage[]> {
-  const db = getDb();
+  const db = await getDb();
   const rows = await db.select().from(schema.galleryImages).orderBy(asc(schema.galleryImages.sortOrder));
   return rows.map((row) => ({ src: row.src, alt: row.alt, caption: row.caption ?? undefined }));
 }
 
 export async function getSiteSettings(): Promise<SiteSettings> {
-  const db = getDb();
+  const db = await getDb();
   const rows = await db.select().from(schema.siteSettings);
   const row = rows[0];
   if (!row) throw new Error("Site ayarları bulunamadı. `npm run db:seed` çalıştırın.");
@@ -61,7 +61,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 }
 
 export async function getHomepageSections(): Promise<HomepageSection[]> {
-  const db = getDb();
+  const db = await getDb();
   const rows = await db.select().from(schema.homepageSections).orderBy(asc(schema.homepageSections.sortOrder));
   return rows.map((row) => ({
     id: row.id,

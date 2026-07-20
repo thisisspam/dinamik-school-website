@@ -12,7 +12,7 @@ export default async function AdminEditStaffPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const db = getDb();
+  const db = await getDb();
   const row = (await db.select().from(schema.staff).where(eq(schema.staff.id, Number(id))))[0];
   if (!row) notFound();
 

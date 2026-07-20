@@ -11,7 +11,7 @@ export default async function AdminGalleryPage({
   searchParams: Promise<{ saved?: string }>;
 }) {
   const { saved } = await searchParams;
-  const db = getDb();
+  const db = await getDb();
   const rows = await db.select().from(schema.galleryImages).orderBy(asc(schema.galleryImages.sortOrder));
 
   return (

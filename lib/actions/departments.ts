@@ -62,7 +62,7 @@ async function resolveImage(formData: FormData, fallback: string): Promise<strin
 
 export async function createDepartmentAction(formData: FormData): Promise<void> {
   await requireAdminSession();
-  const db = getDb();
+  const db = await getDb();
   const slug = normalizeSlug(requiredText(formData, "slug"));
   if (!slug) throw new Error("Geçerli bir bölüm bağlantısı girin.");
   const existing = await db.select({ id: schema.departments.id }).from(schema.departments).where(eq(schema.departments.slug, slug));
@@ -95,7 +95,7 @@ export async function createDepartmentAction(formData: FormData): Promise<void> 
 export async function updateDepartmentAction(formData: FormData): Promise<void> {
   await requireAdminSession();
   const id = Number(formData.get("id"));
-  const db = getDb();
+  const db = await getDb();
   const existing = (await db.select().from(schema.departments).where(eq(schema.departments.id, id)))[0];
   if (!existing) throw new Error("Bölüm bulunamadı.");
 
@@ -125,7 +125,7 @@ export async function toggleDepartmentVisibilityAction(formData: FormData): Prom
   const isVisible = String(formData.get("nextVisible")) === "true";
   if (!Number.isInteger(id)) throw new Error("Geçersiz bölüm kimliği.");
 
-  const db = getDb();
+  const db = await getDb();
   const row = (await db.select({ slug: schema.departments.slug }).from(schema.departments).where(eq(schema.departments.id, id)))[0];
   if (!row) throw new Error("Bölüm bulunamadı.");
   await db.update(schema.departments).set({ isVisible }).where(eq(schema.departments.id, id));
@@ -137,7 +137,7 @@ export async function deleteDepartmentAction(formData: FormData): Promise<void> 
   const id = Number(formData.get("id"));
   if (!Number.isInteger(id)) throw new Error("Geçersiz bölüm kimliği.");
 
-  const db = getDb();
+  const db = await getDb();
   const row = (await db.select().from(schema.departments).where(eq(schema.departments.id, id)))[0];
   if (!row || !row.isDeletable) return;
   await db.delete(schema.departments).where(

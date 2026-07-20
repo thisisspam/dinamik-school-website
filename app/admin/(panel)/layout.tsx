@@ -10,7 +10,8 @@ import { getDb, schema } from "@/lib/db/client";
 export const metadata = { title: "Dinamik Yönetim Paneli" };
 
 export default async function AdminPanelLayout({ children }: { children: React.ReactNode }) {
-  const [{ value: newApplicationCount }] = await getDb()
+  const db = await getDb();
+  const [{ value: newApplicationCount }] = await db
     .select({ value: count() })
     .from(schema.registrationApplications)
     .where(eq(schema.registrationApplications.status, "new"));

@@ -26,7 +26,7 @@ export default async function AdminApplicationsPage({
   const { status: rawStatus = "", q: rawQuery = "", deleted } = await searchParams;
   const status = isApplicationStatus(rawStatus) ? rawStatus : "";
   const query = rawQuery.trim().slice(0, 80);
-  const db = getDb();
+  const db = await getDb();
   const conditions = [];
 
   if (status) conditions.push(eq(schema.registrationApplications.status, status));

@@ -1,61 +1,35 @@
-import { DatabaseSync, type StatementSync } from "node:sqlite";
-import { mkdirSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { drizzle } from "drizzle-orm/sqlite-proxy";
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
-import { CREATE_TABLES_SQL, ensureDepartmentManagementColumns, ensureHomepageSections, ensureRegistrationPrivacyColumns, seedInitialContent } from "./setup";
+import { CREATE_TABLE_STATEMENTS, ensureHomepageSections, seedInitialContent } from "./setup";
 
-const DB_PATH = resolve(process.cwd(), "data", "app.db");
-
-let sqlite: DatabaseSync | null = null;
-
-function getSqlite(): DatabaseSync {
-  if (sqlite) return sqlite;
-
-  mkdirSync(dirname(DB_PATH), { recursive: true });
-  sqlite = new DatabaseSync(DB_PATH);
-  sqlite.exec("PRAGMA journal_mode = WAL;");
-  sqlite.exec(CREATE_TABLES_SQL);
-  ensureDepartmentManagementColumns(sqlite);
-  ensureRegistrationPrivacyColumns(sqlite);
-
-  const { count } = sqlite.prepare("SELECT COUNT(*) as count FROM departments").get() as { count: number };
-  if (count === 0) {
-    seedInitialContent(sqlite);
-  }
-  ensureHomepageSections(sqlite);
-
-  return sqlite;
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) {
+  throw new Error(
+    "DATABASE_URL ortam değişkeni tanımlı değil. Yerelde `vercel env pull .env.local` çalıştırın veya Vercel proje ayarlarında Postgres bağlantısını kontrol edin.",
+  );
 }
 
-function toRowValues(row: Record<string, unknown> | undefined): unknown[] {
-  return row ? Object.values(row) : [];
+const sql = neon(databaseUrl);
+const db = drizzle(sql, { schema });
+
+let ready: Promise<void> | null = null;
+
+async function ensureReady(): Promise<void> {
+  for (const statement of CREATE_TABLE_STATEMENTS) {
+    await sql(statement);
+  }
+  const rows = await sql`SELECT COUNT(*)::int AS count FROM departments`;
+  if ((rows[0] as { count: number }).count === 0) {
+    await seedInitialContent(db);
+  } else {
+    await ensureHomepageSections(db);
+  }
 }
 
-async function proxyCallback(sqlText: string, params: unknown[], method: "run" | "all" | "values" | "get") {
-  const db = getSqlite();
-  const stmt: StatementSync = db.prepare(sqlText);
-
-  if (method === "run") {
-    stmt.run(...(params as never[]));
-    return { rows: [] };
-  }
-
-  if (method === "get") {
-    const row = stmt.get(...(params as never[])) as Record<string, unknown> | undefined;
-    return { rows: toRowValues(row) };
-  }
-
-  const rows = stmt.all(...(params as never[])) as Array<Record<string, unknown>>;
-  return { rows: rows.map((row) => Object.values(row)) };
-}
-
-let db: ReturnType<typeof drizzle<typeof schema>> | null = null;
-
-export function getDb() {
-  if (!db) {
-    db = drizzle(proxyCallback, { schema });
-  }
+export async function getDb() {
+  if (!ready) ready = ensureReady();
+  await ready;
   return db;
 }
 

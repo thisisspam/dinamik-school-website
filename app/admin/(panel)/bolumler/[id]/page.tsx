@@ -9,7 +9,7 @@ import { DepartmentForm, type DepartmentFormValue } from "../../../DepartmentFor
 
 export default async function AdminDepartmentEditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const db = getDb();
+  const db = await getDb();
   const row = (await db.select().from(schema.departments).where(eq(schema.departments.id, Number(id))))[0];
   if (!row) notFound();
 

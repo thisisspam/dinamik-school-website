@@ -12,7 +12,7 @@ export async function uploadGalleryImageAction(formData: FormData): Promise<void
     redirect("/admin/galeri");
   }
 
-  const db = getDb();
+  const db = await getDb();
   const src = await saveUploadedFile(imageFile);
   const existing = await db.select().from(schema.galleryImages);
   const nextOrder = existing.reduce((max, row) => Math.max(max, row.sortOrder), -1) + 1;
@@ -30,7 +30,7 @@ export async function uploadGalleryImageAction(formData: FormData): Promise<void
 
 export async function deleteGalleryImageAction(formData: FormData): Promise<void> {
   const id = Number(formData.get("id"));
-  const db = getDb();
+  const db = await getDb();
   await db.delete(schema.galleryImages).where(eq(schema.galleryImages.id, id));
 
   revalidatePath("/", "layout");

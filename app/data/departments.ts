@@ -21,7 +21,7 @@ export type Department = {
 };
 
 export async function getDepartments(): Promise<Department[]> {
-  const db = getDb();
+  const db = await getDb();
   const rows = await db.select().from(schema.departments)
     .where(eq(schema.departments.isVisible, true))
     .orderBy(asc(schema.departments.sortOrder));

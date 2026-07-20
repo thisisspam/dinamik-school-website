@@ -21,7 +21,7 @@ function textField(formData: FormData, name: string, maxLength: number): string 
   return String(formData.get(name) ?? "").trim().slice(0, maxLength);
 }
 
-function sqliteTimestamp(date: Date): string {
+function formatTimestamp(date: Date): string {
   return date.toISOString().slice(0, 19).replace("T", " ");
 }
 
@@ -59,8 +59,8 @@ export async function createRegistrationApplicationAction(formData: FormData): P
     return { success: false, message: "Başvurunun kaydedilmesi için KVKK aydınlatma metnini okuduğunuzu belirtmelisiniz." };
   }
 
-  const db = getDb();
-  const duplicateThreshold = sqliteTimestamp(new Date(Date.now() - 5 * 60 * 1000));
+  const db = await getDb();
+  const duplicateThreshold = formatTimestamp(new Date(Date.now() - 5 * 60 * 1000));
   const duplicate = await db.select({ id: schema.registrationApplications.id })
     .from(schema.registrationApplications)
     .where(and(
@@ -70,6 +70,7 @@ export async function createRegistrationApplicationAction(formData: FormData): P
     ));
 
   if (duplicate.length === 0) {
+    const now = formatTimestamp(new Date());
     await db.insert(schema.registrationApplications).values({
       studentName,
       parentName,
@@ -81,7 +82,9 @@ export async function createRegistrationApplicationAction(formData: FormData): P
       consentAccepted: true,
       privacyNoticeVersion: PRIVACY_NOTICE_VERSION,
       whatsappConsent,
-      consentAcceptedAt: new Date().toISOString(),
+      consentAcceptedAt: now,
+      createdAt: now,
+      updatedAt: now,
     });
   }
 
@@ -95,7 +98,8 @@ export async function deleteRegistrationApplicationAction(formData: FormData): P
   const id = Number(formData.get("id"));
   if (!Number.isInteger(id) || id < 1) throw new Error("Geçersiz başvuru bilgisi.");
 
-  await getDb().delete(schema.registrationApplications)
+  const db = await getDb();
+  await db.delete(schema.registrationApplications)
     .where(eq(schema.registrationApplications.id, id));
 
   revalidatePath("/admin");
@@ -113,10 +117,11 @@ export async function updateRegistrationApplicationAction(formData: FormData): P
     throw new Error("Geçersiz başvuru bilgisi.");
   }
 
-  await getDb().update(schema.registrationApplications).set({
+  const db = await getDb();
+  await db.update(schema.registrationApplications).set({
     status,
     notes: notes || null,
-    updatedAt: new Date().toISOString(),
+    updatedAt: formatTimestamp(new Date()),
   }).where(eq(schema.registrationApplications.id, id));
 
   revalidatePath("/admin");

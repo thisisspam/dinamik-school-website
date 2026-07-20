@@ -1,7 +1,4 @@
-import { mkdir, writeFile } from "node:fs/promises";
-import { resolve } from "node:path";
-
-const UPLOAD_DIR = resolve(process.cwd(), "public", "uploads");
+import { put } from "@vercel/blob";
 
 function sanitizeFileName(name: string): string {
   return name
@@ -11,11 +8,9 @@ function sanitizeFileName(name: string): string {
     .slice(-80);
 }
 
-/** Saves an uploaded file to public/uploads and returns its public URL path. */
+/** Uploads a file to Vercel Blob and returns its public URL. */
 export async function saveUploadedFile(file: File): Promise<string> {
-  await mkdir(UPLOAD_DIR, { recursive: true });
   const fileName = `${Date.now()}-${sanitizeFileName(file.name || "gorsel")}`;
-  const buffer = Buffer.from(await file.arrayBuffer());
-  await writeFile(resolve(UPLOAD_DIR, fileName), buffer);
-  return `/uploads/${fileName}`;
+  const blob = await put(fileName, file, { access: "public", addRandomSuffix: false });
+  return blob.url;
 }

@@ -49,7 +49,7 @@ const QUICK_LINKS = [
 ] as const;
 
 export default async function AdminHomePage() {
-  const db = getDb();
+  const db = await getDb();
   const [departments, staff, gallery, homepageSections, applications] = await Promise.all([
     db.select({ id: schema.departments.id }).from(schema.departments),
     db.select({ id: schema.staff.id }).from(schema.staff),

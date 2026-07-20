@@ -5,7 +5,7 @@ export type StaffGroup = { category: string; role: string; names: string[] };
 export type StaffMember = { name: string; category: string; role: string };
 
 export async function getStaffGroups(): Promise<StaffGroup[]> {
-  const db = getDb();
+  const db = await getDb();
   const rows = await db.select().from(schema.staff).orderBy(asc(schema.staff.sortOrder));
 
   const groups: StaffGroup[] = [];
@@ -21,7 +21,7 @@ export async function getStaffGroups(): Promise<StaffGroup[]> {
 }
 
 export async function getStaffMembers(): Promise<StaffMember[]> {
-  const db = getDb();
+  const db = await getDb();
   const rows = await db.select().from(schema.staff).orderBy(asc(schema.staff.sortOrder));
 
   return rows.map(({ name, category, role }) => ({ name, category, role }));

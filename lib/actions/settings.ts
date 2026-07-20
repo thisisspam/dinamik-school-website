@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { getDb, schema } from "@/lib/db/client";
 
 export async function updateSettingsAction(formData: FormData): Promise<void> {
-  const db = getDb();
+  const db = await getDb();
   const existing = (await db.select().from(schema.siteSettings))[0];
 
   const values = {

@@ -32,7 +32,8 @@ export default async function AdminApplicationDetailPage({
 }) {
   const { id } = await params;
   const { saved } = await searchParams;
-  const application = (await getDb().select().from(schema.registrationApplications)
+  const db = await getDb();
+  const application = (await db.select().from(schema.registrationApplications)
     .where(eq(schema.registrationApplications.id, Number(id))))[0];
   if (!application) notFound();
 

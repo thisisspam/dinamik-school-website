@@ -9,7 +9,7 @@ export default async function AdminSettingsPage({
   searchParams: Promise<{ saved?: string }>;
 }) {
   const { saved } = await searchParams;
-  const db = getDb();
+  const db = await getDb();
   const row = (await db.select().from(schema.siteSettings))[0];
 
   return (

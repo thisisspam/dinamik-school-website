@@ -19,7 +19,7 @@ export default async function AdminDepartmentsPage({
   searchParams: Promise<{ saved?: string }>;
 }) {
   const { saved } = await searchParams;
-  const db = getDb();
+  const db = await getDb();
   const rows = await db.select().from(schema.departments).orderBy(asc(schema.departments.sortOrder));
   const visibleCount = rows.filter((row) => row.isVisible).length;
   const customCount = rows.filter((row) => row.isDeletable).length;

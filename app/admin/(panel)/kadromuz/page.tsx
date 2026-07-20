@@ -12,7 +12,7 @@ export default async function AdminStaffPage({
   searchParams: Promise<{ saved?: string }>;
 }) {
   const { saved } = await searchParams;
-  const db = getDb();
+  const db = await getDb();
   const rows = await db.select().from(schema.staff).orderBy(asc(schema.staff.sortOrder));
 
   const grouped = new Map<string, typeof rows>();

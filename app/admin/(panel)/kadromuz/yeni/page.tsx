@@ -5,7 +5,7 @@ import { createStaffAction } from "@/lib/actions/staff";
 import { AdminPageHeader } from "../../../AdminPageHeader";
 
 export default async function AdminNewStaffPage() {
-  const db = getDb();
+  const db = await getDb();
   const rows = await db.select({ category: schema.staff.category }).from(schema.staff);
   const categories = [...new Set(rows.map((row) => row.category))];
 
