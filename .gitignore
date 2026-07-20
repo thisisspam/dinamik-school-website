@@ -34,6 +34,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# codex CLI local metadata
+.codex/
+
 # typescript
 next-env.d.ts
 *.tsbuildinfo
