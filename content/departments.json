@@ -1,0 +1,204 @@
+[
+  {
+    "slug": "kimya-teknolojileri",
+    "shortTitle": "Kimya Teknolojileri",
+    "title": "KİMYA TEKNOLOJİLERİ BÖLÜMÜ",
+    "branch": "Kimya Laboratuvarı Dalı",
+    "image": "/images/hero-lab.jpg",
+    "accent": "red",
+    "lead": "Sektörün ihtiyaçları doğrultusunda bilimsel ve teknolojik gelişmelere paralel mesleki yeterlikleri kazanan nitelikli, bilimsel yönden donanımlı ve profesyonel meslek elemanları yetiştirmektir.",
+    "purpose": "Sektörün ihtiyaçları doğrultusunda bilimsel ve teknolojik gelişmelere paralel mesleki yeterlikleri kazanan nitelikli, bilimsel yönden donanımlı ve profesyonel meslek elemanları yetiştirmektir.",
+    "facts": [
+      { "label": "Aktif dal", "value": "Kimya Laboratuvarı" },
+      { "label": "Eğitim verilmeyen dal", "value": "Petrol Endüstrisi" },
+      { "label": "Eğitim verilmeyen dal", "value": "Proses" },
+      { "label": "Eğitim süresi", "value": "4 öğretim yılı" }
+    ],
+    "skills": [
+      "Yeni çağ becerileri ve tasarım odaklı düşünme yaklaşımı doğrultusunda; \"meslek etiği ve ahilik, iş sağlığı ve güvenliği, teknolojik gelişmeler ve endüstriyel dönüşüm, çevre koruma, girişimci fikirler, iş kurma ve yürütme, fikrî ve sınai mülkiyet hakları\" konularında mesleki gelişim sağlayacak beceriler kazanma,",
+      "İş sağlığı ve güvenliği tedbirleri doğrultusunda temel kimyasal işlemleri yapma,",
+      "İş sağlığı ve güvenliği tedbirleri doğrultusunda mesleki hesaplamalar yapma,",
+      "İş sağlığı ve güvenliği tedbirleri doğrultusunda, tekniğine uygun şekilde organik bileşikleri inceleme, alifatik hidrokarbonları, alkolleri, eterleri, aldehitleri, ketonları, azotlu alifatik bileşikleri, esterleri, yağları ve aromatik bileşikleri elde etme ve özelliklerini inceleme,",
+      "İş sağlığı ve güvenliği tedbirleri doğrultusunda, İyi Laboratuvar Uygulamaları'na (GLP), standartlara ve tekniğine uygun olarak",
+      "Numunede grup 1, 2, 3, 4 ve 5 katyonlarının ve anyonlarının toplu analizlerini yapma,",
+      "Gazların özellikleri, tepkimelerde enerji, hız, denge ve elektrokimyasal hücreler ile ilgili hesaplamalar ve uygulamalar yapma,",
+      "Kimyasal proseslerin ve operasyonların temel işlemlerini yapma,",
+      "Numune alma ve atıklarla ilgili işlemleri yapma, baz ve asit miktarı tayini, nem, kül ve elek analizleri, gravimetrik, permanganometrik, iyodometrik, arjantometrik ve kompleksometrik analizler yapma,",
+      "Ultraviyole spektrofotometresi, kolorimetre, alev fotometresi, atomik absorpsiyon spektrofotometresi, refraktometre, polarimetre, potansiyometre ve kondüktometre cihazları ve kromatografik yöntemleri kullanarak numunelerde analiz yapma beceri ve yetkinliklerin kazandırılması amaçlanmaktadır."
+    ],
+    "learningAreas": [],
+    "careerAreas": [],
+    "contentBlocks": [
+      {
+        "id": "program-branches",
+        "type": "branch-list",
+        "title": "Kimya Teknolojisi Alanı Çerçeve Öğretim Programı'nda;",
+        "content": "Kimya Laboratuvarı,\nPetrol Endüstrisi,(Okulumuzda bu dalda eğitim VERİLMEMEKTEDİR)\nProses  (Okulumuzda bu dalda eğitim VERİLMEMEKTEDİR) dalları yer almaktadır."
+      },
+      {
+        "id": "program-scope",
+        "type": "text",
+        "title": "Programın kapsamı",
+        "content": "Bu doğrultuda Kimya Teknolojisi alanı ve alan altında yer alan mesleklerde ulusal ve uluslararası düzeyde standartlara uygun örgün öğretim programı hazırlanmıştır."
+      },
+      {
+        "id": "common-competencies",
+        "type": "skills",
+        "title": "Bu programı tamamlayan öğrenciye;",
+        "content": "Yeni çağ becerileri ve tasarım odaklı düşünme yaklaşımı doğrultusunda; \"meslek etiği ve ahilik, iş sağlığı ve güvenliği, teknolojik gelişmeler ve endüstriyel dönüşüm, çevre koruma, girişimci fikirler, iş kurma ve yürütme, fikrî ve sınai mülkiyet hakları\" konularında mesleki gelişim sağlayacak beceriler kazanma,\nİş sağlığı ve güvenliği tedbirleri doğrultusunda temel kimyasal işlemleri yapma,\nİş sağlığı ve güvenliği tedbirleri doğrultusunda mesleki hesaplamalar yapma,\nİş sağlığı ve güvenliği tedbirleri doğrultusunda, tekniğine uygun şekilde organik bileşikleri inceleme, alifatik hidrokarbonları, alkolleri, eterleri, aldehitleri, ketonları, azotlu alifatik bileşikleri, esterleri, yağları ve aromatik bileşikleri elde etme ve özelliklerini inceleme,",
+        "footer": "ile ilgili ortak bilgi, beceri ve yetkinliklerin yanı sıra;"
+      },
+      {
+        "id": "laboratory-competencies",
+        "type": "skills",
+        "title": "Kimya Laboratuvarı Dalında;",
+        "content": "İş sağlığı ve güvenliği tedbirleri doğrultusunda, İyi Laboratuvar Uygulamaları'na (GLP), standartlara ve tekniğine uygun olarak\nNumunede grup 1, 2, 3, 4 ve 5 katyonlarının ve anyonlarının toplu analizlerini yapma,\nGazların özellikleri, tepkimelerde enerji, hız, denge ve elektrokimyasal hücreler ile ilgili hesaplamalar ve uygulamalar yapma,\nKimyasal proseslerin ve operasyonların temel işlemlerini yapma,\nNumune alma ve atıklarla ilgili işlemleri yapma, baz ve asit miktarı tayini, nem, kül ve elek analizleri, gravimetrik, permanganometrik, iyodometrik, arjantometrik ve kompleksometrik analizler yapma,\nUltraviyole spektrofotometresi, kolorimetre, alev fotometresi, atomik absorpsiyon spektrofotometresi, refraktometre, polarimetre, potansiyometre ve kondüktometre cihazları ve kromatografik yöntemleri kullanarak numunelerde analiz yapma  beceri ve yetkinliklerin kazandırılması amaçlanmaktadır."
+      },
+      {
+        "id": "education-duration",
+        "type": "highlight",
+        "title": "Eğitim süresi",
+        "content": "Alan programının toplam eğitim süresi 4 öğretim yılı olarak planlanmıştır."
+      }
+    ]
+  },
+  {
+    "slug": "elektrik-elektronik-teknolojileri",
+    "shortTitle": "Elektrik - Elektronik",
+    "title": "ELEKTRİK-ELEKTRONİK TEKNOLOJİLERİ BÖLÜMÜ",
+    "branch": "Elektrik Tesisatları ve Dağıtımı Dalı",
+    "image": "/images/electronics.jpg",
+    "accent": "indigo",
+    "lead": "Elektrik-elektronik sanayisi, küresel düzeyde hızla değişen pazar ve rekabet koşulları nedeni ile sürekli ve dinamik bir gelişim içindedir. Bu özellikleri nedeni ile elektrik-elektronik sanayisi, stratejik bir sanayi olarak ülkelerin yakın ilgisini çekmekte ve bu sektör için devletler tarafından özel planlamalar yapılmaktadır. Özellikle hızla küreselleşmekte olan bu sektörde rekabet büyük yoğunluk kazanmakta ve sanayileşmiş ülkeler bu sektörün korunması ve rekabet gücünün geliştirilmesi için özel politikalar uygulamaktadır.",
+    "purpose": "Elektrik-elektronik sanayisi, küresel düzeyde hızla değişen pazar ve rekabet koşulları nedeni ile sürekli ve dinamik bir gelişim içindedir. Bu özellikleri nedeni ile elektrik-elektronik sanayisi, stratejik bir sanayi olarak ülkelerin yakın ilgisini çekmekte ve bu sektör için devletler tarafından özel planlamalar yapılmaktadır. Özellikle hızla küreselleşmekte olan bu sektörde rekabet büyük yoğunluk kazanmakta ve sanayileşmiş ülkeler bu sektörün korunması ve rekabet gücünün geliştirilmesi için özel politikalar uygulamaktadır.",
+    "facts": [
+      { "label": "Eğitim verilmeyen dal", "value": "Asansör Sistemleri" },
+      { "label": "Aktif dal", "value": "Elektrik Tesisatları ve Dağıtımı" },
+      { "label": "Eğitim verilmeyen dal", "value": "Elektrikli Cihazlar Teknik Servisi" },
+      { "label": "Eğitim verilmeyen dal", "value": "Elektronik ve Haberleşme" },
+      { "label": "Eğitim verilmeyen dal", "value": "Endüstriyel Bakım Onarım" },
+      { "label": "Eğitim verilmeyen dal", "value": "Savunma Elektronik Sistemleri" },
+      { "label": "Eğitim süresi", "value": "4 öğretim yılı" }
+    ],
+    "skills": [
+      "Yeni çağ becerileri ve tasarım odaklı düşünme yaklaşımı doğrultusunda \"meslek etiği ve ahilik, iş sağlığı ve güvenliği, teknolojik gelişmeler ve endüstriyel dönüşüm, çevre koruma, girişimci fikirler, iş kurma ve yürütme, fikrî ve sınai mülkiyet hakları\" konularında mesleki gelişim sağlayacak beceriler kazanma,",
+      "İş sağlığı ve güvenliği tedbirlerini alarak temel elektrik-elektronik, ölçme ve temel mekanik uygulamalarını tekniğine uygun şekilde yapma,",
+      "İş sağlığı ve güvenliği tedbirlerini alarak Elektrik İç Tesisleri Yönetmeliği'ne göre elektrik tesisatlarını yapma,",
+      "İş sağlığı ve güvenliği tedbirlerini alarak elektrik-elektronik devre hesaplamaları ve temel elektrik devre kanunları deneylerini yapma,",
+      "İş sağlığı ve güvenliği tedbirleri doğrultusunda bilgisayarlı simülasyon yazılımlarında elektronik devreleri çizme, simülasyonlarını yapma ve baskı devrelerini çizme,",
+      "İş sağlığı ve güvenliği tedbirlerini alarak Elektrik İç Tesisleri Yönetmeliği'ne, Elektrik Kuvvetli Akım Tesisleri Yönetmeliği'ne ve Elektrik Tesislerinde Topraklamalar Yönetmeliği'ne uygun olarak elektrik tesisatı kuvvet ve kumanda panolarını hazırlama,",
+      "İş sağlığı ve güvenliği tedbirlerini alarak bilgisayarlı çizim programında İç Tesisat Yönetmeliği'nden ve üretici firmaların katalog bilgilerinden faydalanarak elektrik tesisat projelerini hazırlama,",
+      "İş sağlığı ve güvenliği tedbirlerini alarak Elektrik İç Tesisleri Yönetmeliği'ne, Elektrik Kuvvetli Akım Tesisleri Yönetmeliği'ne ve Elektrik Tesislerinde Topraklamalar Yönetmeliği'ne uygun olarak kontrol panolarını hazırlama,",
+      "İş sağlığı ve güvenliği tedbirlerini alarak test uygulamaları yapma ile ilgili bilgi, beceri ve yetkinliklerin kazandırılması amaçlanmaktadır."
+    ],
+    "learningAreas": [],
+    "careerAreas": [],
+    "contentBlocks": [
+      {
+        "id": "program-branches",
+        "type": "branch-list",
+        "title": "Elektrik-Elektronik Teknolojisi Alanı Çerçeve Öğretim Programı'nda;",
+        "content": "Asansör Sistemleri, (Okulumuzda bu dalda eğitim VERİLMEMEKTEDİR)\nElektrik Tesisatları ve Dağıtımı,\nElektrikli Cihazlar Teknik Servisi, (Okulumuzda bu dalda eğitim VERİLMEMEKTEDİR)\nElektronik ve Haberleşme, (Okulumuzda bu dalda eğitim VERİLMEMEKTEDİR)\nEndüstriyel Bakım Onarım, (Okulumuzda bu dalda eğitim VERİLMEMEKTEDİR)\nSavunma Elektronik Sistemleri (Okulumuzda bu dalda eğitim VERİLMEMEKTEDİR) dalları yer almaktadır."
+      },
+      {
+        "id": "program-scope",
+        "type": "text",
+        "title": "Programın kapsamı",
+        "content": "Bu doğrultuda Elektrik-Elektronik Teknolojisi alanı ve alan altında yer alan mesleklerde ulusal ve uluslararası düzeyde standartlara uygun örgün öğretim programı hazırlanmıştır."
+      },
+      {
+        "id": "common-competencies",
+        "type": "skills",
+        "title": "Bu programı tamamlayan öğrenciye;",
+        "content": "Yeni çağ becerileri ve tasarım odaklı düşünme yaklaşımı doğrultusunda \"meslek etiği ve ahilik, iş sağlığı ve güvenliği, teknolojik gelişmeler ve endüstriyel dönüşüm, çevre koruma, girişimci fikirler, iş kurma ve yürütme, fikrî ve sınai mülkiyet hakları\" konularında mesleki gelişim sağlayacak beceriler kazanma,\nİş sağlığı ve güvenliği tedbirlerini alarak temel elektrik-elektronik, ölçme ve temel mekanik uygulamalarını tekniğine uygun şekilde yapma,",
+        "footer": "ile ilgili ortak bilgi, beceri ve yetkinliklerin yanı sıra;"
+      },
+      {
+        "id": "installation-competencies",
+        "type": "skills",
+        "title": "Elektrik Tesisatları ve Dağıtımı Dalında;",
+        "content": "İş sağlığı ve güvenliği tedbirlerini alarak Elektrik İç Tesisleri Yönetmeliği'ne göre elektrik tesisatlarını yapma,\nİş sağlığı ve güvenliği tedbirlerini alarak elektrik-elektronik devre hesaplamaları ve temel elektrik devre kanunları deneylerini yapma,\nİş sağlığı ve güvenliği tedbirleri doğrultusunda bilgisayarlı simülasyon yazılımlarında elektronik devreleri çizme, simülasyonlarını yapma ve baskı devrelerini çizme,\nİş sağlığı ve güvenliği tedbirlerini alarak Elektrik İç Tesisleri Yönetmeliği'ne, Elektrik Kuvvetli Akım Tesisleri Yönetmeliği'ne ve Elektrik Tesislerinde Topraklamalar Yönetmeliği'ne uygun olarak elektrik tesisatı kuvvet ve kumanda panolarını hazırlama,\nİş sağlığı ve güvenliği tedbirlerini alarak bilgisayarlı çizim programında İç Tesisat Yönetmeliği'nden ve üretici firmaların katalog bilgilerinden faydalanarak elektrik tesisat projelerini hazırlama,\nİş sağlığı ve güvenliği tedbirlerini alarak Elektrik İç Tesisleri Yönetmeliği'ne, Elektrik Kuvvetli Akım Tesisleri Yönetmeliği'ne ve Elektrik Tesislerinde Topraklamalar Yönetmeliği'ne uygun olarak kontrol panolarını hazırlama,",
+        "footer": "İş sağlığı ve güvenliği tedbirlerini alarak test uygulamaları yapma ile ilgili bilgi, beceri ve yetkinliklerin kazandırılması amaçlanmaktadır."
+      },
+      {
+        "id": "education-duration",
+        "type": "highlight",
+        "title": "Eğitim süresi",
+        "content": "Alan programının toplam eğitim süresi 4 öğretim yılı olarak planlanmıştır."
+      }
+    ]
+  },
+  {
+    "slug": "biyomedikal-cihaz-teknolojileri",
+    "shortTitle": "Biyomedikal",
+    "title": "BİYOMEDİKAL CİHAZ TEKNOLOJİLERİ BÖLÜMÜ",
+    "branch": "Tıbbi Görüntüleme Sistemleri Dalı",
+    "image": "/images/biomedical.jpg",
+    "accent": "cyan",
+    "lead": "Biyomedikal Cihaz Teknolojileri Alanı altında yer alan dallarda,makine ve cihazların; montajı, bakım ve onarımı, ayarlarını, kalibrasyonunu yapabilen, mesleki yeterlikleri kazanmış nitelikli meslek elemanlarını yetiştirmek amaçlanmaktadır.",
+    "purpose": "Biyomedikal Cihaz Teknolojileri Alanı altında yer alan dallarda,makine ve cihazların; montajı, bakım ve onarımı, ayarlarını, kalibrasyonunu yapabilen, mesleki yeterlikleri kazanmış nitelikli meslek elemanlarını yetiştirmek amaçlanmaktadır.",
+    "facts": [
+      { "label": "Eğitim verilmeyen dal", "value": "Yaşam Destek ve Tedavi Cihazları" },
+      { "label": "Aktif dal", "value": "Tıbbi Görüntüleme Sistemleri" },
+      { "label": "Eğitim verilmeyen dal", "value": "Tıbbi Laboratuvar ve Hasta Dışı Uygulama Cihazları" },
+      { "label": "Eğitim verilmeyen dal", "value": "Fizyolojik Sinyal İzleme Teşhis ve Kayıt Cihazları" }
+    ],
+    "skills": [
+      "İş organizasyonunu yapmak,",
+      "Temel elektrik elektromekanik kontrolleri gerçekleştirmek,",
+      "Biyomedikal sistemlerle ilgili temel ölçümleri yapmak,",
+      "Tıbbî teknoloji organizasyonlarını yapmak,",
+      "Görüntüleme cihazlarının kurulum ve ortam şartlarını kontrol etmek, yetki dâhilinde arızalarını tespit etmek ve gidermek,",
+      "Ultrasonik görüntüleyicilerin, x-ışınlı görüntüleyicilerin, nükleer tıp görüntüleme cihazlarının, elektromanyetik görüntüleyici ünitelerinin, tomografi ünitelerinin kurulumunu ve montajını, periyodik bakımlarını yapmak, kalibrasyon ve ayarlarını kontrol etmek,",
+      "Cihazların bilgisayar ve ilgili çevre birimleri ile bağlantılarını yapmak,",
+      "Hastane veri ağ bağlantılarını kontrol etmek ve tanımlamalarını yapmak,",
+      "Endoskopik cihazların (vücut içi kamera sistemlerinin) ve monitörlerin tamir ve bakımını yapmak,",
+      "Meslekî gelişime ilişkin faaliyetleri yürütmektir.",
+      "Fen bilimleri, Matematik, bilgisayar ve mutlaka Yabancı dille ilgili ve başarılı kişiler de olmaları gerekmektedir.",
+      "Tüm duyu organları, işlevlerini tam olarak yerine getirmelidir.",
+      "El ve parmaklarını ustalıkla kullanabilmelidir.",
+      "Mekanik konulara ilgili ve yetenekli",
+      "Alet ve makinelerle uğraşmaktan hoşlanan",
+      "Değişken çalışma temposuna hazırlıklı ve dayanıklı",
+      "Kapalı dar ortamlarda çalışabilen",
+      "Önce ayrıntıları algılayabilen kimseler olması gerekir.",
+      "Hızlı çözüm üretebilen, yorum ve analiz yeteneği yüksek olan kişiler olması gerekir.",
+      "Sabırlı, dikkatli, tedbirli ve titiz, başkaları ile iş birliği içinde çalışabilen, hoş görülü ve empati kurma yeteneği olan, sorumluluk duygusu gelişmiş kişiler olması da gereklidir."
+    ],
+    "learningAreas": [],
+    "careerAreas": [],
+    "contentBlocks": [
+      {
+        "id": "field-purpose",
+        "type": "text",
+        "title": "ALANIN AMACI",
+        "content": "Biyomedikal Cihaz Teknolojileri Alanı altında yer alan dallarda,makine ve cihazların; montajı, bakım ve onarımı, ayarlarını, kalibrasyonunu yapabilen, mesleki yeterlikleri kazanmış nitelikli meslek elemanlarını yetiştirmek amaçlanmaktadır."
+      },
+      {
+        "id": "field-definition",
+        "type": "branch-list",
+        "title": "ALANIN TANIMI",
+        "content": "Yaşam Destek ve Tedavi Cihazları, (Okulumuzda bu dalda eğitim VERİLMEMEKTEDİR)\nTıbbi Görüntüleme Sistemleri,\nTıbbi Laboratuvar ve Hasta Dışı Uygulama Cihazları, (Okulumuzda bu dalda eğitim VERİLMEMEKTEDİR)\nFizyolojik Sinyal İzleme Teşhis ve Kayıt Cihazları (Okulumuzda bu dalda eğitim VERİLMEMEKTEDİR) dallarının yeterliliklerini kazandırmaya yönelik eğitim ve öğretim verilen alandır.",
+        "footer": "Biyomedikal cihaz teknolojileri alanı altında bulunan;"
+      },
+      {
+        "id": "imaging-definition",
+        "type": "text",
+        "title": "Tıbbi Görüntüleme Sistemleri Dalı",
+        "content": "Tanımı\nTıbbî görüntüleme cihazlarına ilişkin kurulum şartlarını kontrol etme, yetki dâhilinde montaj, ilk çalıştırma, bakım, onarım ve kalibrasyon (ölçümleme) ile ayar işlerini kendi başına ve/veya teknik destek ekibi ile belirli bir süre içerisinde ve de ihtiyaç duyulan her zamanda yapma bilgi ve becerisine sahip nitelikli kişidir."
+      },
+      {
+        "id": "duties",
+        "type": "skills",
+        "title": "Görevleri",
+        "content": "İş organizasyonunu yapmak,\nTemel elektrik elektromekanik kontrolleri gerçekleştirmek,\nBiyomedikal sistemlerle ilgili temel ölçümleri yapmak,\nTıbbî teknoloji organizasyonlarını yapmak,\nGörüntüleme cihazlarının kurulum ve ortam şartlarını kontrol etmek, yetki dâhilinde arızalarını tespit etmek ve gidermek,\nUltrasonik görüntüleyicilerin, x-ışınlı görüntüleyicilerin, nükleer tıp görüntüleme cihazlarının, elektromanyetik görüntüleyici ünitelerinin, tomografi ünitelerinin kurulumunu ve montajını, periyodik bakımlarını yapmak, kalibrasyon ve ayarlarını kontrol etmek,\nCihazların bilgisayar ve ilgili çevre birimleri ile bağlantılarını yapmak,\nHastane veri ağ bağlantılarını kontrol etmek ve tanımlamalarını yapmak,\nEndoskopik cihazların (vücut içi kamera sistemlerinin) ve monitörlerin tamir ve bakımını yapmak,\nMeslekî gelişime ilişkin faaliyetleri yürütmektir."
+      },
+      {
+        "id": "candidate-qualities",
+        "type": "skills",
+        "title": "ELEMANLARINDA ARANAN ÖZELLİKLER",
+        "content": "Fen bilimleri, Matematik, bilgisayar ve mutlaka Yabancı dille ilgili ve başarılı kişiler de olmaları gerekmektedir.\nTüm duyu organları, işlevlerini tam olarak yerine getirmelidir.\nEl ve parmaklarını ustalıkla kullanabilmelidir.\nMekanik konulara ilgili ve yetenekli\nAlet ve makinelerle uğraşmaktan hoşlanan\nDeğişken çalışma temposuna hazırlıklı ve dayanıklı\nKapalı dar ortamlarda çalışabilen\nÖnce ayrıntıları algılayabilen kimseler olması gerekir.\nHızlı çözüm üretebilen, yorum ve analiz yeteneği yüksek olan kişiler olması gerekir.\nSabırlı, dikkatli, tedbirli ve titiz, başkaları ile iş birliği içinde çalışabilen, hoş görülü ve empati kurma yeteneği olan, sorumluluk duygusu gelişmiş kişiler olması da gereklidir."
+      }
+    ]
+  }
+]

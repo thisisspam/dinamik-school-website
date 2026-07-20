@@ -1,0 +1,11 @@
+[
+  { "src": "/images/gallery-1.jpg", "alt": "Dinamik öğrencilerinin kış etkinliği", "caption": "Kış etkinlikleri ve kampüs yaşamı" },
+  { "src": "/images/gallery-2.jpg", "alt": "Öğrencilerin açık hava etkinliği", "caption": "Açık hava buluşmaları" },
+  { "src": "/images/gallery-3.jpg", "alt": "Okulun kültürel gezi programı", "caption": "Kültürel gezi programları" },
+  { "src": "/images/gallery-4.jpg", "alt": "Dinamik öğrencileri sosyal etkinlikte", "caption": "Sosyal etkinlikler" },
+  { "src": "/images/gallery-7.jpg", "alt": "Okul etkinliğine katılan öğrenciler", "caption": "Öğrenci topluluğu" },
+  { "src": "/images/gallery-8.jpg", "alt": "Dinamik öğrenci topluluğu", "caption": "Birlikte öğrenme ve üretme" },
+  { "src": "/images/hero-lab.jpg", "alt": "Kimya laboratuvarında uygulamalı çalışma", "caption": "Kimya laboratuvarı" },
+  { "src": "/images/electronics.jpg", "alt": "Elektrik-elektronik atölyesinde uygulama", "caption": "Elektrik-elektronik uygulamaları" },
+  { "src": "/images/biomedical.jpg", "alt": "Biyomedikal cihaz eğitiminde uygulama", "caption": "Biyomedikal cihaz eğitimi" }
+]
