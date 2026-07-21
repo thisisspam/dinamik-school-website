@@ -39,37 +39,34 @@ const departmentHeadingImages: Record<string, Record<string, HeadingImage>> = {
   },
 };
 
+// Full-section background photo (behind the whole content block) with a dark
+// overlay so the heading text and cards stay legible on top.
+function SectionMedia({ image }: { image?: HeadingImage }) {
+  if (!image) return null;
+  return (
+    <>
+      <Image className="department-section-media-img" src={image.src} alt={image.alt} fill sizes="100vw" />
+      <span className="department-section-media-overlay" aria-hidden="true" />
+    </>
+  );
+}
+
 function BlockHeading({
   eyebrow,
   title,
   headingId,
-  image,
+  light,
   compact,
 }: {
   eyebrow: string;
   title: string;
   headingId: string;
-  image?: HeadingImage;
+  light?: boolean;
   compact?: boolean;
 }) {
-  const className = `department-block-heading${compact ? " department-block-heading--compact" : ""}${image ? " department-block-heading--media" : ""}`;
-
-  if (image) {
-    return (
-      <div className={className}>
-        <Image className="department-heading-media-img" src={image.src} alt={image.alt} fill sizes="(max-width: 1180px) calc(100vw - 48px), 1120px" />
-        <span className="department-heading-media-overlay" aria-hidden="true" />
-        <div className="department-heading-media-copy">
-          <p className="inner-eyebrow inner-eyebrow--light">{eyebrow}</p>
-          <h2 id={headingId}>{title}</h2>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className={className}>
-      <p className="inner-eyebrow">{eyebrow}</p>
+    <div className={`department-block-heading${compact ? " department-block-heading--compact" : ""}`}>
+      <p className={`inner-eyebrow${light ? " inner-eyebrow--light" : ""}`}>{eyebrow}</p>
       <h2 id={headingId}>{title}</h2>
     </div>
   );
@@ -96,9 +93,10 @@ function DepartmentContentBlockView({ block, isFirst, headingImage }: { block: D
   if (block.type === "branch-list") {
     const branches = linesToList(block.content);
     return (
-      <section className={`department-branch-section department-content-block${isFirst ? " is-first" : ""}`} aria-labelledby={headingId}>
+      <section className={`department-branch-section department-content-block${isFirst ? " is-first" : ""}${headingImage ? " department-content-block--media" : ""}`} aria-labelledby={headingId}>
+        <SectionMedia image={headingImage} />
         <div className="container">
-          <BlockHeading eyebrow="Alan programı" title={block.title} headingId={headingId} image={headingImage} />
+          <BlockHeading eyebrow="Alan programı" title={block.title} headingId={headingId} light={Boolean(headingImage)} />
           {block.footer ? <p className="department-branch-intro">{block.footer}</p> : null}
           <div className={`department-branch-grid${branches.length === 4 ? " department-branch-grid--four" : ""}`} role="list">
             {branches.map((branch, index) => {
@@ -119,9 +117,10 @@ function DepartmentContentBlockView({ block, isFirst, headingImage }: { block: D
 
   if (block.type === "skills") {
     return (
-      <section className="inner-section department-content-block" aria-labelledby={headingId}>
+      <section className={`inner-section department-content-block${headingImage ? " department-content-block--media" : ""}`} aria-labelledby={headingId}>
+        <SectionMedia image={headingImage} />
         <div className="container department-list-block">
-          <BlockHeading eyebrow="Beceriler" title={block.title} headingId={headingId} image={headingImage} />
+          <BlockHeading eyebrow="Beceriler" title={block.title} headingId={headingId} light={Boolean(headingImage)} />
           <ul className="check-list-grid">
             {linesToList(block.content).map((skill, index) => <li key={`${block.id}-${index}`}><CheckCircle2 size={17} aria-hidden="true" />{skill}</li>)}
           </ul>
@@ -174,9 +173,10 @@ function DepartmentContentBlockView({ block, isFirst, headingImage }: { block: D
   }
 
   return (
-    <section className="inner-section department-content-block" aria-labelledby={headingId}>
+    <section className={`inner-section department-content-block${headingImage ? " department-content-block--media" : ""}`} aria-labelledby={headingId}>
+      <SectionMedia image={headingImage} />
       <div className="container department-text-block">
-        <BlockHeading eyebrow="Bilgiler" title={block.title} headingId={headingId} image={headingImage} />
+        <BlockHeading eyebrow="Bilgiler" title={block.title} headingId={headingId} light={Boolean(headingImage)} />
         <div className="department-text-block-copy">{linesToList(block.content).map((paragraph, index) => <p key={`${block.id}-${index}`}>{paragraph}</p>)}</div>
       </div>
     </section>
