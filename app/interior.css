@@ -903,6 +903,56 @@
   content: "";
   pointer-events: none;
 }
+.activity-gallery-section + .activity-gallery-section {
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+.activity-gallery-section--social {
+  border-top: 0;
+  background: #fff;
+}
+.activity-gallery-section--social::before {
+  display: none;
+}
+.activity-gallery-section--social .biomedical-workshop-heading h2 {
+  color: var(--brand-navy-deep);
+}
+.activity-gallery-section--social .biomedical-workshop-heading > p {
+  color: var(--muted);
+}
+.activity-gallery-section--social .inner-eyebrow--light {
+  color: var(--brand-red);
+}
+.activity-gallery-section--social .biomedical-workshop-gallery:focus-visible .biomedical-workshop-stage {
+  box-shadow: 0 0 0 3px var(--brand-navy-deep), 0 0 0 7px var(--brand-red), 0 34px 90px rgba(0, 0, 0, .22);
+}
+.activity-gallery-section--social .biomedical-workshop-thumbnails button {
+  border-color: rgba(45, 41, 88, .13);
+  background: #fff;
+  color: var(--muted);
+  box-shadow: 0 10px 28px rgba(33, 30, 68, .07);
+}
+.activity-gallery-section--social .biomedical-workshop-thumbnails button:hover,
+.activity-gallery-section--social .biomedical-workshop-thumbnails button:focus-visible {
+  border-color: rgba(45, 41, 88, .34);
+  color: var(--brand-navy-deep);
+}
+.activity-gallery-section--social .biomedical-workshop-thumbnails button.is-active {
+  border-color: rgba(255, 0, 0, .58);
+  background: rgba(255, 0, 0, .045);
+  color: var(--brand-navy-deep);
+}
+.activity-gallery-section--cultural {
+  background:
+    radial-gradient(circle at 88% 10%, rgba(26, 177, 187, .16), transparent 30%),
+    radial-gradient(circle at 8% 88%, rgba(83, 70, 190, .22), transparent 32%),
+    #111027;
+}
+.activity-gallery-section--sporting {
+  background:
+    radial-gradient(circle at 88% 14%, rgba(255, 0, 0, .2), transparent 30%),
+    radial-gradient(circle at 10% 90%, rgba(83, 70, 190, .18), transparent 32%),
+    #0c0b21;
+}
 .biomedical-workshop-heading {
   position: relative;
   z-index: 1;
@@ -951,16 +1001,26 @@
   object-fit: cover;
   animation: biomedical-gallery-reveal .75s cubic-bezier(.2, .7, .2, 1) both;
 }
+.biomedical-workshop-backdrop {
+  z-index: 0;
+  object-fit: cover;
+  filter: blur(24px) brightness(.58) saturate(.72);
+  transform: scale(1.09);
+}
+.biomedical-workshop-image--contain {
+  z-index: 1;
+  object-fit: contain;
+}
 .biomedical-workshop-shade {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   background: linear-gradient(180deg, rgba(8, 7, 25, .12) 25%, rgba(8, 7, 25, .36) 57%, rgba(8, 7, 25, .94) 100%);
   pointer-events: none;
 }
 .biomedical-workshop-controls {
   position: absolute;
-  z-index: 2;
+  z-index: 3;
   top: clamp(18px, 3vw, 30px);
   right: clamp(18px, 3vw, 30px);
   display: flex;
@@ -988,7 +1048,7 @@
 }
 .biomedical-workshop-caption {
   position: absolute;
-  z-index: 2;
+  z-index: 3;
   right: clamp(24px, 4vw, 54px);
   bottom: clamp(30px, 5vw, 62px);
   left: clamp(24px, 4vw, 54px);
@@ -1020,7 +1080,7 @@
 }
 .biomedical-workshop-progress {
   position: absolute;
-  z-index: 2;
+  z-index: 3;
   right: 0;
   bottom: 0;
   left: 0;
@@ -1038,7 +1098,7 @@
 }
 .biomedical-workshop-thumbnails {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--gallery-thumbnail-count, 6), minmax(0, 1fr));
   gap: 12px;
   margin-top: 16px;
 }

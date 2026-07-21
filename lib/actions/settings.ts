@@ -18,7 +18,7 @@ export async function updateSettingsAction(formData: FormData): Promise<void> {
     mapUrl: String(formData.get("mapUrl") ?? "").trim(),
     hours: String(formData.get("hours") ?? "").trim(),
     instagramUrl: String(formData.get("instagramUrl") ?? "").trim(),
-    youtubeUrl: String(formData.get("youtubeUrl") ?? "").trim(),
+    youtubeUrl: "",
   };
 
   if (existing) {

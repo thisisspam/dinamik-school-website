@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink, Mail, MapPin, MessageCircle, Phone, Video } from "lucide-react";
+import { ExternalLink, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { DesktopNavigation } from "./DesktopNavigation";
 import { MobileNavigation } from "./MobileNavigation";
 import { siteNavigation } from "./navigation";
@@ -69,7 +69,6 @@ export async function SiteFooter() {
             <p>Meslek sahibi, gelecek sahibi.</p>
             <div className="inner-footer-social">
               <a href={settings.instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram"><InstagramIcon /></a>
-              <a href={settings.youtubeUrl} target="_blank" rel="noreferrer" aria-label="YouTube"><Video size={18} /></a>
             </div>
           </div>
           <div className="footer-links">

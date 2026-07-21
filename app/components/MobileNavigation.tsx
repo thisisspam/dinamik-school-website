@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, ChevronRight, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import type { NavigationItem } from "./navigation";
@@ -53,7 +53,6 @@ export function MobileNavigation({ navigation, ctaHref = "#on-kayit" }: MobileNa
             return (
               <Link key={item.label} href={item.href} onClick={closeMenu}>
                 {item.label}
-                <ChevronRight size={16} aria-hidden="true" />
               </Link>
             );
           }
@@ -63,23 +62,23 @@ export function MobileNavigation({ navigation, ctaHref = "#on-kayit" }: MobileNa
 
           return (
             <div className="mobile-navigation-group" key={item.label}>
-              <button
-                className="mobile-submenu-trigger"
-                type="button"
-                aria-label={`${item.label} alt menüsünü ${isSubmenuOpen ? "kapat" : "aç"}`}
-                aria-expanded={isSubmenuOpen}
-                aria-controls={submenuId}
-                aria-haspopup="true"
-                onClick={() => setOpenSubmenu(isSubmenuOpen ? null : item.label)}
-              >
-                <span>{item.label}</span>
-                <ChevronDown size={16} aria-hidden="true" />
-              </button>
+              <div className={`mobile-submenu-trigger${isSubmenuOpen ? " is-open" : ""}`}>
+                <Link href={item.href} onClick={closeMenu}>{item.label}</Link>
+                <button
+                  type="button"
+                  aria-label={`${item.label} alt menüsünü ${isSubmenuOpen ? "kapat" : "aç"}`}
+                  aria-expanded={isSubmenuOpen}
+                  aria-controls={submenuId}
+                  aria-haspopup="true"
+                  onClick={() => setOpenSubmenu(isSubmenuOpen ? null : item.label)}
+                >
+                  <ChevronDown size={16} aria-hidden="true" />
+                </button>
+              </div>
               <div className="mobile-submenu" id={submenuId} hidden={!isSubmenuOpen}>
                 {item.children.map((child) => (
                   <Link key={child.href} href={child.href} onClick={closeMenu}>
                     {child.label}
-                    <ChevronRight size={15} aria-hidden="true" />
                   </Link>
                 ))}
               </div>

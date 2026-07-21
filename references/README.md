@@ -55,6 +55,13 @@ zaman özgün PDF kontrol edilmelidir.
   atölye galerisi.
 - Ayrıntılı dosya eşlemesi için klasördeki `README.md` kontrol edilmelidir.
 
+### `content/sportif-faaliyet-fotograflari/`
+
+- Kullanıcı kaynağı: 21 Temmuz 2026 tarihinde sağlanan özgün judo ve futsal fotoğrafları.
+- Set: 7 adet müsabaka, kürsü, takım ve antrenör fotoğrafı.
+- Kullanım: `Faaliyetlerimiz` sayfasındaki `Sportif Faaliyetler` animasyonlu galerisi.
+- Web için anlamlı adlarla hazırlanan birebir kopyalar `public/images/activities/sports/` altında tutulur.
+
 ## Kaynak önceliği
 
 1. Kullanıcının en yeni açık talimatı

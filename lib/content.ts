@@ -12,7 +12,6 @@ export type SiteSettings = {
   mapUrl: string;
   hours: string;
   instagramUrl: string;
-  youtubeUrl: string;
 };
 
 export const HOMEPAGE_SECTION_THEMES = ["original", "light", "navy", "red"] as const;
@@ -56,7 +55,6 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     mapUrl: row.mapUrl,
     hours: row.hours,
     instagramUrl: row.instagramUrl,
-    youtubeUrl: row.youtubeUrl,
   };
 }
 

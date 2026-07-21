@@ -245,7 +245,7 @@ export default async function Home() {
         {heroSection?.isVisible !== false ? (
         <section className={`hero${managedThemeClass(heroSection)}`} id="anasayfa" aria-labelledby="hero-title">
           <div className="hero-media" aria-hidden="true">
-            <Image src="/images/hero-banner.png" alt="" fill priority sizes="100vw" />
+            <Image src="/images/homepage-campus-hero.png" alt="" fill priority sizes="100vw" />
           </div>
           <div className="hero-wash" aria-hidden="true" />
 

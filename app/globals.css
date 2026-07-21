@@ -477,17 +477,44 @@ a {
 
 .mobile-menu nav > a:hover,
 .mobile-submenu-trigger:hover,
-.mobile-submenu-trigger[aria-expanded="true"] {
+.mobile-submenu-trigger.is-open {
   background: rgba(255, 0, 0, 0.05);
   color: var(--brand-red);
 }
 
-.mobile-submenu-trigger svg {
+.mobile-submenu-trigger > a {
+  display: flex;
+  min-width: 0;
+  align-self: stretch;
+  flex: 1;
+  align-items: center;
+}
+
+.mobile-submenu-trigger > button {
+  display: grid;
+  width: 36px;
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.mobile-submenu-trigger > button:hover,
+.mobile-submenu-trigger > button:focus-visible {
+  background: rgba(255, 0, 0, 0.08);
+  outline: none;
+}
+
+.mobile-submenu-trigger > button svg {
   flex: 0 0 auto;
   transition: transform 160ms ease;
 }
 
-.mobile-submenu-trigger[aria-expanded="true"] svg {
+.mobile-submenu-trigger.is-open > button svg {
   transform: rotate(180deg);
 }
 

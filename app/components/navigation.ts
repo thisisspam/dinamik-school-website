@@ -36,9 +36,9 @@ export const siteNavigation: NavigationItem[] = [
   { label: "Kadromuz", href: "/kadromuz" },
   {
     label: "Galeri",
-    href: "/galeri",
+    href: "/faaliyetlerimiz",
     children: [
-      { label: "Sosyal, Kültürel ve Sportif Çalışmalar", href: "/faaliyetlerimiz" },
+      { label: "Faaliyetlerimiz", href: "/faaliyetlerimiz" },
     ],
   },
   { label: "Başarılar", href: "/basarilarimiz" },

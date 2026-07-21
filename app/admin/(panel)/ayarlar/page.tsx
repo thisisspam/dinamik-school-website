@@ -17,7 +17,7 @@ export default async function AdminSettingsPage({
       <AdminPageHeader
         eyebrow="Kurumsal bilgiler"
         title="Site Ayarları"
-        description="İletişim bilgileri, sosyal medya bağlantıları ve çalışma saatleri sitenin her yerinde bu değerleri kullanır."
+        description="İletişim bilgileri, Instagram bağlantısı ve çalışma saatleri sitenin her yerinde bu değerleri kullanır."
       />
       {saved ? <div className="admin-flash">Kaydedildi.</div> : null}
       <div className="admin-card">
@@ -54,16 +54,10 @@ export default async function AdminSettingsPage({
             Çalışma saatleri
             <input type="text" name="hours" defaultValue={row?.hours} required />
           </label>
-          <div className="admin-form-row">
-            <label>
-              Instagram bağlantısı
-              <input type="url" name="instagramUrl" defaultValue={row?.instagramUrl} required />
-            </label>
-            <label>
-              YouTube bağlantısı
-              <input type="url" name="youtubeUrl" defaultValue={row?.youtubeUrl} required />
-            </label>
-          </div>
+          <label>
+            Instagram bağlantısı
+            <input type="url" name="instagramUrl" defaultValue={row?.instagramUrl} required />
+          </label>
           <div className="admin-actions">
             <button className="admin-btn" type="submit"><Save aria-hidden="true" size={16} /> Değişiklikleri kaydet</button>
           </div>

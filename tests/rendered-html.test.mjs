@@ -78,22 +78,57 @@ test("keeps essential navigation and accessibility contracts", async () => {
   assert.match(html, /Okulumuz[\s\S]*Hakkımızda[\s\S]*Okul Kıyafetlerimiz[\s\S]*Rehberlik/i);
   assert.match(
     html,
-    /Galeri[\s\S]*Sosyal, Kültürel ve Sportif Çalışmalar/i,
+    /Galeri[\s\S]*Faaliyetlerimiz/i,
   );
-  assert.match(html, /href="\/galeri"[^>]*>\s*Galeri/i);
+  assert.doesNotMatch(html, /Sosyal, Kültürel ve Sportif Çalışmalar/i);
+  assert.match(html, /href="\/faaliyetlerimiz"[^>]*>\s*Galeri\s*<\/a>/i);
   assert.match(html, /href="\/kadromuz"/i);
   assert.match(html, /href="\/basarilarimiz"/i);
   assert.match(html, /aria-label="Hızlı erişim"/i);
   assert.match(html, /aria-label="WhatsApp üzerinden iletişime geçin"/i);
+  assert.doesNotMatch(html, /href="[^"]*(?:youtube\.com|youtu\.be)|aria-label="YouTube"/i);
   assert.match(html, /href="tel:\+908502182806"/i);
   assert.match(html, /href="tel:\+903624655353"/i);
   assert.match(html, /aria-expanded="false"/i);
   assert.match(
     html,
-    /<button[^>]*class="mobile-submenu-trigger"[^>]*aria-label="Bölümler alt menüsünü aç"[^>]*>[\s\S]*?<span>Bölümler<\/span>/i,
+    /class="mobile-submenu-trigger"[^>]*>[\s\S]*?href="\/bolumler"[^>]*>Bölümler<\/a>[\s\S]*?aria-label="Bölümler alt menüsünü aç"/i,
   );
+  const mobileNavigationHtml = html.match(/<nav[^>]*aria-label="Mobil navigasyon"[\s\S]*?<\/nav>/i)?.[0] ?? "";
+  assert.ok(mobileNavigationHtml, "mobile navigation markup should be rendered");
+  assert.doesNotMatch(mobileNavigationHtml, /lucide-chevron-right/i);
   assert.doesNotMatch(html, /class="mobile-navigation-parent"/i);
   assert.doesNotMatch(html, /href="\/haberler"|>\s*Yayınlar\s*</i, "Yayınlar/Haberler was intentionally removed");
+});
+
+test("renders three animated activity galleries and the original sport photo set", async () => {
+  const html = await readRoute("/faaliyetlerimiz");
+
+  assert.equal(
+    (html.match(/biomedical-workshop-section activity-gallery-section/g) ?? []).length,
+    3,
+  );
+  assert.match(html, /id="sosyal-faaliyetler"[\s\S]*Sosyal faaliyetler/i);
+  assert.match(html, /id="kulturel-faaliyetler"[\s\S]*Kültürel faaliyetler/i);
+  assert.match(html, /id="sportif-faaliyetler"[\s\S]*Sportif faaliyetler/i);
+  assert.ok(
+    html.indexOf('id="sportif-faaliyetler"') < html.indexOf('id="sosyal-faaliyetler"')
+      && html.indexOf('id="sosyal-faaliyetler"') < html.indexOf('id="kulturel-faaliyetler"'),
+    "activity galleries should render in sporting, social, cultural order",
+  );
+  assert.match(html, /aria-label="Otomatik geçişi durdur"/i);
+
+  for (const imageName of [
+    "judo-basari-takimi.jpeg",
+    "judo-kursu-sporcusu.jpeg",
+    "judo-sporcusu-ve-antrenorler.jpeg",
+    "futsal-takimi-sahada.jpeg",
+    "futsal-takimi-soyunma-odasi.jpeg",
+    "judo-musabaka-sporcusu.jpeg",
+    "futsal-takimi-turnuva.jpeg",
+  ]) {
+    assert.match(html, new RegExp(`/images/activities/sports/${imageName}`, "i"));
+  }
 });
 
 test("exports every primary frontend route with working internal navigation", async () => {
