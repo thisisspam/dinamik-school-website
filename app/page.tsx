@@ -84,21 +84,6 @@ const benefits = [
     title: "3 Alan",
     text: "Mesleki Program",
   },
-  {
-    icon: Building2,
-    title: "1.400",
-    text: "Öğrenci Kapasitesi",
-  },
-  {
-    icon: School,
-    title: "400",
-    text: "Kişilik Konferans Salonu",
-  },
-  {
-    icon: Trophy,
-    title: "1 Kampüs",
-    text: "Eğitim, Spor ve Sosyal Yaşam",
-  },
 ];
 
 const quickLinks: LinkItem[] = [
@@ -330,7 +315,7 @@ export default async function Home() {
             <div className="proof-grid" aria-label="Okulun öne çıkan bilgileri">
               {benefits.map((benefit, index) => {
                 const Icon = benefit.icon;
-                const accent = ["teal", "blue", "green", "blue", "teal"][index];
+                const accent = ["teal", "blue"][index];
 
                 return (
                   <div className="proof-card" key={benefit.title}>

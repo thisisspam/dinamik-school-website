@@ -226,6 +226,7 @@ test("renders the cinematic homepage composition while preserving the brand logo
   assert.match(html, /class="departments-footer-link"/i);
   assert.match(html, /class="hero-rail"/i);
   assert.equal((html.match(/class="hero-tile(?: hero-tile--large)?"/gi) ?? []).length, 3);
+  assert.equal((html.match(/class="proof-card"/gi) ?? []).length, 2);
   assert.match(html, /class="hero-tile hero-tile--large" href="#okulumuz"/i);
   assert.doesNotMatch(html, /class="hero-tile hero-tile--large"[^>]+href="https?:\/\/[^\"]*youtube/i);
 });

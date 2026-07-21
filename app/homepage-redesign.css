@@ -252,9 +252,10 @@ main > section[id] {
 
 .proof-grid {
   justify-self: center;
+  max-width: 560px;
   margin: 39px auto 0;
   padding-bottom: 0;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.11);
@@ -1110,7 +1111,7 @@ main > section[id] {
 
   .proof-grid {
     overflow: hidden;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     scroll-snap-type: none;
   }
 
@@ -1287,10 +1288,10 @@ main > section[id] {
   .proof-grid {
     width: 100%;
     margin-top: 34px;
-    overflow-x: auto;
+    overflow-x: hidden;
     padding-bottom: 0;
-    grid-template-columns: repeat(5, minmax(164px, 1fr));
-    scroll-snap-type: x mandatory;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    scroll-snap-type: none;
   }
 
   .proof-card {
