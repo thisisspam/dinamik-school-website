@@ -45,6 +45,16 @@ Kimya ve Elektrik-Elektronik alan programları için toplam eğitim süresi dör
 olarak belirtilmiştir. Ayrıntılı yetkinlikler ve eğitim verilmeyen dallar için özet yerine her
 zaman özgün PDF kontrol edilmelidir.
 
+### `content/biyomedikal-cihaz-fotograflari/`
+
+- Kullanıcı kaynağı: 21 Temmuz 2026 tarihinde sağlanan Biyomedikal Cihaz Teknolojileri
+  bölüm ve atölye fotoğrafları.
+- İlk set: 21 adet bölüm, cihaz, derslik ve uygulama fotoğrafı.
+- `atolyeler/` seti: Atölye adlarını ve yenilenen eğitim ortamlarını gösteren 6 adet fotoğraf.
+- Kullanım: Biyomedikal Cihaz Teknolojileri sayfasındaki gerçek eğitim ortamı görselleri ve
+  atölye galerisi.
+- Ayrıntılı dosya eşlemesi için klasördeki `README.md` kontrol edilmelidir.
+
 ## Kaynak önceliği
 
 1. Kullanıcının en yeni açık talimatı

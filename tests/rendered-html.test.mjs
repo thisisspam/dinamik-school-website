@@ -211,6 +211,25 @@ test("labels active and unavailable branches according to the provided program r
   assert.match(biomedicalHtml, /Ultrasonik görüntüleyicilerin,[\s\S]*kalibrasyon ve ayarlarını kontrol etmek/i);
   assert.match(biomedicalHtml, /Sabırlı, dikkatli, tedbirli ve titiz,[\s\S]*sorumluluk duygusu gelişmiş kişiler olması da gereklidir/i);
   assert.ok((biomedicalHtml.match(/department-branch-card is-unavailable/g) ?? []).length >= 3);
+  assert.match(biomedicalHtml, /Sağlık teknolojisinin geleceği, bu atölyelerde üretilir\./i);
+  assert.match(biomedicalHtml, /class="biomedical-workshop-gallery"/i);
+  assert.equal((biomedicalHtml.match(/aria-label="[1-6]\. fotoğraf:/gi) ?? []).length, 6);
+  assert.match(biomedicalHtml, /Tıbbi Görüntüleme Cihazları Atölyesi/i);
+  assert.match(biomedicalHtml, /Kalibrasyon Atölyesi/i);
+  assert.match(biomedicalHtml, /Bilgisayar Laboratuvarı/i);
+  assert.match(biomedicalHtml, /Baskı Devre ve Lehimleme Atölyesi/i);
+  assert.match(biomedicalHtml, /Mesleki Fizyoloji ve Terminoloji Atölyesi/i);
+  assert.match(biomedicalHtml, /Tıbbi Görüntüleme Sistemleri Atölyesi/i);
+
+  const workshopImageResponses = await Promise.all([
+    "tibbi-goruntuleme-cihazlari-atolyesi.jpeg",
+    "kalibrasyon-atolyesi.jpeg",
+    "bilgisayar-laboratuvari.jpeg",
+    "baski-devre-lehimleme-atolyesi.jpeg",
+    "mesleki-fizyoloji-atolyesi.jpeg",
+    "tibbi-goruntuleme-sistemleri-atolyesi.jpeg",
+  ].map((fileName) => fetch(`${BASE_URL}/images/departments/biomedical/workshops/${fileName}`)));
+  assert.ok(workshopImageResponses.every((response) => response.ok), "all biomedical workshop gallery images should be served");
 
   assert.doesNotMatch(departmentsHtml, /Petrol Endüstrisi|Asansör Sistemleri|Yaşam Destek ve Tedavi Cihazları/i);
 });

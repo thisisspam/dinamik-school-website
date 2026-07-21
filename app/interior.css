@@ -882,6 +882,250 @@
 .department-highlight-card h2 { margin: 0; color: #fff; font-size: clamp(1.75rem, 3vw, 2.8rem); letter-spacing: -0.04em; }
 .department-highlight-card p:last-child { margin: 12px 0 0; color: rgba(255, 255, 255, 0.82); font-size: 1rem; line-height: 1.7; }
 
+.biomedical-workshop-section {
+  position: relative;
+  padding: clamp(82px, 9vw, 124px) 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 8% 12%, rgba(255, 0, 0, 0.18), transparent 30%),
+    radial-gradient(circle at 92% 88%, rgba(83, 70, 190, 0.2), transparent 32%),
+    #0c0b21;
+}
+.biomedical-workshop-section::before {
+  position: absolute;
+  top: 5%;
+  right: -130px;
+  width: 360px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 50%;
+  box-shadow: 0 0 0 70px rgba(255, 255, 255, 0.025), 0 0 0 140px rgba(255, 255, 255, 0.018);
+  content: "";
+  pointer-events: none;
+}
+.biomedical-workshop-heading {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
+  align-items: end;
+  gap: clamp(34px, 7vw, 90px);
+  margin-bottom: clamp(38px, 5vw, 60px);
+}
+.biomedical-workshop-heading h2 {
+  max-width: 820px;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2.6rem, 5vw, 5rem);
+  font-weight: 880;
+  line-height: .98;
+  letter-spacing: -.065em;
+  text-wrap: balance;
+}
+.biomedical-workshop-heading > p {
+  margin: 0 0 6px;
+  color: rgba(255, 255, 255, .68);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.biomedical-workshop-gallery {
+  position: relative;
+  z-index: 1;
+  outline: none;
+}
+.biomedical-workshop-gallery:focus-visible .biomedical-workshop-stage {
+  box-shadow: 0 0 0 3px #fff, 0 0 0 7px var(--brand-red), 0 34px 90px rgba(0, 0, 0, .4);
+}
+.biomedical-workshop-stage {
+  position: relative;
+  height: clamp(440px, 57vw, 680px);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: clamp(24px, 3vw, 36px);
+  background: #17152e;
+  box-shadow: 0 34px 90px rgba(0, 0, 0, .4);
+  isolation: isolate;
+}
+.biomedical-workshop-image {
+  z-index: 0;
+  object-fit: cover;
+  animation: biomedical-gallery-reveal .75s cubic-bezier(.2, .7, .2, 1) both;
+}
+.biomedical-workshop-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(8, 7, 25, .12) 25%, rgba(8, 7, 25, .36) 57%, rgba(8, 7, 25, .94) 100%);
+  pointer-events: none;
+}
+.biomedical-workshop-controls {
+  position: absolute;
+  z-index: 2;
+  top: clamp(18px, 3vw, 30px);
+  right: clamp(18px, 3vw, 30px);
+  display: flex;
+  gap: 9px;
+}
+.biomedical-workshop-controls button {
+  display: grid;
+  width: 46px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 50%;
+  background: rgba(8, 7, 25, .58);
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  transition: border-color .2s ease, background-color .2s ease, transform .2s ease;
+}
+.biomedical-workshop-controls button:hover,
+.biomedical-workshop-controls button:focus-visible {
+  border-color: rgba(255, 255, 255, .72);
+  background: var(--brand-red);
+  outline: none;
+  transform: translateY(-2px);
+}
+.biomedical-workshop-caption {
+  position: absolute;
+  z-index: 2;
+  right: clamp(24px, 4vw, 54px);
+  bottom: clamp(30px, 5vw, 62px);
+  left: clamp(24px, 4vw, 54px);
+  max-width: 760px;
+  color: #fff;
+}
+.biomedical-workshop-caption > span {
+  display: inline-flex;
+  margin-bottom: 12px;
+  color: #ff7171;
+  font-size: .72rem;
+  font-weight: 850;
+  letter-spacing: .16em;
+}
+.biomedical-workshop-caption h3 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 860;
+  line-height: 1.02;
+  letter-spacing: -.05em;
+  text-wrap: balance;
+}
+.biomedical-workshop-caption p {
+  max-width: 680px;
+  margin: 15px 0 0;
+  color: rgba(255, 255, 255, .76);
+  font-size: clamp(.9rem, 1.3vw, 1rem);
+  line-height: 1.7;
+}
+.biomedical-workshop-progress {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, .12);
+}
+.biomedical-workshop-progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand-red), #ff7777);
+}
+.biomedical-workshop-progress span.is-running {
+  animation: biomedical-gallery-progress 5.5s linear forwards;
+}
+.biomedical-workshop-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.biomedical-workshop-thumbnails button {
+  display: grid;
+  min-width: 0;
+  gap: 10px;
+  padding: 9px 9px 13px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 17px;
+  background: rgba(255, 255, 255, .045);
+  color: rgba(255, 255, 255, .64);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .25s ease, background-color .25s ease, color .25s ease, transform .25s ease;
+}
+.biomedical-workshop-thumbnails button:hover,
+.biomedical-workshop-thumbnails button:focus-visible {
+  border-color: rgba(255, 255, 255, .28);
+  color: #fff;
+  outline: none;
+  transform: translateY(-3px);
+}
+.biomedical-workshop-thumbnails button.is-active {
+  border-color: rgba(255, 77, 77, .8);
+  background: rgba(255, 0, 0, .1);
+  color: #fff;
+}
+.biomedical-workshop-thumbnail-image {
+  position: relative;
+  display: block;
+  aspect-ratio: 1.55;
+  overflow: hidden;
+  border-radius: 11px;
+  background: #17152e;
+}
+.biomedical-workshop-thumbnail-image img { object-fit: cover; }
+.biomedical-workshop-thumbnails button > span:last-child {
+  padding: 0 3px;
+  overflow: hidden;
+  font-size: .7rem;
+  font-weight: 760;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+@keyframes biomedical-gallery-reveal {
+  from { opacity: 0; transform: scale(1.045); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes biomedical-gallery-progress {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@media (max-width: 900px) {
+  .biomedical-workshop-heading { grid-template-columns: 1fr; align-items: start; }
+  .biomedical-workshop-heading > p { max-width: 680px; }
+  .biomedical-workshop-thumbnails {
+    grid-template-columns: none;
+    grid-auto-columns: minmax(158px, 31vw);
+    grid-auto-flow: column;
+    padding: 4px 2px 10px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline proximity;
+  }
+  .biomedical-workshop-thumbnails button { scroll-snap-align: start; }
+}
+
+@media (max-width: 640px) {
+  .biomedical-workshop-stage { height: 440px; border-radius: 22px; }
+  .biomedical-workshop-heading h2 { font-size: clamp(2.25rem, 11vw, 3.2rem); }
+  .biomedical-workshop-controls button { width: 42px; }
+  .biomedical-workshop-caption { right: 22px; bottom: 30px; left: 22px; }
+  .biomedical-workshop-caption h3 { font-size: clamp(1.8rem, 8vw, 2.5rem); }
+  .biomedical-workshop-caption p { font-size: .86rem; line-height: 1.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .biomedical-workshop-image,
+  .biomedical-workshop-progress span.is-running { animation: none; }
+  .biomedical-workshop-controls button,
+  .biomedical-workshop-thumbnails button { transition: none; }
+}
+
 .metric-band-item small {
   color: var(--muted);
   font-size: 0.7rem;

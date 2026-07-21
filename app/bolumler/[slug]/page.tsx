@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle2, CircleX, Compass, Gauge, ShieldCheck } from "
 import { notFound } from "next/navigation";
 import { InnerPageShell } from "../../components/SiteChrome";
 import { PageHero } from "../../components/PageHero";
+import { BiomedicalWorkshopGallery } from "../../components/BiomedicalWorkshopGallery";
 import { getDepartment, getDepartments } from "../../data/departments";
 import type { DepartmentContentBlock } from "@/lib/department-blocks";
 import { linesToList, linesToPairs, linesToTitledPairs } from "@/lib/textformat";
@@ -239,15 +240,19 @@ export default async function DepartmentPage({ params }: DepartmentPageProps) {
   const headingImages = departmentHeadingImages[department.slug];
   const sectionImages = departmentSectionImages[department.slug];
   const accentLineBlocks = departmentAccentLineBlocks[department.slug];
+  const isBiomedicalDepartment = department.slug === "biyomedikal-cihaz-teknolojileri";
 
   return (
     <InnerPageShell>
       <PageHero eyebrow={heroIntroBlock?.title ?? department.branch} title={department.title} description={heroIntroBlock?.content ?? department.lead} image={department.image} current={department.shortTitle} accent={department.accent} />
 
       {hasDetailedProgramContent ? (
-        <div className="department-program-flow">
-          {visibleContentBlocks.map((block, index) => <DepartmentContentBlockView block={block} isFirst={index === 0} headingImage={headingImages?.[block.id]} sectionImage={sectionImages?.[block.id]} accentLine={accentLineBlocks?.includes(block.id)} key={block.id} />)}
-        </div>
+        <>
+          <div className="department-program-flow">
+            {visibleContentBlocks.map((block, index) => <DepartmentContentBlockView block={block} isFirst={index === 0} headingImage={headingImages?.[block.id]} sectionImage={sectionImages?.[block.id]} accentLine={accentLineBlocks?.includes(block.id)} key={block.id} />)}
+          </div>
+          {isBiomedicalDepartment ? <BiomedicalWorkshopGallery /> : null}
+        </>
       ) : (
         <>
           {department.contentBlocks[0]?.type === "info-cards" ? <DepartmentContentBlockView block={department.contentBlocks[0]} isFirst headingImage={headingImages?.[department.contentBlocks[0].id]} sectionImage={sectionImages?.[department.contentBlocks[0].id]} accentLine={accentLineBlocks?.includes(department.contentBlocks[0].id)} /> : null}
