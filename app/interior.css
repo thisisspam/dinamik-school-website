@@ -832,6 +832,16 @@
 .department-content-block--media .department-block-heading h2 { color: #fff; }
 .department-content-block--media .department-text-block-copy p { color: rgba(255, 255, 255, 0.86); }
 .department-content-block--media .department-text-block-copy p:first-child:not(:last-child) { color: #fff; }
+.department-content-block--media::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand-red), #ff7474);
+  content: "";
+}
 .department-list-block { max-width: 980px; }
 .department-list-block .check-list-grid { margin-top: 0; }
 .department-text-block { display: grid; grid-template-columns: minmax(260px, .72fr) minmax(320px, 1.28fr); align-items: start; gap: clamp(38px, 7vw, 90px); }
