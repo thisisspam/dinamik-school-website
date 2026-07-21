@@ -21,8 +21,8 @@ type HeadingImage = { src: string; alt: string };
 const departmentHeadingImages: Record<string, Record<string, HeadingImage>> = {
   "biyomedikal-cihaz-teknolojileri": {
     "field-definition": {
-      src: "/images/departments/biomedical/imaging-classroom.jpeg",
-      alt: "Tıbbi görüntüleme dersliğinde CT cihazı eşliğinde ders işlenişi",
+      src: "/images/departments/biomedical/xray-system.jpeg",
+      alt: "Röntgen cihazının bulunduğu uygulama odası",
     },
     "imaging-definition": {
       src: "/images/departments/biomedical/imaging-corridor.jpeg",
