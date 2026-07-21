@@ -46,6 +46,11 @@ const departmentSectionImages: Record<string, Record<string, HeadingImage>> = {
   },
 };
 
+// Content-block ids that get the site's red gradient accent line at the bottom.
+const departmentAccentLineBlocks: Record<string, string[]> = {
+  "biyomedikal-cihaz-teknolojileri": ["imaging-definition", "duties"],
+};
+
 // Full-section background photo (behind the whole content block) with a dark
 // overlay so the heading text and body stay legible on top.
 function SectionMedia({ image }: { image?: HeadingImage }) {
@@ -94,8 +99,9 @@ function BlockHeading({
   );
 }
 
-function DepartmentContentBlockView({ block, isFirst, headingImage, sectionImage }: { block: DepartmentContentBlock; isFirst: boolean; headingImage?: HeadingImage; sectionImage?: HeadingImage }) {
+function DepartmentContentBlockView({ block, isFirst, headingImage, sectionImage, accentLine }: { block: DepartmentContentBlock; isFirst: boolean; headingImage?: HeadingImage; sectionImage?: HeadingImage; accentLine?: boolean }) {
   const headingId = `department-block-${block.id.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
+  const accentLineClass = accentLine ? " department-content-block--accent-line" : "";
 
   if (block.type === "info-cards") {
     const facts = linesToPairs(block.content);
@@ -138,7 +144,7 @@ function DepartmentContentBlockView({ block, isFirst, headingImage, sectionImage
 
   if (block.type === "skills") {
     return (
-      <section className="inner-section department-content-block" aria-labelledby={headingId}>
+      <section className={`inner-section department-content-block${accentLineClass}`} aria-labelledby={headingId}>
         <div className="container department-list-block">
           <BlockHeading eyebrow="Beceriler" title={block.title} headingId={headingId} image={headingImage} />
           <ul className="check-list-grid">
@@ -193,7 +199,7 @@ function DepartmentContentBlockView({ block, isFirst, headingImage, sectionImage
   }
 
   return (
-    <section className={`inner-section department-content-block${sectionImage ? " department-content-block--media" : ""}`} aria-labelledby={headingId}>
+    <section className={`inner-section department-content-block${sectionImage ? " department-content-block--media" : ""}${accentLineClass}`} aria-labelledby={headingId}>
       <SectionMedia image={sectionImage} />
       <div className="container department-text-block">
         {sectionImage
@@ -232,6 +238,7 @@ export default async function DepartmentPage({ params }: DepartmentPageProps) {
   const visibleContentBlocks = heroIntroBlock ? department.contentBlocks.slice(1) : department.contentBlocks;
   const headingImages = departmentHeadingImages[department.slug];
   const sectionImages = departmentSectionImages[department.slug];
+  const accentLineBlocks = departmentAccentLineBlocks[department.slug];
 
   return (
     <InnerPageShell>
@@ -239,11 +246,11 @@ export default async function DepartmentPage({ params }: DepartmentPageProps) {
 
       {hasDetailedProgramContent ? (
         <div className="department-program-flow">
-          {visibleContentBlocks.map((block, index) => <DepartmentContentBlockView block={block} isFirst={index === 0} headingImage={headingImages?.[block.id]} sectionImage={sectionImages?.[block.id]} key={block.id} />)}
+          {visibleContentBlocks.map((block, index) => <DepartmentContentBlockView block={block} isFirst={index === 0} headingImage={headingImages?.[block.id]} sectionImage={sectionImages?.[block.id]} accentLine={accentLineBlocks?.includes(block.id)} key={block.id} />)}
         </div>
       ) : (
         <>
-          {department.contentBlocks[0]?.type === "info-cards" ? <DepartmentContentBlockView block={department.contentBlocks[0]} isFirst headingImage={headingImages?.[department.contentBlocks[0].id]} sectionImage={sectionImages?.[department.contentBlocks[0].id]} /> : null}
+          {department.contentBlocks[0]?.type === "info-cards" ? <DepartmentContentBlockView block={department.contentBlocks[0]} isFirst headingImage={headingImages?.[department.contentBlocks[0].id]} sectionImage={sectionImages?.[department.contentBlocks[0].id]} accentLine={accentLineBlocks?.includes(department.contentBlocks[0].id)} /> : null}
 
           <section className="inner-section">
             <div className="container editorial-grid">
@@ -260,7 +267,7 @@ export default async function DepartmentPage({ params }: DepartmentPageProps) {
           </section>
 
           {department.contentBlocks.map((block, index) => (
-            index === 0 && block.type === "info-cards" ? null : <DepartmentContentBlockView block={block} isFirst={false} headingImage={headingImages?.[block.id]} sectionImage={sectionImages?.[block.id]} key={block.id} />
+            index === 0 && block.type === "info-cards" ? null : <DepartmentContentBlockView block={block} isFirst={false} headingImage={headingImages?.[block.id]} sectionImage={sectionImages?.[block.id]} accentLine={accentLineBlocks?.includes(block.id)} key={block.id} />
           ))}
 
           <section className="inner-section">

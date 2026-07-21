@@ -832,7 +832,8 @@
 .department-content-block--media .department-block-heading h2 { color: #fff; }
 .department-content-block--media .department-text-block-copy p { color: rgba(255, 255, 255, 0.86); }
 .department-content-block--media .department-text-block-copy p:first-child:not(:last-child) { color: #fff; }
-.department-content-block--media::after {
+.department-content-block--accent-line { position: relative; }
+.department-content-block--accent-line::after {
   position: absolute;
   right: 0;
   bottom: 0;
