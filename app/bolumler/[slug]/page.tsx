@@ -13,6 +13,68 @@ type DepartmentPageProps = { params: Promise<{ slug: string }> };
 
 const CONTENT_ICONS = [Compass, Gauge, ShieldCheck];
 
+const departmentGalleries: Record<string, Array<{ src: string; alt: string; caption: string }>> = {
+  "biyomedikal-cihaz-teknolojileri": [
+    {
+      src: "/images/departments/biomedical/imaging-classroom.jpeg",
+      alt: "Tıbbi görüntüleme dersliğinde CT cihazı eşliğinde ders işlenişi",
+      caption: "Tıbbi görüntüleme dersliğinde CT cihazı",
+    },
+    {
+      src: "/images/departments/biomedical/measurement-equipment.jpeg",
+      alt: "Güç kaynağı, osiloskop ve ölçüm cihazlarının bulunduğu laboratuvar masası",
+      caption: "Ölçüm ve test cihazları laboratuvarı",
+    },
+    {
+      src: "/images/departments/biomedical/applied-workshop.jpeg",
+      alt: "Öğrencilerin lehimleme yaparak devre kartı hazırladığı atölye çalışması",
+      caption: "Uygulamalı elektronik atölye çalışması",
+    },
+    {
+      src: "/images/departments/biomedical/xray-system.jpeg",
+      alt: "Röntgen cihazının bulunduğu uygulama odası",
+      caption: "Röntgen uygulama alanı",
+    },
+    {
+      src: "/images/departments/biomedical/imaging-corridor.jpeg",
+      alt: "Tıbbi görüntüleme temalı duvar çizimleriyle atölye koridoru",
+      caption: "Tıbbi Görüntüleme atölyesi koridoru",
+    },
+    {
+      src: "/images/departments/biomedical/biomedical-hero.jpeg",
+      alt: "Öğrencilerin eğitim fuarında biyomedikal cihazları tanıttığı stant",
+      caption: "Eğitim fuarında tıbbi cihaz tanıtımı",
+    },
+  ],
+};
+
+function DepartmentGallery({ slug }: { slug: string }) {
+  const photos = departmentGalleries[slug];
+  if (!photos) return null;
+
+  return (
+    <section className="inner-section inner-section--soft" aria-labelledby="department-gallery-title">
+      <div className="container">
+        <div className="inner-section-header">
+          <div>
+            <p className="inner-eyebrow">Atölyeden kareler</p>
+            <h2 id="department-gallery-title">Programın uygulama ortamından görüntüler</h2>
+          </div>
+          <p>Derslik, laboratuvar ve atölye çalışmalarından bir seçki.</p>
+        </div>
+        <div className="gallery-masonry">
+          {photos.map((photo) => (
+            <figure className="gallery-card" key={photo.src}>
+              <Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 700px) calc(100vw - 48px), 45vw" />
+              <figcaption>{photo.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function DepartmentContentBlockView({ block, isFirst }: { block: DepartmentContentBlock; isFirst: boolean }) {
   const headingId = `department-block-${block.id.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
 
@@ -150,6 +212,8 @@ export default async function DepartmentPage({ params }: DepartmentPageProps) {
   return (
     <InnerPageShell>
       <PageHero eyebrow={heroIntroBlock?.title ?? department.branch} title={department.title} description={heroIntroBlock?.content ?? department.lead} image={department.image} current={department.shortTitle} accent={department.accent} />
+
+      <DepartmentGallery slug={department.slug} />
 
       {hasDetailedProgramContent ? (
         <div className="department-program-flow">
