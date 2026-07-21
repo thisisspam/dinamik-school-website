@@ -880,13 +880,20 @@
 
 .staff-card {
   position: relative;
-  min-height: 190px;
-  padding: 24px;
+  min-height: 0;
+  padding: 0;
   overflow: hidden;
   border: 1px solid rgba(45, 41, 88, 0.1);
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 12px 32px rgba(33, 30, 68, 0.055);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.staff-card:hover {
+  border-color: rgba(255, 0, 0, 0.2);
+  box-shadow: 0 20px 45px rgba(33, 30, 68, 0.11);
+  transform: translateY(-4px);
 }
 
 .staff-card::after {
@@ -900,24 +907,53 @@
   content: "";
 }
 
+.staff-card-media {
+  position: relative;
+  display: grid;
+  aspect-ratio: 4 / 5;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 70% 22%, rgba(255, 0, 0, 0.13), transparent 34%),
+    linear-gradient(145deg, #211e44, #38326f);
+}
+
+.staff-card-media img {
+  object-fit: cover;
+  transition: transform 380ms ease;
+}
+
+.staff-card:hover .staff-card-media img {
+  transform: scale(1.025);
+}
+
+.staff-card-body {
+  position: relative;
+  z-index: 1;
+  min-height: 108px;
+  padding: 20px 22px 22px;
+  background: #fff;
+}
+
 .staff-avatar {
   display: grid;
-  width: 52px;
+  width: 74px;
   aspect-ratio: 1;
   place-items: center;
-  margin-bottom: 22px;
-  border-radius: 17px;
-  background: linear-gradient(135deg, #211e44, #49428a);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.1);
   color: #fff;
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-weight: 850;
   letter-spacing: 0.05em;
+  backdrop-filter: blur(10px);
 }
 
 .staff-card h3 {
   margin: 0 0 7px;
   color: var(--brand-navy-deep);
-  font-size: 0.96rem;
+  font-size: 1rem;
   line-height: 1.3;
 }
 

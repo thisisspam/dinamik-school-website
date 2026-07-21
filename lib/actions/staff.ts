@@ -4,6 +4,19 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { getDb, schema } from "@/lib/db/client";
+import { saveUploadedFile } from "@/lib/media";
+
+async function resolveStaffImage(formData: FormData): Promise<string | null> {
+  const existingImage = String(formData.get("existingImage") ?? "").trim() || null;
+  if (formData.get("removeImage") === "on") return null;
+
+  const imageFile = formData.get("imageFile");
+  if (imageFile instanceof File && imageFile.size > 0) {
+    return saveUploadedFile(imageFile);
+  }
+
+  return existingImage;
+}
 
 export async function createStaffAction(formData: FormData): Promise<void> {
   const db = await getDb();
@@ -14,6 +27,7 @@ export async function createStaffAction(formData: FormData): Promise<void> {
     name: String(formData.get("name") ?? "").trim(),
     category: String(formData.get("category") ?? "").trim(),
     role: String(formData.get("role") ?? "").trim(),
+    image: await resolveStaffImage(formData),
     sortOrder: nextOrder,
   });
 
@@ -31,6 +45,7 @@ export async function updateStaffAction(formData: FormData): Promise<void> {
       name: String(formData.get("name") ?? "").trim(),
       category: String(formData.get("category") ?? "").trim(),
       role: String(formData.get("role") ?? "").trim(),
+      image: await resolveStaffImage(formData),
     })
     .where(eq(schema.staff.id, id));
 

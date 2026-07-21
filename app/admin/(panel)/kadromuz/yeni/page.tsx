@@ -18,7 +18,7 @@ export default async function AdminNewStaffPage() {
         actions={<Link className="admin-btn admin-btn-secondary" href="/admin/kadromuz"><ArrowLeft aria-hidden="true" size={16} /> Kadroya dön</Link>}
       />
       <div className="admin-card">
-        <form className="admin-form" action={createStaffAction}>
+        <form className="admin-form" action={createStaffAction} encType="multipart/form-data">
           <label>
             Ad Soyad
             <input type="text" name="name" required autoFocus />
@@ -30,6 +30,11 @@ export default async function AdminNewStaffPage() {
           <label>
             Unvan
             <input type="text" name="role" required placeholder="Örn. Matematik Öğretmeni" />
+          </label>
+          <label>
+            Öğretmen fotoğrafı
+            <input type="file" name="imageFile" accept="image/jpeg,image/png,image/webp" />
+            <span className="admin-hint">Dikey, net ve en az 400 × 500 piksel bir görsel kullanın.</span>
           </label>
           <datalist id="kategori-listesi">
             {categories.map((category) => (

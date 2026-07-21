@@ -15,7 +15,8 @@
     "start": "next start",
     "test": "npm run build && node --test tests/rendered-html.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
-    "db:seed": "tsx lib/db/seed.ts"
+    "db:seed": "tsx lib/db/seed.ts",
+    "staff:sync-portraits": "node scripts/sync-staff-portraits.mjs"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",

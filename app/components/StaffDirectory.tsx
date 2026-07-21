@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Search, Users } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { StaffGroup, StaffMember } from "../data/staff";
@@ -57,9 +58,22 @@ export function StaffDirectory({ staffGroups, staffMembers }: { staffGroups: Sta
       <div className="staff-grid" aria-live="polite">
         {visibleStaff.map((member) => (
           <article className="staff-card" key={`${member.category}-${member.name}`}>
-            <span className="staff-avatar" aria-hidden="true">{getInitials(member.name)}</span>
-            <h3>{member.name}</h3>
-            <p>{member.role}</p>
+            <div className="staff-card-media">
+              {member.image ? (
+                <Image
+                  src={member.image}
+                  alt={`${member.name}, ${member.role}`}
+                  fill
+                  sizes="(max-width: 700px) calc(100vw - 48px), (max-width: 1100px) 33vw, 25vw"
+                />
+              ) : (
+                <span className="staff-avatar" aria-hidden="true">{getInitials(member.name)}</span>
+              )}
+            </div>
+            <div className="staff-card-body">
+              <h3>{member.name}</h3>
+              <p>{member.role}</p>
+            </div>
           </article>
         ))}
         {visibleStaff.length === 0 ? (

@@ -28,8 +28,10 @@ export const CREATE_TABLE_STATEMENTS = [
     name TEXT NOT NULL,
     category TEXT NOT NULL,
     role TEXT NOT NULL,
+    image TEXT,
     sort_order INTEGER NOT NULL DEFAULT 0
   )`,
+  `ALTER TABLE staff ADD COLUMN IF NOT EXISTS image TEXT`,
   `CREATE TABLE IF NOT EXISTS gallery_images (
     id SERIAL PRIMARY KEY,
     src TEXT NOT NULL,
@@ -101,6 +103,13 @@ type DepartmentSeed = {
   contentBlocks?: unknown;
 };
 type StaffGroupSeed = { category: string; role: string; names: string[] };
+type StaffPortraitSeed = {
+  name: string;
+  aliases?: string[];
+  category: string;
+  role: string;
+  image: string;
+};
 type GalleryImageSeed = { src: string; alt: string; caption?: string };
 type SiteSettingsSeed = {
   generalPhone: string;
@@ -162,14 +171,41 @@ export async function seedInitialContent(db: NeonHttpDatabase<typeof schema>): P
   );
 
   const staffGroups = readJson<StaffGroupSeed[]>("staff.json");
-  const staffRows: Array<{ name: string; category: string; role: string; sortOrder: number }> = [];
+  const staffPortraits = readJson<StaffPortraitSeed[]>("staff-portraits.json");
+  const staffRows: Array<{ name: string; category: string; role: string; image: string | null; sortOrder: number }> = [];
   let staffSortOrder = 0;
   for (const group of staffGroups) {
     for (const name of group.names) {
-      staffRows.push({ name, category: group.category, role: group.role, sortOrder: staffSortOrder });
+      staffRows.push({ name, category: group.category, role: group.role, image: null, sortOrder: staffSortOrder });
       staffSortOrder += 1;
     }
   }
+
+  for (const portrait of staffPortraits) {
+    const acceptedNames = new Set([portrait.name, ...(portrait.aliases ?? [])]);
+    const existing = staffRows.find((row) => acceptedNames.has(row.name));
+    if (existing) {
+      existing.name = portrait.name;
+      existing.category = portrait.category;
+      existing.role = portrait.role;
+      existing.image = portrait.image;
+      continue;
+    }
+
+    const lastCategoryIndex = staffRows.findLastIndex((row) => row.category === portrait.category);
+    const insertAt = lastCategoryIndex >= 0 ? lastCategoryIndex + 1 : staffRows.length;
+    staffRows.splice(insertAt, 0, {
+      name: portrait.name,
+      category: portrait.category,
+      role: portrait.role,
+      image: portrait.image,
+      sortOrder: staffSortOrder,
+    });
+    staffSortOrder += 1;
+  }
+  staffRows.forEach((row, index) => {
+    row.sortOrder = index;
+  });
   await db.insert(schema.staff).values(staffRows);
 
   const gallery = readJson<GalleryImageSeed[]>("gallery.json");

@@ -133,6 +133,10 @@ test("keeps every teaching branch separate in the staff directory", async () => 
   assert.match(html, /Kader Danışmaz[\s\S]*Tarih Öğretmeni/i);
   assert.match(html, /Fatma Zehra Soruklu[\s\S]*Coğrafya Öğretmeni/i);
   assert.match(html, /Betül Müdür[\s\S]*Felsefe Öğretmeni/i);
+  assert.match(html, /Mustafa İrfan Kütük[\s\S]*Türk Dili ve Edebiyatı Öğretmeni/i);
+  assert.match(html, /Nevin Varoğlu[\s\S]*Türk Dili ve Edebiyatı Öğretmeni/i);
+  assert.match(html, /src="\/uploads\/staff\/kader-danismaz\.webp"/i);
+  assert.match(html, /alt="Kader Danışmaz, Tarih Öğretmeni"/i);
   assert.doesNotMatch(html, /Sosyal Bilimler|Fen Bilimleri|Spor ve Sanat/i);
 });
 
@@ -222,6 +226,8 @@ test("renders the cinematic homepage composition while preserving the brand logo
   assert.match(html, /class="departments-footer-link"/i);
   assert.match(html, /class="hero-rail"/i);
   assert.equal((html.match(/class="hero-tile(?: hero-tile--large)?"/gi) ?? []).length, 3);
+  assert.match(html, /class="hero-tile hero-tile--large" href="#okulumuz"/i);
+  assert.doesNotMatch(html, /class="hero-tile hero-tile--large"[^>]+href="https?:\/\/[^\"]*youtube/i);
 });
 
 test("removes disposable starter preview code and dependency", async () => {

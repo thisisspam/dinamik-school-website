@@ -5,6 +5,8 @@ import { PageHero } from "../components/PageHero";
 import { StaffDirectory } from "../components/StaffDirectory";
 import { getStaffGroups, getStaffMembers } from "../data/staff";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Kadromuz",
   description: "Dinamik Samsun'un mesleki alan, akademik branş ve rehberlik öğretmenlerinden oluşan eğitim kadrosu.",

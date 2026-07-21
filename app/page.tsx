@@ -293,9 +293,7 @@ export default async function Home() {
               <aside className="hero-rail" aria-label="Okuldan öne çıkanlar">
                 <a
                   className="hero-tile hero-tile--large"
-                  href={settings.youtubeUrl}
-                  target="_blank"
-                  rel="noreferrer"
+                  href="#okulumuz"
                 >
                   <Image
                     src="/images/gallery-4.jpg"

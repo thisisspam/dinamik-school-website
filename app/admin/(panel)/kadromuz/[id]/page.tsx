@@ -28,8 +28,9 @@ export default async function AdminEditStaffPage({
         actions={<Link className="admin-btn admin-btn-secondary" href="/admin/kadromuz"><ArrowLeft aria-hidden="true" size={16} /> Kadroya dön</Link>}
       />
       <div className="admin-card">
-        <form className="admin-form" action={updateStaffAction}>
+        <form className="admin-form" action={updateStaffAction} encType="multipart/form-data">
           <input type="hidden" name="id" value={row.id} />
+          <input type="hidden" name="existingImage" value={row.image ?? ""} />
           <label>
             Ad Soyad
             <input type="text" name="name" defaultValue={row.name} required autoFocus />
@@ -42,6 +43,29 @@ export default async function AdminEditStaffPage({
             Unvan
             <input type="text" name="role" defaultValue={row.role} required />
           </label>
+          <div className="admin-media-field admin-staff-media-field">
+            <div className="admin-current-media admin-staff-current-media">
+              {row.image ? (
+                // eslint-disable-next-line @next/next/no-img-element -- admin preview supports local and uploaded URLs
+                <img src={row.image} alt={`${row.name} mevcut fotoğrafı`} />
+              ) : (
+                <span>Fotoğraf yok</span>
+              )}
+            </div>
+            <div className="admin-staff-media-controls">
+              <label>
+                Yeni öğretmen fotoğrafı
+                <input type="file" name="imageFile" accept="image/jpeg,image/png,image/webp" />
+              </label>
+              {row.image ? (
+                <label className="admin-checkbox-label">
+                  <input type="checkbox" name="removeImage" />
+                  Mevcut fotoğrafı kaldır
+                </label>
+              ) : null}
+              <span className="admin-hint">Dosya seçmezseniz mevcut fotoğraf korunur.</span>
+            </div>
+          </div>
           <datalist id="kategori-listesi">
             {categories.map((category) => (
               <option value={category} key={category} />

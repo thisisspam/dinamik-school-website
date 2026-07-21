@@ -37,6 +37,14 @@ export default async function AdminStaffPage({
             <tbody>
               {members.map((member) => (
                 <tr key={member.id}>
+                  <td className="admin-staff-thumbnail-cell">
+                    {member.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element -- compact admin thumbnail supports local and uploaded URLs
+                      <img className="admin-staff-thumbnail" src={member.image} alt="" />
+                    ) : (
+                      <span className="admin-staff-thumbnail admin-staff-thumbnail--empty" aria-hidden="true">—</span>
+                    )}
+                  </td>
                   <td>{member.name}</td>
                   <td className="admin-actions">
                     <Link className="admin-btn admin-btn-secondary" href={`/admin/kadromuz/${member.id}`}>
