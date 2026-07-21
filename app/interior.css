@@ -794,6 +794,29 @@
 .department-block-heading { max-width: 840px; margin-bottom: 34px; }
 .department-block-heading--compact { margin-bottom: 24px; }
 .department-block-heading h2 { margin: 0; color: var(--brand-navy-deep); font-size: clamp(2rem, 3.5vw, 3.35rem); font-weight: 870; line-height: 1.05; letter-spacing: -0.05em; text-wrap: balance; }
+
+.department-block-heading--media {
+  position: relative;
+  display: flex;
+  max-width: none;
+  min-height: clamp(230px, 32vw, 340px);
+  align-items: flex-end;
+  padding: clamp(24px, 4vw, 46px);
+  overflow: hidden;
+  border-radius: 26px;
+  box-shadow: 0 26px 66px rgba(33, 30, 68, 0.24);
+  isolation: isolate;
+}
+.department-heading-media-img { object-fit: cover; z-index: -2; }
+.department-heading-media-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(172deg, rgba(15, 14, 40, 0.12) 0%, rgba(15, 14, 40, 0.5) 52%, rgba(11, 10, 30, 0.92) 100%);
+}
+.department-heading-media-copy { max-width: 760px; }
+.department-block-heading--media .inner-eyebrow { margin-bottom: 12px; }
+.department-block-heading--media h2 { color: #fff; }
 .department-list-block { max-width: 980px; }
 .department-list-block .check-list-grid { margin-top: 0; }
 .department-text-block { display: grid; grid-template-columns: minmax(260px, .72fr) minmax(320px, 1.28fr); align-items: start; gap: clamp(38px, 7vw, 90px); }
@@ -809,6 +832,7 @@
 .department-branch-section { padding: clamp(70px, 8vw, 104px) 0; }
 .department-branch-section.is-first { position: relative; z-index: 4; margin-top: -44px; padding: 0 0 clamp(72px, 8vw, 104px); }
 .department-branch-section.is-first .department-block-heading { padding-top: clamp(78px, 8vw, 112px); }
+.department-branch-section.is-first .department-block-heading--media { margin-top: clamp(80px, 9vw, 120px); padding-top: clamp(24px, 4vw, 46px); }
 .department-branch-intro { max-width: 850px; margin: -14px 0 26px; color: var(--muted); font-size: 1rem; line-height: 1.8; }
 .department-branch-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: hidden; border: 1px solid rgba(45, 41, 88, 0.1); border-radius: 22px; background: rgba(255, 255, 255, 0.98); box-shadow: 0 22px 60px rgba(33, 30, 68, 0.14); }
 .department-branch-grid--four { grid-template-columns: repeat(2, minmax(0, 1fr)); }

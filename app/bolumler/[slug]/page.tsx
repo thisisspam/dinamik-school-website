@@ -13,69 +13,69 @@ type DepartmentPageProps = { params: Promise<{ slug: string }> };
 
 const CONTENT_ICONS = [Compass, Gauge, ShieldCheck];
 
-const departmentGalleries: Record<string, Array<{ src: string; alt: string; caption: string }>> = {
-  "biyomedikal-cihaz-teknolojileri": [
-    {
+type HeadingImage = { src: string; alt: string };
+
+// Per-department photos rendered as the background of each section heading,
+// keyed by content-block id. Distributing the real workshop/lab photos behind
+// the headings ties each program section to a genuine campus visual.
+const departmentHeadingImages: Record<string, Record<string, HeadingImage>> = {
+  "biyomedikal-cihaz-teknolojileri": {
+    "field-definition": {
       src: "/images/departments/biomedical/imaging-classroom.jpeg",
       alt: "Tıbbi görüntüleme dersliğinde CT cihazı eşliğinde ders işlenişi",
-      caption: "Tıbbi görüntüleme dersliğinde CT cihazı",
     },
-    {
-      src: "/images/departments/biomedical/measurement-equipment.jpeg",
-      alt: "Güç kaynağı, osiloskop ve ölçüm cihazlarının bulunduğu laboratuvar masası",
-      caption: "Ölçüm ve test cihazları laboratuvarı",
-    },
-    {
-      src: "/images/departments/biomedical/applied-workshop.jpeg",
-      alt: "Öğrencilerin lehimleme yaparak devre kartı hazırladığı atölye çalışması",
-      caption: "Uygulamalı elektronik atölye çalışması",
-    },
-    {
-      src: "/images/departments/biomedical/xray-system.jpeg",
-      alt: "Röntgen cihazının bulunduğu uygulama odası",
-      caption: "Röntgen uygulama alanı",
-    },
-    {
+    "imaging-definition": {
       src: "/images/departments/biomedical/imaging-corridor.jpeg",
       alt: "Tıbbi görüntüleme temalı duvar çizimleriyle atölye koridoru",
-      caption: "Tıbbi Görüntüleme atölyesi koridoru",
     },
-    {
-      src: "/images/departments/biomedical/biomedical-hero.jpeg",
-      alt: "Öğrencilerin eğitim fuarında biyomedikal cihazları tanıttığı stant",
-      caption: "Eğitim fuarında tıbbi cihaz tanıtımı",
+    "duties": {
+      src: "/images/departments/biomedical/measurement-equipment.jpeg",
+      alt: "Güç kaynağı, osiloskop ve ölçüm cihazlarının bulunduğu laboratuvar masası",
     },
-  ],
+    "candidate-qualities": {
+      src: "/images/departments/biomedical/applied-workshop.jpeg",
+      alt: "Öğrencilerin lehimleme yaparak devre kartı hazırladığı atölye çalışması",
+    },
+  },
 };
 
-function DepartmentGallery({ slug }: { slug: string }) {
-  const photos = departmentGalleries[slug];
-  if (!photos) return null;
+function BlockHeading({
+  eyebrow,
+  title,
+  headingId,
+  image,
+  compact,
+}: {
+  eyebrow: string;
+  title: string;
+  headingId: string;
+  image?: HeadingImage;
+  compact?: boolean;
+}) {
+  const className = `department-block-heading${compact ? " department-block-heading--compact" : ""}${image ? " department-block-heading--media" : ""}`;
 
-  return (
-    <section className="inner-section inner-section--soft" aria-labelledby="department-gallery-title">
-      <div className="container">
-        <div className="inner-section-header">
-          <div>
-            <p className="inner-eyebrow">Atölyeden kareler</p>
-            <h2 id="department-gallery-title">Programın uygulama ortamından görüntüler</h2>
-          </div>
-          <p>Derslik, laboratuvar ve atölye çalışmalarından bir seçki.</p>
-        </div>
-        <div className="gallery-masonry">
-          {photos.map((photo) => (
-            <figure className="gallery-card" key={photo.src}>
-              <Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 700px) calc(100vw - 48px), 45vw" />
-              <figcaption>{photo.caption}</figcaption>
-            </figure>
-          ))}
+  if (image) {
+    return (
+      <div className={className}>
+        <Image className="department-heading-media-img" src={image.src} alt={image.alt} fill sizes="(max-width: 1180px) calc(100vw - 48px), 1120px" />
+        <span className="department-heading-media-overlay" aria-hidden="true" />
+        <div className="department-heading-media-copy">
+          <p className="inner-eyebrow inner-eyebrow--light">{eyebrow}</p>
+          <h2 id={headingId}>{title}</h2>
         </div>
       </div>
-    </section>
+    );
+  }
+
+  return (
+    <div className={className}>
+      <p className="inner-eyebrow">{eyebrow}</p>
+      <h2 id={headingId}>{title}</h2>
+    </div>
   );
 }
 
-function DepartmentContentBlockView({ block, isFirst }: { block: DepartmentContentBlock; isFirst: boolean }) {
+function DepartmentContentBlockView({ block, isFirst, headingImage }: { block: DepartmentContentBlock; isFirst: boolean; headingImage?: HeadingImage }) {
   const headingId = `department-block-${block.id.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
 
   if (block.type === "info-cards") {
@@ -98,7 +98,7 @@ function DepartmentContentBlockView({ block, isFirst }: { block: DepartmentConte
     return (
       <section className={`department-branch-section department-content-block${isFirst ? " is-first" : ""}`} aria-labelledby={headingId}>
         <div className="container">
-          <div className="department-block-heading"><p className="inner-eyebrow">Alan programı</p><h2 id={headingId}>{block.title}</h2></div>
+          <BlockHeading eyebrow="Alan programı" title={block.title} headingId={headingId} image={headingImage} />
           {block.footer ? <p className="department-branch-intro">{block.footer}</p> : null}
           <div className={`department-branch-grid${branches.length === 4 ? " department-branch-grid--four" : ""}`} role="list">
             {branches.map((branch, index) => {
@@ -121,7 +121,7 @@ function DepartmentContentBlockView({ block, isFirst }: { block: DepartmentConte
     return (
       <section className="inner-section department-content-block" aria-labelledby={headingId}>
         <div className="container department-list-block">
-          <div className="department-block-heading"><p className="inner-eyebrow">Beceriler</p><h2 id={headingId}>{block.title}</h2></div>
+          <BlockHeading eyebrow="Beceriler" title={block.title} headingId={headingId} image={headingImage} />
           <ul className="check-list-grid">
             {linesToList(block.content).map((skill, index) => <li key={`${block.id}-${index}`}><CheckCircle2 size={17} aria-hidden="true" />{skill}</li>)}
           </ul>
@@ -176,7 +176,7 @@ function DepartmentContentBlockView({ block, isFirst }: { block: DepartmentConte
   return (
     <section className="inner-section department-content-block" aria-labelledby={headingId}>
       <div className="container department-text-block">
-        <div className="department-block-heading"><p className="inner-eyebrow">Bilgiler</p><h2 id={headingId}>{block.title}</h2></div>
+        <BlockHeading eyebrow="Bilgiler" title={block.title} headingId={headingId} image={headingImage} />
         <div className="department-text-block-copy">{linesToList(block.content).map((paragraph, index) => <p key={`${block.id}-${index}`}>{paragraph}</p>)}</div>
       </div>
     </section>
@@ -208,20 +208,19 @@ export default async function DepartmentPage({ params }: DepartmentPageProps) {
     ? department.contentBlocks[0]
     : undefined;
   const visibleContentBlocks = heroIntroBlock ? department.contentBlocks.slice(1) : department.contentBlocks;
+  const headingImages = departmentHeadingImages[department.slug];
 
   return (
     <InnerPageShell>
       <PageHero eyebrow={heroIntroBlock?.title ?? department.branch} title={department.title} description={heroIntroBlock?.content ?? department.lead} image={department.image} current={department.shortTitle} accent={department.accent} />
 
-      <DepartmentGallery slug={department.slug} />
-
       {hasDetailedProgramContent ? (
         <div className="department-program-flow">
-          {visibleContentBlocks.map((block, index) => <DepartmentContentBlockView block={block} isFirst={index === 0} key={block.id} />)}
+          {visibleContentBlocks.map((block, index) => <DepartmentContentBlockView block={block} isFirst={index === 0} headingImage={headingImages?.[block.id]} key={block.id} />)}
         </div>
       ) : (
         <>
-          {department.contentBlocks[0]?.type === "info-cards" ? <DepartmentContentBlockView block={department.contentBlocks[0]} isFirst /> : null}
+          {department.contentBlocks[0]?.type === "info-cards" ? <DepartmentContentBlockView block={department.contentBlocks[0]} isFirst headingImage={headingImages?.[department.contentBlocks[0].id]} /> : null}
 
           <section className="inner-section">
             <div className="container editorial-grid">
@@ -238,7 +237,7 @@ export default async function DepartmentPage({ params }: DepartmentPageProps) {
           </section>
 
           {department.contentBlocks.map((block, index) => (
-            index === 0 && block.type === "info-cards" ? null : <DepartmentContentBlockView block={block} isFirst={false} key={block.id} />
+            index === 0 && block.type === "info-cards" ? null : <DepartmentContentBlockView block={block} isFirst={false} headingImage={headingImages?.[block.id]} key={block.id} />
           ))}
 
           <section className="inner-section">
