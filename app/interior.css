@@ -817,6 +817,21 @@
 .department-heading-media-copy { max-width: 760px; }
 .department-block-heading--media .inner-eyebrow { margin-bottom: 12px; }
 .department-block-heading--media h2 { color: #fff; }
+
+/* Full-section background photo: the whole content block sits over a real
+   campus photo with a dark overlay; heading and body text go light. */
+.department-content-block--media { position: relative; isolation: isolate; overflow: hidden; background: #0c0b21; }
+.department-program-flow > .department-content-block--media { background: #0c0b21; }
+.department-section-media-img { object-fit: cover; z-index: -2; }
+.department-section-media-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(12, 11, 33, 0.84) 0%, rgba(12, 11, 33, 0.7) 45%, rgba(10, 9, 28, 0.86) 100%);
+}
+.department-content-block--media .department-block-heading h2 { color: #fff; }
+.department-content-block--media .department-text-block-copy p { color: rgba(255, 255, 255, 0.86); }
+.department-content-block--media .department-text-block-copy p:first-child:not(:last-child) { color: #fff; }
 .department-list-block { max-width: 980px; }
 .department-list-block .check-list-grid { margin-top: 0; }
 .department-text-block { display: grid; grid-template-columns: minmax(260px, .72fr) minmax(320px, 1.28fr); align-items: start; gap: clamp(38px, 7vw, 90px); }

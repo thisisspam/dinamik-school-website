@@ -24,10 +24,6 @@ const departmentHeadingImages: Record<string, Record<string, HeadingImage>> = {
       src: "/images/departments/biomedical/xray-system.jpeg",
       alt: "Röntgen cihazının bulunduğu uygulama odası",
     },
-    "imaging-definition": {
-      src: "/images/departments/biomedical/imaging-corridor.jpeg",
-      alt: "Tıbbi görüntüleme temalı duvar çizimleriyle atölye koridoru",
-    },
     "duties": {
       src: "/images/departments/biomedical/measurement-equipment.jpeg",
       alt: "Güç kaynağı, osiloskop ve ölçüm cihazlarının bulunduğu laboratuvar masası",
@@ -38,6 +34,29 @@ const departmentHeadingImages: Record<string, Record<string, HeadingImage>> = {
     },
   },
 };
+
+// Photos rendered as the background of the whole section (behind heading and
+// body), keyed by content-block id. Body text goes light and cards float on top.
+const departmentSectionImages: Record<string, Record<string, HeadingImage>> = {
+  "biyomedikal-cihaz-teknolojileri": {
+    "imaging-definition": {
+      src: "/images/departments/biomedical/imaging-corridor.jpeg",
+      alt: "Tıbbi görüntüleme temalı duvar çizimleriyle atölye koridoru",
+    },
+  },
+};
+
+// Full-section background photo (behind the whole content block) with a dark
+// overlay so the heading text and body stay legible on top.
+function SectionMedia({ image }: { image?: HeadingImage }) {
+  if (!image) return null;
+  return (
+    <>
+      <Image className="department-section-media-img" src={image.src} alt={image.alt} fill sizes="100vw" />
+      <span className="department-section-media-overlay" aria-hidden="true" />
+    </>
+  );
+}
 
 function BlockHeading({
   eyebrow,
@@ -75,7 +94,7 @@ function BlockHeading({
   );
 }
 
-function DepartmentContentBlockView({ block, isFirst, headingImage }: { block: DepartmentContentBlock; isFirst: boolean; headingImage?: HeadingImage }) {
+function DepartmentContentBlockView({ block, isFirst, headingImage, sectionImage }: { block: DepartmentContentBlock; isFirst: boolean; headingImage?: HeadingImage; sectionImage?: HeadingImage }) {
   const headingId = `department-block-${block.id.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
 
   if (block.type === "info-cards") {
@@ -174,9 +193,12 @@ function DepartmentContentBlockView({ block, isFirst, headingImage }: { block: D
   }
 
   return (
-    <section className="inner-section department-content-block" aria-labelledby={headingId}>
+    <section className={`inner-section department-content-block${sectionImage ? " department-content-block--media" : ""}`} aria-labelledby={headingId}>
+      <SectionMedia image={sectionImage} />
       <div className="container department-text-block">
-        <BlockHeading eyebrow="Bilgiler" title={block.title} headingId={headingId} image={headingImage} />
+        {sectionImage
+          ? <div className="department-block-heading"><p className="inner-eyebrow inner-eyebrow--light">Bilgiler</p><h2 id={headingId}>{block.title}</h2></div>
+          : <BlockHeading eyebrow="Bilgiler" title={block.title} headingId={headingId} image={headingImage} />}
         <div className="department-text-block-copy">{linesToList(block.content).map((paragraph, index) => <p key={`${block.id}-${index}`}>{paragraph}</p>)}</div>
       </div>
     </section>
@@ -209,6 +231,7 @@ export default async function DepartmentPage({ params }: DepartmentPageProps) {
     : undefined;
   const visibleContentBlocks = heroIntroBlock ? department.contentBlocks.slice(1) : department.contentBlocks;
   const headingImages = departmentHeadingImages[department.slug];
+  const sectionImages = departmentSectionImages[department.slug];
 
   return (
     <InnerPageShell>
@@ -216,11 +239,11 @@ export default async function DepartmentPage({ params }: DepartmentPageProps) {
 
       {hasDetailedProgramContent ? (
         <div className="department-program-flow">
-          {visibleContentBlocks.map((block, index) => <DepartmentContentBlockView block={block} isFirst={index === 0} headingImage={headingImages?.[block.id]} key={block.id} />)}
+          {visibleContentBlocks.map((block, index) => <DepartmentContentBlockView block={block} isFirst={index === 0} headingImage={headingImages?.[block.id]} sectionImage={sectionImages?.[block.id]} key={block.id} />)}
         </div>
       ) : (
         <>
-          {department.contentBlocks[0]?.type === "info-cards" ? <DepartmentContentBlockView block={department.contentBlocks[0]} isFirst headingImage={headingImages?.[department.contentBlocks[0].id]} /> : null}
+          {department.contentBlocks[0]?.type === "info-cards" ? <DepartmentContentBlockView block={department.contentBlocks[0]} isFirst headingImage={headingImages?.[department.contentBlocks[0].id]} sectionImage={sectionImages?.[department.contentBlocks[0].id]} /> : null}
 
           <section className="inner-section">
             <div className="container editorial-grid">
@@ -237,7 +260,7 @@ export default async function DepartmentPage({ params }: DepartmentPageProps) {
           </section>
 
           {department.contentBlocks.map((block, index) => (
-            index === 0 && block.type === "info-cards" ? null : <DepartmentContentBlockView block={block} isFirst={false} headingImage={headingImages?.[block.id]} key={block.id} />
+            index === 0 && block.type === "info-cards" ? null : <DepartmentContentBlockView block={block} isFirst={false} headingImage={headingImages?.[block.id]} sectionImage={sectionImages?.[block.id]} key={block.id} />
           ))}
 
           <section className="inner-section">
