@@ -227,8 +227,31 @@ test("renders the cinematic homepage composition while preserving the brand logo
   assert.match(html, /class="hero-rail"/i);
   assert.equal((html.match(/class="hero-tile(?: hero-tile--large)?"/gi) ?? []).length, 3);
   assert.equal((html.match(/class="proof-card"/gi) ?? []).length, 2);
-  assert.match(html, /class="hero-tile hero-tile--large" href="#okulumuz"/i);
+  assert.match(html, /class="hero-tile hero-tile--large" href="\/okulumuz#okulumuzu-taniyin"/i);
   assert.doesNotMatch(html, /class="hero-tile hero-tile--large"[^>]+href="https?:\/\/[^\"]*youtube/i);
+});
+
+test("publishes the school video gallery and links the homepage hero to it", async () => {
+  const [homeHtml, schoolHtml] = await Promise.all([render().then((response) => response.text()), readRoute("/okulumuz")]);
+
+  assert.match(homeHtml, /href="\/okulumuz#okulumuzu-taniyin"[^>]*>[\s\S]*?Okulumuzu Tanıyın/i);
+  assert.match(schoolHtml, /class="school-video-feature" id="okulumuzu-taniyin"/i);
+  assert.match(schoolHtml, /<video[^>]*autoplay=""[^>]*controls=""[^>]*muted=""/i);
+  assert.match(schoolHtml, /src="\/uploads\/videos\/okulumuzu-taniyin\.mp4"/i);
+  assert.equal((schoolHtml.match(/<video\b/gi) ?? []).length, 5);
+  assert.match(schoolHtml, /Kimyada analiz ve kalite kontrol/i);
+  assert.match(schoolHtml, /Elektrik - Elektronik atölyelerinde eğitim/i);
+  assert.match(schoolHtml, /Biyomedikal Cihaz Teknolojileri/i);
+
+  for (const fileName of [
+    "okulumuzu-taniyin.mp4",
+    "okulumuzdan-goruntuler-1.mp4",
+    "okulumuzdan-goruntuler-2.mp4",
+    "okulumuzdan-goruntuler-3.mp4",
+    "okulumuzdan-goruntuler-4.mp4",
+  ]) {
+    await access(new URL(`../public/uploads/videos/${fileName}`, import.meta.url));
+  }
 });
 
 test("removes disposable starter preview code and dependency", async () => {

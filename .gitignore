@@ -51,6 +51,8 @@ next-env.d.ts
 !/public/uploads/.gitkeep
 !/public/uploads/staff/
 !/public/uploads/staff/*.webp
+!/public/uploads/videos/
+!/public/uploads/videos/*.mp4
 
 .vercel
 .env*

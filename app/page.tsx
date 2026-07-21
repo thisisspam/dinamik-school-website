@@ -268,7 +268,7 @@ export default async function Home() {
                     {heroSection?.ctaLabel ?? "Bölümleri İncele"}
                     <ArrowRight size={17} aria-hidden="true" />
                   </a>
-                  <a className="button button--secondary" href="#okulumuz">
+                  <a className="button button--secondary" href="/okulumuz#okulumuzu-taniyin">
                     <Play size={16} fill="currentColor" aria-hidden="true" />
                     Okulumuzu Tanıyın
                   </a>
@@ -278,7 +278,7 @@ export default async function Home() {
               <aside className="hero-rail" aria-label="Okuldan öne çıkanlar">
                 <a
                   className="hero-tile hero-tile--large"
-                  href="#okulumuz"
+                  href="/okulumuz#okulumuzu-taniyin"
                 >
                   <Image
                     src="/images/gallery-4.jpg"

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, BookOpenCheck, GraduationCap, Shirt, Users } from "lucide-react";
 import { InnerPageShell } from "../components/SiteChrome";
 import { PageHero } from "../components/PageHero";
+import { SchoolVideoGallery } from "../components/SchoolVideoGallery";
 
 export const metadata: Metadata = {
   title: "Okulumuz",
@@ -50,6 +51,8 @@ export default function SchoolPage() {
         imageAlt="Dinamik Mesleki ve Teknik Anadolu Lisesi kampüsü ve öğrencileri"
         current="Okulumuz"
       />
+
+      <SchoolVideoGallery />
 
       <section className="inner-section inner-section--soft" aria-labelledby="school-pages-title">
         <div className="container">
