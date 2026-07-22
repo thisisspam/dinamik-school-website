@@ -185,7 +185,13 @@
         "id": "imaging-definition",
         "type": "text",
         "title": "Tıbbi Görüntüleme Sistemleri Dalı",
-        "content": "Tanımı\nTıbbî görüntüleme cihazlarına ilişkin kurulum şartlarını kontrol etme, yetki dâhilinde montaj, ilk çalıştırma, bakım, onarım ve kalibrasyon (ölçümleme) ile ayar işlerini kendi başına ve/veya teknik destek ekibi ile belirli bir süre içerisinde ve de ihtiyaç duyulan her zamanda yapma bilgi ve becerisine sahip nitelikli kişidir."
+        "content": "Biyomedikal Cihaz Teknolojileri Alanı; sağlık ve teknolojiyi bir araya getiren, tıbbi cihazların güvenli ve etkin kullanımına yönelik nitelikli teknik personeller yetiştiren bir eğitim alanıdır. Tıbbi Görüntüleme Cihazları Dalında öğrenciler, tanı ve teşhis süreçlerinde kullanılan ileri teknoloji cihazlarını teorik ve uygulamalı olarak tanıma fırsatı bulurlar."
+      },
+      {
+        "id": "education-process",
+        "type": "text",
+        "title": "Eğitim Süreci ve Uygulamalı Eğitim",
+        "content": "Eğitim süresince öğrenciler; insan anatomisi ve fizyolojisi, tıbbi terminoloji, elektronik, ölçme ve kontrol teknikleri gibi temel mesleki bilgileri edinir. Röntgen, ultrasonografi, bilgisayarlı tomografi (BT), manyetik rezonans (MR), mamografi ve diğer tıbbi görüntüleme sistemlerinin çalışma prensiplerini öğrenerek teknik altyapılarını geliştirirler.\nAlan dersleri, modern atölye ve laboratuvarlarda uygulamalı olarak yürütülmektedir. Öğrenciler; elektronik ölçüm cihazlarını kullanmayı, bakım ve onarım işlemlerini gerçekleştirmeyi, arıza analizi yapmayı, kalibrasyon uygulamalarını ve teknik servis süreçlerini mesleki standartlara uygun şekilde öğrenirler."
       },
       {
         "id": "duties",
@@ -198,6 +204,12 @@
         "type": "skills",
         "title": "ELEMANLARINDA ARANAN ÖZELLİKLER",
         "content": "Fen bilimleri, Matematik, bilgisayar ve mutlaka Yabancı dille ilgili ve başarılı kişiler de olmaları gerekmektedir.\nTüm duyu organları, işlevlerini tam olarak yerine getirmelidir.\nEl ve parmaklarını ustalıkla kullanabilmelidir.\nMekanik konulara ilgili ve yetenekli\nAlet ve makinelerle uğraşmaktan hoşlanan\nDeğişken çalışma temposuna hazırlıklı ve dayanıklı\nKapalı dar ortamlarda çalışabilen\nÖnce ayrıntıları algılayabilen kimseler olması gerekir.\nHızlı çözüm üretebilen, yorum ve analiz yeteneği yüksek olan kişiler olması gerekir.\nSabırlı, dikkatli, tedbirli ve titiz, başkaları ile iş birliği içinde çalışabilen, hoş görülü ve empati kurma yeteneği olan, sorumluluk duygusu gelişmiş kişiler olması da gereklidir."
+      },
+      {
+        "id": "career-future",
+        "type": "learning-cards",
+        "title": "Kariyer ve Gelecek",
+        "content": "Kariyer Olanakları | Mezunlarımız; hastaneler, tıp merkezleri, biyomedikal teknik servis firmaları, tıbbi cihaz üretici ve distribütör kuruluşları ile kalibrasyon laboratuvarlarında görev alabilir. Ayrıca ilgili ön lisans ve lisans programlarına devam ederek akademik ve mesleki gelişimlerini sürdürebilirler.\nGeleceğin Mesleği | Biyomedikal Cihaz Teknolojileri Alanı, insan sağlığına doğrudan katkı sağlayan teknolojilerin geliştirilmesi, güvenli kullanımı ve sürdürülebilirliğinde önemli rol üstlenen, sürekli gelişen ve güçlü kariyer fırsatları sunan bir meslek alanıdır."
       }
     ]
   }

@@ -242,9 +242,13 @@ test("labels active and unavailable branches according to the provided program r
     assert.match(biomedicalHtml, new RegExp(`${unavailableBranch}[\\s\\S]*Okulumuzda bu dalda eğitim VERİLMEMEKTEDİR`, "i"));
   }
   assert.match(biomedicalHtml, /Biyomedikal Cihaz Teknolojileri Alanı altında yer alan dallarda,makine ve cihazların/i);
-  assert.match(biomedicalHtml, /Tıbbî görüntüleme cihazlarına ilişkin kurulum şartlarını kontrol etme/i);
+  assert.match(biomedicalHtml, /Biyomedikal Cihaz Teknolojileri Alanı; sağlık ve teknolojiyi bir araya getiren,[\s\S]*ileri teknoloji cihazlarını teorik ve uygulamalı olarak tanıma fırsatı bulurlar/i);
+  assert.doesNotMatch(biomedicalHtml, /Tıbbî görüntüleme cihazlarına ilişkin kurulum şartlarını kontrol etme/i);
+  assert.match(biomedicalHtml, /Eğitim Süreci ve Uygulamalı Eğitim[\s\S]*insan anatomisi ve fizyolojisi,[\s\S]*mesleki standartlara uygun şekilde öğrenirler/i);
   assert.match(biomedicalHtml, /Ultrasonik görüntüleyicilerin,[\s\S]*kalibrasyon ve ayarlarını kontrol etmek/i);
   assert.match(biomedicalHtml, /Sabırlı, dikkatli, tedbirli ve titiz,[\s\S]*sorumluluk duygusu gelişmiş kişiler olması da gereklidir/i);
+  assert.match(biomedicalHtml, /aria-labelledby="department-block-career-future"[\s\S]*Kariyer Olanakları[\s\S]*hastaneler, tıp merkezleri,[\s\S]*Geleceğin Mesleği[\s\S]*güçlü kariyer fırsatları sunan bir meslek alanıdır[\s\S]*<\/section>/i);
+  assert.match(biomedicalHtml, /class="detail-skill-grid detail-skill-grid--two"/i);
   assert.ok((biomedicalHtml.match(/department-branch-card is-unavailable/g) ?? []).length >= 3);
   assert.match(biomedicalHtml, /Sağlık teknolojisinin geleceği, bu atölyelerde üretilir\./i);
   assert.match(biomedicalHtml, /class="biomedical-workshop-gallery"/i);

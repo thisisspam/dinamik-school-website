@@ -32,7 +32,7 @@ const BLOCK_HINTS: Record<DepartmentContentBlockType, string> = {
   "info-cards": "Her satır: Etiket | Değer. Üç bilgi kartı önerilir.",
   "branch-list": "Her satıra bir dal yazın. Eğitim verilmeyen dalların açıklamasını aynı satırda eksiksiz koruyun.",
   skills: "Her satıra bir beceri yazın.",
-  "learning-cards": "Her satır: Kart başlığı | Kart açıklaması.",
+  "learning-cards": "Her satır: Bilgi başlığı | Bilgi açıklaması.",
   "career-tags": "Her satıra bir kariyer veya devam eğitimi alanı yazın.",
   text: "Her satır ziyaretçi sayfasında ayrı bir paragraf olarak gösterilir.",
   highlight: "Tek bir önemli bilgi veya kısa açıklama yazın.",

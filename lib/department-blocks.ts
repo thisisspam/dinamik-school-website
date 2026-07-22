@@ -57,9 +57,9 @@ export const DEPARTMENT_BLOCK_OPTIONS: Array<{
   },
   {
     value: "learning-cards",
-    label: "Öğrenme kartları",
-    description: "Başlık ve açıklamalı öğrenme alanı kartları.",
-    defaultTitle: "Ne öğreneceksin?",
+    label: "Başlıklı bilgi kartları",
+    description: "Birbiriyle ilişkili başlık ve açıklamaları aynı bölümde kartlar halinde gösterir.",
+    defaultTitle: "Öne çıkanlar",
     defaultContent: "Kart başlığı | Kart açıklaması",
   },
   {

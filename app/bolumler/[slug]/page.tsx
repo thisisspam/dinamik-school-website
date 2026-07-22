@@ -158,12 +158,13 @@ function DepartmentContentBlockView({ block, isFirst, headingImage, sectionImage
   }
 
   if (block.type === "learning-cards") {
+    const detailCards = linesToTitledPairs(block.content);
     return (
       <section className="inner-section inner-section--soft department-content-block" aria-labelledby={headingId}>
         <div className="container">
-          <div className="department-block-heading"><p className="inner-eyebrow">Öğrenme alanları</p><h2 id={headingId}>{block.title}</h2></div>
-          <div className="detail-skill-grid">
-            {linesToTitledPairs(block.content).map((area, index) => {
+          <div className="department-block-heading"><p className="inner-eyebrow">Öne çıkanlar</p><h2 id={headingId}>{block.title}</h2></div>
+          <div className={`detail-skill-grid${detailCards.length === 2 ? " detail-skill-grid--two" : ""}`}>
+            {detailCards.map((area, index) => {
               const Icon = CONTENT_ICONS[index % CONTENT_ICONS.length];
               return <article className="detail-skill-card" key={`${block.id}-${index}`}><span><Icon size={23} /></span><h3>{area.title}</h3><p>{area.text}</p></article>;
             })}
