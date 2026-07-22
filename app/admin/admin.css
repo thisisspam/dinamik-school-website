@@ -491,6 +491,9 @@
 .admin-checkbox-label input { width: 18px; min-height: 18px; accent-color: var(--admin-red); }
 .admin-staff-thumbnail-cell { width: 62px; }
 .admin-staff-thumbnail { display: grid; width: 44px; height: 55px; place-items: center; overflow: hidden; border-radius: 9px; background: var(--admin-surface-soft); object-fit: cover; color: var(--admin-muted); }
+.admin-staff-role, .admin-staff-additional-role { display: block; margin-top: 3px; font-size: .75rem; }
+.admin-staff-role { color: var(--admin-muted); }
+.admin-staff-additional-role { color: var(--admin-red); font-weight: 750; }
 .admin-media-inputs { display: flex; min-width: 0; flex-direction: column; gap: 13px; }
 
 .admin-block-editor { display: flex; flex-direction: column; gap: 14px; padding-top: 4px; }

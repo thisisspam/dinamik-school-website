@@ -171,11 +171,35 @@ test("keeps every teaching branch separate in the staff directory", async () => 
     assert.match(html, new RegExp(`>${branch}<`, "i"), `${branch} needs its own staff filter`);
   }
 
+  const administrativeSectionIndex = html.indexOf('id="administrative-staff-title"');
+  const teachingSectionIndex = html.indexOf('id="teaching-staff-title"');
+  assert.ok(administrativeSectionIndex >= 0, "the administrative staff needs a dedicated section");
+  assert.ok(teachingSectionIndex > administrativeSectionIndex, "administrators need to appear above teachers");
+  assert.match(html, />İdari Kadromuz</i);
+  assert.match(html, />Müdürler</i);
+  assert.match(html, />Müdür Yardımcıları</i);
+  assert.doesNotMatch(html, /<button[^>]*>İdari Kadro<\/button>/i);
+  for (const administrator of [
+    "Fatih Gül",
+    "Gül Zeynel Mutlu Bayrak",
+    "Ferhat Küçükarslan",
+    "Mehmet Bahadır Gülbin",
+    "Nazan Kalkan",
+    "Dursun Tüfek",
+    "Pakize Güzel Şimşek",
+  ]) {
+    assert.match(html, new RegExp(administrator, "i"), `${administrator} needs an administrative staff card`);
+  }
+  assert.match(html, /Fatih Gül[\s\S]*Kurum Müdürü/i);
+  assert.match(html, /Gül Zeynel Mutlu Bayrak[\s\S]*Müdür/i);
+  assert.match(html, /Mehmet Bahadır Gülbin[\s\S]*Müdür Yardımcısı/i);
+  assert.match(html, /Pakize Güzel Şimşek[\s\S]*Müdür Yardımcısı/i);
   assert.match(html, /Kader Danışmaz[\s\S]*Tarih Öğretmeni/i);
   assert.match(html, /Fatma Zehra Soruklu[\s\S]*Coğrafya Öğretmeni/i);
   assert.match(html, /Betül Müdür[\s\S]*Felsefe Öğretmeni/i);
   assert.match(html, /Mustafa İrfan Kütük[\s\S]*Türk Dili ve Edebiyatı Öğretmeni/i);
   assert.match(html, /Nevin Varoğlu[\s\S]*Türk Dili ve Edebiyatı Öğretmeni/i);
+  assert.match(html, /Bahri Dağdeviren[\s\S]*staff-card-primary-role[^>]*>Kimya Teknolojileri Alan Şefi</i);
   assert.match(html, /src="\/uploads\/staff\/kader-danismaz\.webp"/i);
   assert.match(html, /alt="Kader Danışmaz, Tarih Öğretmeni"/i);
   assert.doesNotMatch(html, /Sosyal Bilimler|Fen Bilimleri|Spor ve Sanat/i);

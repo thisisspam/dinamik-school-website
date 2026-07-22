@@ -24,7 +24,7 @@ export default async function AdminEditStaffPage({
       <AdminPageHeader
         eyebrow="Kadro düzenleme"
         title={row.name}
-        description="Öğretmenin branş ve unvan bilgilerini güncelleyin."
+        description="Kadro üyesinin görev veya branş, ana unvan ve varsa ek görev bilgilerini güncelleyin."
         actions={<Link className="admin-btn admin-btn-secondary" href="/admin/kadromuz"><ArrowLeft aria-hidden="true" size={16} /> Kadroya dön</Link>}
       />
       <div className="admin-card">
@@ -40,21 +40,26 @@ export default async function AdminEditStaffPage({
             <input type="text" name="category" list="kategori-listesi" defaultValue={row.category} required />
           </label>
           <label>
-            Unvan
+            Ana unvan
             <input type="text" name="role" defaultValue={row.role} required />
+          </label>
+          <label>
+            Ek görev (isteğe bağlı)
+            <input type="text" name="additionalRole" defaultValue={row.additionalRole ?? ""} placeholder="Örn. Müdür Yardımcısı" />
+            <span className="admin-hint">Ek görev, kadro kartında farklı renkle gösterilir.</span>
           </label>
           <div className="admin-media-field admin-staff-media-field">
             <div className="admin-current-media admin-staff-current-media">
               {row.image ? (
                 // eslint-disable-next-line @next/next/no-img-element -- admin preview supports local and uploaded URLs
-                <img src={row.image} alt={`${row.name} mevcut fotoğrafı`} />
+                <img src={row.image} alt={`${row.name} mevcut kadro fotoğrafı`} />
               ) : (
                 <span>Fotoğraf yok</span>
               )}
             </div>
             <div className="admin-staff-media-controls">
               <label>
-                Yeni öğretmen fotoğrafı
+                Yeni kadro fotoğrafı
                 <input type="file" name="imageFile" accept="image/jpeg,image/png,image/webp" />
               </label>
               {row.image ? (

@@ -1,7 +1,13 @@
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
-import { CREATE_TABLE_STATEMENTS, ensureHomepageSections, seedInitialContent } from "./setup";
+import {
+  CREATE_TABLE_STATEMENTS,
+  DATA_MIGRATION_STATEMENTS,
+  ensureAdministrativeStaff,
+  ensureHomepageSections,
+  seedInitialContent,
+} from "./setup";
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
@@ -19,12 +25,16 @@ async function ensureReady(): Promise<void> {
   for (const statement of CREATE_TABLE_STATEMENTS) {
     await sql(statement);
   }
+  for (const statement of DATA_MIGRATION_STATEMENTS) {
+    await sql(statement);
+  }
   const rows = await sql`SELECT COUNT(*)::int AS count FROM departments`;
   if ((rows[0] as { count: number }).count === 0) {
     await seedInitialContent(db);
   } else {
     await ensureHomepageSections(db);
   }
+  await ensureAdministrativeStaff(db);
 }
 
 export async function getDb() {

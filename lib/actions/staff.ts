@@ -27,6 +27,7 @@ export async function createStaffAction(formData: FormData): Promise<void> {
     name: String(formData.get("name") ?? "").trim(),
     category: String(formData.get("category") ?? "").trim(),
     role: String(formData.get("role") ?? "").trim(),
+    additionalRole: String(formData.get("additionalRole") ?? "").trim() || null,
     image: await resolveStaffImage(formData),
     sortOrder: nextOrder,
   });
@@ -45,6 +46,7 @@ export async function updateStaffAction(formData: FormData): Promise<void> {
       name: String(formData.get("name") ?? "").trim(),
       category: String(formData.get("category") ?? "").trim(),
       role: String(formData.get("role") ?? "").trim(),
+      additionalRole: String(formData.get("additionalRole") ?? "").trim() || null,
       image: await resolveStaffImage(formData),
     })
     .where(eq(schema.staff.id, id));

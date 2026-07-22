@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 
 export default async function StaffPage() {
   const [staffGroups, staffMembers] = await Promise.all([getStaffGroups(), getStaffMembers()]);
+  const teachingGroups = staffGroups.filter((group) => group.category !== "İdari Kadro");
   return (
     <InnerPageShell>
       <PageHero
@@ -28,14 +29,14 @@ export default async function StaffPage() {
       />
       <section className="inner-section inner-section--soft" aria-labelledby="staff-title">
         <div className="container">
-          <div className="inner-section-header"><div><p className="inner-eyebrow">Eğitim kadromuz</p><h2 id="staff-title">Farklı uzmanlıklar, ortak bir eğitim vizyonu.</h2></div><p>Öğretmen listesi, okulun güncel kurumsal kadro yayını temel alınarak branşlara göre düzenlenmiştir.</p></div>
+          <div className="inner-section-header"><div><p className="inner-eyebrow">Okul kadromuz</p><h2 id="staff-title">Farklı uzmanlıklar, ortak bir eğitim vizyonu.</h2></div><p>Kadro listesi, okulun güncel kurumsal yayınları temel alınarak görev ve branşlara göre düzenlenmiştir.</p></div>
           <div className="staff-intro-strip">
-            <div><strong>{staffMembers.length}</strong><small>öğretmen</small></div>
-            <div><strong>{staffGroups.length}</strong><small>uzmanlık grubu</small></div>
+            <div><strong>{staffMembers.length}</strong><small>kadro üyesi</small></div>
+            <div><strong>{teachingGroups.length}</strong><small>branş grubu</small></div>
             <div><strong>3</strong><small>mesleki alan ekibi</small></div>
             <div><strong>1</strong><small>ortak eğitim kültürü</small></div>
           </div>
-          <StaffDirectory staffGroups={staffGroups} staffMembers={staffMembers} />
+          <StaffDirectory staffGroups={teachingGroups} staffMembers={staffMembers} />
         </div>
       </section>
       <section className="inner-section">

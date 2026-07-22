@@ -13,8 +13,8 @@ export default async function AdminNewStaffPage() {
     <>
       <AdminPageHeader
         eyebrow="Yeni kadro kaydı"
-        title="Yeni öğretmen ekle"
-        description="Öğretmenin adını, branş grubunu ve unvanını girerek kadroya ekleyin."
+        title="Yeni kadro kaydı ekle"
+        description="Kadro üyesinin adını, görev veya branş grubunu, ana unvanını ve varsa ek görevini girin."
         actions={<Link className="admin-btn admin-btn-secondary" href="/admin/kadromuz"><ArrowLeft aria-hidden="true" size={16} /> Kadroya dön</Link>}
       />
       <div className="admin-card">
@@ -28,11 +28,16 @@ export default async function AdminNewStaffPage() {
             <input type="text" name="category" list="kategori-listesi" required />
           </label>
           <label>
-            Unvan
+            Ana unvan
             <input type="text" name="role" required placeholder="Örn. Matematik Öğretmeni" />
           </label>
           <label>
-            Öğretmen fotoğrafı
+            Ek görev (isteğe bağlı)
+            <input type="text" name="additionalRole" placeholder="Örn. Müdür Yardımcısı" />
+            <span className="admin-hint">Ek görev, kadro kartında farklı renkle gösterilir.</span>
+          </label>
+          <label>
+            Kadro fotoğrafı
             <input type="file" name="imageFile" accept="image/jpeg,image/png,image/webp" />
             <span className="admin-hint">Dikey, net ve en az 400 × 500 piksel bir görsel kullanın.</span>
           </label>
@@ -42,7 +47,7 @@ export default async function AdminNewStaffPage() {
             ))}
           </datalist>
           <div className="admin-actions">
-            <button className="admin-btn" type="submit"><Plus aria-hidden="true" size={16} /> Öğretmeni ekle</button>
+            <button className="admin-btn" type="submit"><Plus aria-hidden="true" size={16} /> Kadroya ekle</button>
             <Link className="admin-btn admin-btn-secondary" href="/admin/kadromuz">Vazgeç</Link>
           </div>
         </form>

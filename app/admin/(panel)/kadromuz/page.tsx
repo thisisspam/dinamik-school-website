@@ -26,8 +26,8 @@ export default async function AdminStaffPage({
       <AdminPageHeader
         eyebrow="Eğitim kadrosu"
         title="Kadromuz"
-        description={`${rows.length} öğretmen, ${grouped.size} branş grubu. Kadro bilgilerini ekleyin, düzenleyin veya güncelliğini yitiren kayıtları kaldırın.`}
-        actions={<Link className="admin-btn" href="/admin/kadromuz/yeni"><Plus aria-hidden="true" size={16} /> Yeni öğretmen</Link>}
+        description={`${rows.length} kadro kaydı, ${grouped.size} görev ve branş grubu. Kadro bilgilerini ekleyin, düzenleyin veya güncelliğini yitiren kayıtları kaldırın.`}
+        actions={<Link className="admin-btn" href="/admin/kadromuz/yeni"><Plus aria-hidden="true" size={16} /> Yeni kadro kaydı</Link>}
       />
       {saved ? <div className="admin-flash">Kaydedildi.</div> : null}
       {[...grouped.entries()].map(([category, members]) => (
@@ -45,7 +45,13 @@ export default async function AdminStaffPage({
                       <span className="admin-staff-thumbnail admin-staff-thumbnail--empty" aria-hidden="true">—</span>
                     )}
                   </td>
-                  <td>{member.name}</td>
+                  <td>
+                    <strong>{member.name}</strong>
+                    <span className="admin-staff-role">{member.role}</span>
+                    {member.additionalRole ? (
+                      <span className="admin-staff-additional-role">{member.additionalRole}</span>
+                    ) : null}
+                  </td>
                   <td className="admin-actions">
                     <Link className="admin-btn admin-btn-secondary" href={`/admin/kadromuz/${member.id}`}>
                       <Pencil aria-hidden="true" size={14} /> Düzenle
@@ -63,7 +69,7 @@ export default async function AdminStaffPage({
           </table>
         </div>
       ))}
-      {rows.length === 0 ? <p className="admin-empty">Henüz kayıtlı öğretmen yok.</p> : null}
+      {rows.length === 0 ? <p className="admin-empty">Henüz kayıtlı kadro üyesi yok.</p> : null}
     </>
   );
 }

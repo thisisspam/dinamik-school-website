@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { sql } from "drizzle-orm";
 import type { NeonHttpDatabase } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
 
@@ -28,9 +29,11 @@ export const CREATE_TABLE_STATEMENTS = [
     name TEXT NOT NULL,
     category TEXT NOT NULL,
     role TEXT NOT NULL,
+    additional_role TEXT,
     image TEXT,
     sort_order INTEGER NOT NULL DEFAULT 0
   )`,
+  `ALTER TABLE staff ADD COLUMN IF NOT EXISTS additional_role TEXT`,
   `ALTER TABLE staff ADD COLUMN IF NOT EXISTS image TEXT`,
   `CREATE TABLE IF NOT EXISTS gallery_images (
     id SERIAL PRIMARY KEY,
@@ -85,6 +88,12 @@ export const CREATE_TABLE_STATEMENTS = [
   )`,
 ];
 
+export const DATA_MIGRATION_STATEMENTS = [
+  `UPDATE staff
+   SET role = 'Kimya Teknolojileri Alan Şefi', additional_role = NULL
+   WHERE name = 'Bahri Dağdeviren' AND role = 'Müdür Yardımcısı'`,
+];
+
 const CONTENT_DIR = resolve(process.cwd(), "content");
 
 type DepartmentSeed = {
@@ -102,13 +111,24 @@ type DepartmentSeed = {
   careerAreas: unknown;
   contentBlocks?: unknown;
 };
-type StaffGroupSeed = { category: string; role: string; names: string[] };
+type StaffGroupSeed = {
+  category: string;
+  role: string;
+  names: string[];
+  additionalRoles?: Record<string, string>;
+};
 type StaffPortraitSeed = {
   name: string;
   aliases?: string[];
   category: string;
   role: string;
+  additionalRole?: string;
   image: string;
+};
+type AdministrativeStaffSeed = {
+  sourceUrl: string;
+  verifiedAt: string;
+  members: Array<{ name: string; role: string }>;
 };
 type GalleryImageSeed = { src: string; alt: string; caption?: string };
 type SiteSettingsSeed = {
@@ -139,6 +159,59 @@ type HomepageSectionSeed = {
 
 function readJson<T>(fileName: string): T {
   return JSON.parse(readFileSync(resolve(CONTENT_DIR, fileName), "utf8")) as T;
+}
+
+function normalizeStaffName(name: string): string {
+  return name.trim().replace(/\s+/g, " ").toLocaleLowerCase("tr-TR");
+}
+
+export async function ensureAdministrativeStaff(db: NeonHttpDatabase<typeof schema>): Promise<void> {
+  const administrativeStaff = readJson<AdministrativeStaffSeed>("administrative-staff.json");
+  if (administrativeStaff.members.length === 0) return;
+
+  const rosterValues = sql.join(
+    administrativeStaff.members.map(
+      (member, index) => sql`(${member.name}::text, ${member.role}::text, ${index}::integer)`,
+    ),
+    sql.raw(", "),
+  );
+
+  await db.execute(sql`
+    WITH sync_lock AS MATERIALIZED (
+      SELECT pg_advisory_xact_lock(2026072301)
+    ),
+    roster(name, role, position) AS (
+      VALUES ${rosterValues}
+    ),
+    updated_teaching_staff AS (
+      UPDATE staff
+      SET additional_role = roster.role
+      FROM roster, sync_lock
+      WHERE staff.name = roster.name
+        AND staff.category <> 'İdari Kadro'
+        AND staff.additional_role IS DISTINCT FROM roster.role
+      RETURNING staff.id
+    ),
+    updated_administrative_staff AS (
+      UPDATE staff
+      SET role = roster.role, additional_role = NULL
+      FROM roster, sync_lock
+      WHERE staff.name = roster.name
+        AND staff.category = 'İdari Kadro'
+        AND (staff.role IS DISTINCT FROM roster.role OR staff.additional_role IS NOT NULL)
+      RETURNING staff.id
+    ),
+    ordering AS (
+      SELECT COALESCE(MIN(sort_order), 0) - (SELECT COUNT(*)::int FROM roster) AS first_position
+      FROM staff
+    )
+    INSERT INTO staff (name, category, role, additional_role, image, sort_order)
+    SELECT roster.name, 'İdari Kadro', roster.role, NULL, NULL, ordering.first_position + roster.position
+    FROM roster, ordering, sync_lock
+    WHERE NOT EXISTS (
+      SELECT 1 FROM staff WHERE staff.name = roster.name
+    )
+  `);
 }
 
 export async function ensureHomepageSections(db: NeonHttpDatabase<typeof schema>): Promise<void> {
@@ -172,14 +245,49 @@ export async function seedInitialContent(db: NeonHttpDatabase<typeof schema>): P
 
   const staffGroups = readJson<StaffGroupSeed[]>("staff.json");
   const staffPortraits = readJson<StaffPortraitSeed[]>("staff-portraits.json");
-  const staffRows: Array<{ name: string; category: string; role: string; image: string | null; sortOrder: number }> = [];
+  const administrativeStaff = readJson<AdministrativeStaffSeed>("administrative-staff.json");
+  const staffRows: Array<{
+    name: string;
+    category: string;
+    role: string;
+    additionalRole: string | null;
+    image: string | null;
+    sortOrder: number;
+  }> = [];
   let staffSortOrder = 0;
   for (const group of staffGroups) {
     for (const name of group.names) {
-      staffRows.push({ name, category: group.category, role: group.role, image: null, sortOrder: staffSortOrder });
+      staffRows.push({
+        name,
+        category: group.category,
+        role: group.role,
+        additionalRole: group.additionalRoles?.[name] ?? null,
+        image: null,
+        sortOrder: staffSortOrder,
+      });
       staffSortOrder += 1;
     }
   }
+
+  const administrativeRows: typeof staffRows = [];
+  for (const member of administrativeStaff.members) {
+    const normalizedName = normalizeStaffName(member.name);
+    const existing = staffRows.find((row) => normalizeStaffName(row.name) === normalizedName);
+    if (existing) {
+      existing.additionalRole = member.role;
+      continue;
+    }
+
+    administrativeRows.push({
+      name: member.name,
+      category: "İdari Kadro",
+      role: member.role,
+      additionalRole: null,
+      image: null,
+      sortOrder: 0,
+    });
+  }
+  staffRows.unshift(...administrativeRows);
 
   for (const portrait of staffPortraits) {
     const acceptedNames = new Set([portrait.name, ...(portrait.aliases ?? [])]);
@@ -188,6 +296,7 @@ export async function seedInitialContent(db: NeonHttpDatabase<typeof schema>): P
       existing.name = portrait.name;
       existing.category = portrait.category;
       existing.role = portrait.role;
+      existing.additionalRole = portrait.additionalRole ?? existing.additionalRole;
       existing.image = portrait.image;
       continue;
     }
@@ -198,6 +307,7 @@ export async function seedInitialContent(db: NeonHttpDatabase<typeof schema>): P
       name: portrait.name,
       category: portrait.category,
       role: portrait.role,
+      additionalRole: portrait.additionalRole ?? null,
       image: portrait.image,
       sortOrder: staffSortOrder,
     });

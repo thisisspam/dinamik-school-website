@@ -2,7 +2,13 @@ import { asc } from "drizzle-orm";
 import { getDb, schema } from "../../lib/db/client";
 
 export type StaffGroup = { category: string; role: string; names: string[] };
-export type StaffMember = { name: string; category: string; role: string; image: string | null };
+export type StaffMember = {
+  name: string;
+  category: string;
+  role: string;
+  additionalRole: string | null;
+  image: string | null;
+};
 
 export async function getStaffGroups(): Promise<StaffGroup[]> {
   const db = await getDb();
@@ -24,5 +30,11 @@ export async function getStaffMembers(): Promise<StaffMember[]> {
   const db = await getDb();
   const rows = await db.select().from(schema.staff).orderBy(asc(schema.staff.sortOrder));
 
-  return rows.map(({ name, category, role, image }) => ({ name, category, role, image }));
+  return rows.map(({ name, category, role, additionalRole, image }) => ({
+    name,
+    category,
+    role,
+    additionalRole,
+    image,
+  }));
 }

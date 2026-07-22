@@ -28,6 +28,7 @@ export const staff = pgTable("staff", {
   name: text("name").notNull(),
   category: text("category").notNull(),
   role: text("role").notNull(),
+  additionalRole: text("additional_role"),
   image: text("image"),
   sortOrder: integer("sort_order").notNull().default(0),
 });
