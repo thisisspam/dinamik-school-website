@@ -5,6 +5,15 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    // Banner/görsel yüklemeleri Server Action gövdesiyle gönderiliyor. Varsayılan
+    // 1 MB sınırı, lib/media.ts'in izin verdiği 8 MB görsellerde action'ı reddedip
+    // sunucu hatasına yol açıyordu; sınırı yükleme limitiyle (form yükü için biraz
+    // üstünde) hizalıyoruz.
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
+  },
   async headers() {
     return [
       {
