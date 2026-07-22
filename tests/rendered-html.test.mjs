@@ -86,6 +86,7 @@ test("keeps essential navigation and accessibility contracts", async () => {
   assert.match(html, /href="\/basarilarimiz"/i);
   assert.match(html, /aria-label="Hızlı erişim"/i);
   assert.match(html, /aria-label="WhatsApp üzerinden iletişime geçin"/i);
+  assert.match(html, /https:\/\/wa\.me\/905448708955\?text=Merhaba%2C%20Dinamik%20Okullar%C4%B1%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum\./i);
   assert.doesNotMatch(html, /href="[^"]*(?:youtube\.com|youtu\.be)|aria-label="YouTube"/i);
   assert.match(html, /href="tel:\+908502182806"/i);
   assert.match(html, /href="tel:\+903624655353"/i);
@@ -161,6 +162,11 @@ test("exports every primary frontend route with working internal navigation", as
 test("keeps every teaching branch separate in the staff directory", async () => {
   const html = await readRoute("/kadromuz");
 
+  assert.match(html, /src="\/images\/kadromuz-banner\.png"/i);
+  assert.match(html, /alt="Dinamik Okulları eğitim kadrosu okul binası önünde"/i);
+  const staffBannerResponse = await fetch(`${BASE_URL}/images/kadromuz-banner.png`);
+  assert.equal(staffBannerResponse.status, 200);
+
   for (const branch of ["Fizik", "Biyoloji", "Tarih", "Coğrafya", "Felsefe", "Beden Eğitimi ve Spor", "Müzik", "Görsel Sanatlar"]) {
     assert.match(html, new RegExp(`>${branch}<`, "i"), `${branch} needs its own staff filter`);
   }
@@ -188,6 +194,7 @@ test("publishes a clear KVKK notice and separates optional WhatsApp preference",
   assert.match(registrationHtml, /name="privacyNoticeAcknowledged"/i);
   assert.match(registrationHtml, /name="whatsappConsent"/i);
   assert.match(registrationHtml, /İsteğe bağlı/i);
+  assert.match(registrationHtml, /905448708955/i);
   assert.match(registrationHtml, /href="\/kvkk#aydinlatma"/i);
 });
 

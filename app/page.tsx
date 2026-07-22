@@ -5,6 +5,7 @@ import { InstagramIcon, SiteFooter, SiteHeader } from "./components/SiteChrome";
 import { RegistrationForm } from "./components/RegistrationForm";
 import { getDepartments } from "./data/departments";
 import { getGalleryImages, getHomepageSections, getSiteSettings, type HomepageSection } from "../lib/content";
+import { createWhatsappHref } from "../lib/whatsapp";
 import {
   ArrowRight,
   Building2,
@@ -216,7 +217,7 @@ export default async function Home() {
   const gallery = galleryImages.slice(0, 6);
   const generalPhoneTel = `tel:+9${settings.generalPhone.replace(/\D/g, "")}`;
   const landlineTel = `tel:+9${settings.landlinePhone.replace(/\D/g, "")}`;
-  const whatsappHref = `https://wa.me/9${settings.whatsapp.replace(/\D/g, "")}`;
+  const whatsappHref = createWhatsappHref(settings.whatsapp);
   const sectionByKey = new Map(homepageSections.map((section) => [section.sectionKey, section]));
   const heroSection = sectionByKey.get("hero");
   const benefitsSection = sectionByKey.get("benefits");
@@ -618,7 +619,7 @@ export default async function Home() {
                 <li><CheckCircle2 size={18} aria-hidden="true" /> Kayıt süreci ve koşulları</li>
               </ul>
             </div>
-            <RegistrationForm />
+            <RegistrationForm whatsappNumber={settings.whatsapp} />
           </div>
         </section>
         ) : null}

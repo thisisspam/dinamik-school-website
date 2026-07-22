@@ -3,6 +3,7 @@ import { CheckCircle2, ShieldCheck } from "lucide-react";
 import { InnerPageShell } from "../components/SiteChrome";
 import { PageHero } from "../components/PageHero";
 import { RegistrationForm } from "../components/RegistrationForm";
+import { getSiteSettings } from "../../lib/content";
 
 export const metadata: Metadata = {
   title: "Ön Kayıt",
@@ -10,7 +11,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/on-kayit" },
 };
 
-export default function RegistrationPage() {
+export default async function RegistrationPage() {
+  const settings = await getSiteSettings();
   return (
     <InnerPageShell>
       <PageHero eyebrow="Geleceğin için ilk adım" title="Seni tanıyalım, doğru programı birlikte keşfedelim." description="Kısa bilgi talebini ilet; bölümler, kampüs ve kayıt süreci hakkında okul ekibimizden destek al." image="/images/hero-banner.png" current="Ön Kayıt" compact />
@@ -27,7 +29,7 @@ export default function RegistrationPage() {
               <li><ShieldCheck size={18} />Şeffaf ve kullanıcı kontrollü gönderim</li>
             </ul>
           </div>
-          <RegistrationForm />
+          <RegistrationForm whatsappNumber={settings.whatsapp} />
         </div>
       </section>
     </InnerPageShell>

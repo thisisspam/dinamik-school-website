@@ -5,6 +5,7 @@ import { ArrowRight, Clock3, ExternalLink, Mail, MessageCircle, Phone } from "lu
 import { InnerPageShell } from "../components/SiteChrome";
 import { PageHero } from "../components/PageHero";
 import { getSiteSettings } from "../../lib/content";
+import { createWhatsappHref } from "../../lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "İletişim",
@@ -16,7 +17,7 @@ export default async function ContactPage() {
   const settings = await getSiteSettings();
   const generalPhoneTel = `tel:+9${settings.generalPhone.replace(/\D/g, "")}`;
   const landlinePhoneTel = `tel:+9${settings.landlinePhone.replace(/\D/g, "")}`;
-  const whatsappHref = `https://wa.me/9${settings.whatsapp.replace(/\D/g, "")}`;
+  const whatsappHref = createWhatsappHref(settings.whatsapp);
 
   return (
     <InnerPageShell>

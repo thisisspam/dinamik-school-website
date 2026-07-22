@@ -6,10 +6,9 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { createRegistrationApplicationAction } from "@/lib/actions/registration-applications";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/privacy";
+import { createWhatsappHref } from "@/lib/whatsapp";
 
-const WHATSAPP_NUMBER = "905467765060";
-
-export function RegistrationForm() {
+export function RegistrationForm({ whatsappNumber }: { whatsappNumber: string }) {
   const pathname = usePathname();
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [statusMessage, setStatusMessage] = useState("");
@@ -43,7 +42,7 @@ export function RegistrationForm() {
     ].join("\n");
 
     const whatsappConsent = data.get("whatsappConsent") === "on";
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = createWhatsappHref(whatsappNumber, message);
     const whatsappWindow = whatsappConsent ? window.open("about:blank", "_blank") : null;
     if (whatsappWindow) whatsappWindow.opener = null;
 

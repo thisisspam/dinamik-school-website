@@ -6,6 +6,7 @@ import { MobileNavigation } from "./MobileNavigation";
 import { siteNavigation } from "./navigation";
 import { ScrollAwareHeader } from "./ScrollAwareHeader";
 import { getSiteSettings } from "../../lib/content";
+import { createWhatsappHref } from "../../lib/whatsapp";
 
 export function SiteHeader() {
   return (
@@ -56,7 +57,7 @@ export function InstagramIcon() {
 export async function SiteFooter() {
   const settings = await getSiteSettings();
   const landlineTel = `tel:+9${settings.landlinePhone.replace(/\D/g, "")}`;
-  const whatsappHref = `https://wa.me/9${settings.whatsapp.replace(/\D/g, "")}`;
+  const whatsappHref = createWhatsappHref(settings.whatsapp);
 
   return (
     <>

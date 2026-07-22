@@ -27,6 +27,14 @@ kaynakları içerir. Kaynaklar `Downloads` klasörüne bağlı kalmamak için de
 - SHA-256: `E023841F023134484353B2DC88072CAA602FD048F39FEBBDD75056D7845D5270`
 - `public/images/footer-logo-dinamik.png` ile birebir aynıdır.
 
+### `public/images/kadromuz-banner.png`
+
+- Kullanıcı kaynağı: `ChatGPT Image 22 Tem 2026 20_12_13.png`
+- Boyut: 1508 x 1043 px
+- Kullanım: `Kadromuz` sayfasının banner görseli.
+- SHA-256: `42D12FFBCA84E32FF5F8447395FB18C14E2E7CA735ED5321B7BE10557DF8A821`
+- Kullanıcı tarafından sağlanan özgün PNG dosyasının birebir kopyasıdır.
+
 ## İçerik kaynağı
 
 ### `content/bolumler-ve-dallari-tanitim.pdf`

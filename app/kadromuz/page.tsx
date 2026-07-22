@@ -17,7 +17,15 @@ export default async function StaffPage() {
   const [staffGroups, staffMembers] = await Promise.all([getStaffGroups(), getStaffMembers()]);
   return (
     <InnerPageShell>
-      <PageHero eyebrow="Uzmanlık, deneyim, iş birliği" title="Her öğrencinin potansiyeline inanan güçlü bir eğitim ekibi." description="Mesleki alan öğretmenlerinden akademik branşlara, rehberlikten sanat ve spora uzanan çok yönlü bir kadro." image="/images/gallery-3.jpg" current="Kadromuz" />
+      <PageHero
+        eyebrow="Uzmanlık, deneyim, iş birliği"
+        title="Her öğrencinin potansiyeline inanan güçlü bir eğitim ekibi."
+        description="Mesleki alan öğretmenlerinden akademik branşlara, rehberlikten sanat ve spora uzanan çok yönlü bir kadro."
+        image="/images/kadromuz-banner.png"
+        imageAlt="Dinamik Okulları eğitim kadrosu okul binası önünde"
+        imagePosition="center 15%"
+        current="Kadromuz"
+      />
       <section className="inner-section inner-section--soft" aria-labelledby="staff-title">
         <div className="container">
           <div className="inner-section-header"><div><p className="inner-eyebrow">Eğitim kadromuz</p><h2 id="staff-title">Farklı uzmanlıklar, ortak bir eğitim vizyonu.</h2></div><p>Öğretmen listesi, okulun güncel kurumsal kadro yayını temel alınarak branşlara göre düzenlenmiştir.</p></div>
