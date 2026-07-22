@@ -77,16 +77,16 @@ export function SchoolVideoGallery() {
 
           <div className="school-video-feature-copy">
             <p className="school-video-kicker"><Film size={17} aria-hidden="true" /> Ana tanıtım filmi</p>
-            <h3>Okulumuzu 78 saniyede keşfedin.</h3>
+            <h3>Okulumuzu 90 saniyede keşfedin.</h3>
             <p>
               Dinamik&apos;in eğitim ortamlarını, kampüs atmosferini ve öğrencilerimize
               sunduğu uygulamalı öğrenme deneyimini tek videoda izleyin.
             </p>
             <div className="school-video-details">
-              <span><PlayCircle size={18} aria-hidden="true" /> 1 dakika 18 saniye</span>
+              <span><PlayCircle size={18} aria-hidden="true" /> 1 dakika 30 saniye</span>
               <span><Volume2 size={18} aria-hidden="true" /> Sesi oynatıcıdan açabilirsiniz</span>
             </div>
-            <time dateTime="PT1M18S">01:18</time>
+            <time dateTime="PT1M30S">01:30</time>
           </div>
         </article>
 
