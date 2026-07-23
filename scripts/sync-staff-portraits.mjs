@@ -20,6 +20,7 @@ async function main() {
   if (!databaseUrl) throw new Error("DATABASE_URL bulunamadı.");
 
   const shouldApply = process.argv.includes("--apply");
+  const shouldReorder = process.argv.includes("--reorder");
   const portraits = JSON.parse(
     readFileSync(resolve(process.cwd(), "content/staff-portraits.json"), "utf8"),
   );
@@ -88,22 +89,24 @@ async function main() {
     }
   }
 
-  const rowsForOrdering = shouldApply
-    ? await sql`
-        SELECT id, name, category, role, image, sort_order
-        FROM staff
-        ORDER BY sort_order, id
-      `
-    : currentRows;
-  const categoryOrder = [...new Set(rowsForOrdering.map((row) => row.category))];
-  const desiredOrder = categoryOrder.flatMap((category) =>
-    rowsForOrdering.filter((row) => row.category === category),
-  );
-  for (const [sortOrder, row] of desiredOrder.entries()) {
-    if (Number(row.sort_order) === sortOrder) continue;
-    changes.push({ type: "reorder", id: row.id, name: row.name, category: row.category });
-    if (shouldApply) {
-      await sql`UPDATE staff SET sort_order = ${sortOrder} WHERE id = ${row.id}`;
+  if (shouldReorder) {
+    const rowsForOrdering = shouldApply
+      ? await sql`
+          SELECT id, name, category, role, image, sort_order
+          FROM staff
+          ORDER BY sort_order, id
+        `
+      : currentRows;
+    const categoryOrder = [...new Set(rowsForOrdering.map((row) => row.category))];
+    const desiredOrder = categoryOrder.flatMap((category) =>
+      rowsForOrdering.filter((row) => row.category === category),
+    );
+    for (const [sortOrder, row] of desiredOrder.entries()) {
+      if (Number(row.sort_order) === sortOrder) continue;
+      changes.push({ type: "reorder", id: row.id, name: row.name, category: row.category });
+      if (shouldApply) {
+        await sql`UPDATE staff SET sort_order = ${sortOrder} WHERE id = ${row.id}`;
+      }
     }
   }
 

@@ -33,5 +33,21 @@
   { "name": "Melike Demirbağ", "category": "İngilizce", "role": "İngilizce Öğretmeni", "image": "/uploads/staff/melike-demirbag.webp" },
   { "name": "Mihriban Çelik", "category": "İngilizce", "role": "İngilizce Öğretmeni", "image": "/uploads/staff/mihriban-celik.webp" },
   { "name": "Zeynep Bozdemir", "category": "Biyoloji", "role": "Biyoloji Öğretmeni", "image": "/uploads/staff/zeynep-bozdemir.webp" },
-  { "name": "İrem Keskin", "aliases": ["Hanife İrem Keskin"], "category": "Biyoloji", "role": "Biyoloji Öğretmeni", "image": "/uploads/staff/irem-keskin.webp" }
+  { "name": "İrem Keskin", "aliases": ["Hanife İrem Keskin"], "category": "Biyoloji", "role": "Biyoloji Öğretmeni", "image": "/uploads/staff/irem-keskin.webp" },
+  { "name": "Ferhat Akbulut", "category": "Elektrik - Elektronik Teknolojileri", "role": "Elektrik-Elektronik Teknolojileri Öğretmeni", "image": "/uploads/staff/ferhat-akbulut.webp" },
+  { "name": "Furkan Kamış", "category": "Felsefe", "role": "Felsefe Öğretmeni", "image": "/uploads/staff/furkan-kamis.webp" },
+  { "name": "Nuriye Yumlu Güngör", "category": "Fizik", "role": "Fizik Öğretmeni", "image": "/uploads/staff/nuriye-yumlu-gungor.webp" },
+  { "name": "Pakize Güzel Şimşek", "category": "İdari Kadro", "role": "Müdür Yardımcısı", "image": "/uploads/staff/pakize-guzel-simsek.webp" },
+  { "name": "Sibel Kelkitli Özçelik", "category": "Kimya Teknolojileri", "role": "Kimya Teknolojileri Öğretmeni", "image": "/uploads/staff/sibel-kelkitli-ozcelik.webp" },
+  { "name": "Ümit Şahin", "category": "Rehberlik", "role": "Rehberlik Öğretmeni", "image": "/uploads/staff/umit-sahin.webp" },
+  { "name": "Derya Çok", "category": "Kimya Teknolojileri", "role": "Kimya Teknolojileri Öğretmeni", "image": "/uploads/staff/derya-cok.webp" },
+  { "name": "Ercan Altınkap", "category": "Fizik", "role": "Fizik Öğretmeni", "image": "/uploads/staff/ercan-altinkap.webp" },
+  { "name": "Ferhat Küçükarslan", "category": "İdari Kadro", "role": "Müdür", "image": "/uploads/staff/ferhat-kucukarslan.webp" },
+  { "name": "Nazan Kalkan", "category": "İdari Kadro", "role": "Müdür Yardımcısı", "image": "/uploads/staff/nazan-kalkan.webp" },
+  { "name": "Yılmaz Ceylan", "category": "Elektrik - Elektronik Teknolojileri", "role": "Elektrik-Elektronik Teknolojileri Öğretmeni", "image": "/uploads/staff/yilmaz-ceylan.webp" },
+  { "name": "Nesrin Beşir", "category": "Elektrik - Elektronik Teknolojileri", "role": "Elektrik-Elektronik Teknolojileri Öğretmeni", "image": "/uploads/staff/nesrin-besir.webp" },
+  { "name": "Gül Zeynel Mutlu Bayrak", "category": "İdari Kadro", "role": "Müdür", "image": "/uploads/staff/gul-zeynel-mutlu-bayrak.webp" },
+  { "name": "Betül Müdür", "category": "Felsefe", "role": "Felsefe Öğretmeni", "image": "/uploads/staff/betul-mudur.webp" },
+  { "name": "Fatih Gül", "category": "İdari Kadro", "role": "Kurum Müdürü", "image": "/uploads/staff/fatih-gul.webp" },
+  { "name": "Bahri Dağdeviren", "category": "Kimya Teknolojileri", "role": "Kimya Teknolojileri Alan Şefi", "image": "/uploads/staff/bahri-dagdeviren.webp" }
 ]

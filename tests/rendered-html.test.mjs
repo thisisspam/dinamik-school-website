@@ -201,6 +201,31 @@ test("keeps every teaching branch separate in the staff directory", async () => 
   assert.match(html, /Nevin Varoğlu[\s\S]*Türk Dili ve Edebiyatı Öğretmeni/i);
   assert.match(html, /Bahri Dağdeviren[\s\S]*staff-card-primary-role[^>]*>Kimya Teknolojileri Alan Şefi</i);
   assert.match(html, /src="\/uploads\/staff\/kader-danismaz\.webp"/i);
+  const remainingPortraits = [
+    "ferhat-akbulut.webp",
+    "furkan-kamis.webp",
+    "nuriye-yumlu-gungor.webp",
+    "pakize-guzel-simsek.webp",
+    "sibel-kelkitli-ozcelik.webp",
+    "umit-sahin.webp",
+    "derya-cok.webp",
+    "ercan-altinkap.webp",
+    "ferhat-kucukarslan.webp",
+    "nazan-kalkan.webp",
+    "yilmaz-ceylan.webp",
+    "nesrin-besir.webp",
+    "gul-zeynel-mutlu-bayrak.webp",
+    "betul-mudur.webp",
+    "fatih-gul.webp",
+    "bahri-dagdeviren.webp",
+  ];
+  for (const portrait of remainingPortraits) {
+    assert.match(html, new RegExp(`/uploads/staff/${portrait}`, "i"), `${portrait} needs a staff card`);
+  }
+  const remainingPortraitResponses = await Promise.all(
+    remainingPortraits.map((portrait) => fetch(`${BASE_URL}/uploads/staff/${portrait}`)),
+  );
+  assert.ok(remainingPortraitResponses.every((response) => response.ok), "all remaining staff portraits should be served");
   assert.match(html, /alt="Kader Danışmaz, Tarih Öğretmeni"/i);
   assert.doesNotMatch(html, /Sosyal Bilimler|Fen Bilimleri|Spor ve Sanat/i);
 });
