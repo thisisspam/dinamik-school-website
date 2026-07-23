@@ -273,6 +273,28 @@ test("labels active and unavailable branches according to the provided program r
   assert.match(chemistryHtml, /Alan programının toplam eğitim süresi 4 öğretim yılı olarak planlanmıştır/i);
   assert.doesNotMatch(chemistryHtml, /Teknik bilgiyi güvenli, dikkatli ve üretken bir çalışma kültürüne dönüştür/i);
   assert.ok((chemistryHtml.match(/department-branch-card is-unavailable/g) ?? []).length >= 2);
+  assert.match(chemistryHtml, /Bilimsel merak, laboratuvarda deneyime dönüşür\./i);
+  assert.match(chemistryHtml, /id="chemistry-workshop"/i);
+  assert.match(chemistryHtml, /class="biomedical-workshop-section chemistry-workshop-section"/i);
+  assert.equal((chemistryHtml.match(/aria-label="[1-7]\. fotoğraf:/gi) ?? []).length, 7);
+  assert.match(chemistryHtml, /Temel Kimya Laboratuvarı/i);
+  assert.match(chemistryHtml, /Organik Kimya Laboratuvarı/i);
+  assert.match(chemistryHtml, /Anorganik ve Analitik Kimya Laboratuvarı/i);
+  assert.match(chemistryHtml, /Üretimhane/i);
+  assert.match(chemistryHtml, /Analiz Uygulaması/i);
+  assert.match(chemistryHtml, /Uygulamalı Kimya Eğitimi/i);
+  assert.match(chemistryHtml, /Öğretmen Rehberliğinde Deney/i);
+
+  const chemistryImageResponses = await Promise.all([
+    "temel-kimya-laboratuvari.webp",
+    "organik-kimya-laboratuvari.webp",
+    "anorganik-analitik-kimya-laboratuvari.webp",
+    "uretimhane.webp",
+    "ogrenciler-analiz-uygulamasi.jpeg",
+    "kimya-laboratuvari-ogrenci-grubu.jpeg",
+    "ogretmen-rehberliginde-uygulama.jpeg",
+  ].map((fileName) => fetch(`${BASE_URL}/images/departments/chemistry/workshops/${fileName}`)));
+  assert.ok(chemistryImageResponses.every((response) => response.ok), "all chemistry workshop gallery images should be served");
 
   for (const unavailableBranch of [
     "Asansör Sistemleri",
@@ -285,6 +307,24 @@ test("labels active and unavailable branches according to the provided program r
   }
   assert.match(electronicsHtml, /Elektrik-elektronik sanayisi, küresel düzeyde hızla değişen pazar ve rekabet koşulları/i);
   assert.match(electronicsHtml, /Elektrik İç Tesisleri Yönetmeliği'ne,[\s\S]*kontrol panolarını hazırlama/i);
+  assert.match(electronicsHtml, /Teknik bilgi, atölyede güvenli uygulamaya dönüşür\./i);
+  assert.match(electronicsHtml, /id="electrical-workshop"/i);
+  assert.match(electronicsHtml, /class="biomedical-workshop-section electrical-workshop-section"/i);
+  assert.equal((electronicsHtml.match(/aria-label="[1-5]\. fotoğraf:/gi) ?? []).length, 5);
+  assert.match(electronicsHtml, /Tesisat Atölyesi/i);
+  assert.match(electronicsHtml, /Elektrik Tesisat Atölyesi/i);
+  assert.match(electronicsHtml, /Zayıf Akım Atölyesi/i);
+  assert.match(electronicsHtml, /Pano Atölyesi/i);
+  assert.match(electronicsHtml, /Kumanda Atölyesi/i);
+
+  const electricalImageResponses = await Promise.all([
+    "tesisat-atolyesi.webp",
+    "elektrik-tesisat-atolyesi.webp",
+    "zayif-akim-atolyesi.webp",
+    "pano-atolyesi.webp",
+    "kumanda-atolyesi.webp",
+  ].map((fileName) => fetch(`${BASE_URL}/images/departments/electrical/workshops/${fileName}`)));
+  assert.ok(electricalImageResponses.every((response) => response.ok), "all electrical workshop gallery images should be served");
   assert.match(electronicsHtml, /İş sağlığı ve güvenliği tedbirlerini alarak test uygulamaları yapma ile ilgili bilgi, beceri ve yetkinliklerin kazandırılması amaçlanmaktadır/i);
   assert.match(electronicsHtml, /Alan programının toplam eğitim süresi 4 öğretim yılı olarak planlanmıştır/i);
   assert.doesNotMatch(electronicsHtml, /Teknik bilgiyi güvenli, dikkatli ve üretken bir çalışma kültürüne dönüştür/i);

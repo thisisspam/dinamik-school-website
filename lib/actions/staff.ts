@@ -57,9 +57,20 @@ export async function updateStaffAction(formData: FormData): Promise<void> {
 
 export async function deleteStaffAction(formData: FormData): Promise<void> {
   const id = Number(formData.get("id"));
+  if (!Number.isSafeInteger(id) || id <= 0) {
+    throw new Error("Geçersiz kadro kaydı.");
+  }
+
   const db = await getDb();
-  await db.delete(schema.staff).where(eq(schema.staff.id, id));
+  const deletedRows = await db
+    .delete(schema.staff)
+    .where(eq(schema.staff.id, id))
+    .returning({ id: schema.staff.id });
+
+  if (deletedRows.length === 0) {
+    throw new Error("Silinecek kadro kaydı bulunamadı.");
+  }
 
   revalidatePath("/", "layout");
-  redirect("/admin/kadromuz?saved=1");
+  redirect("/admin/kadromuz?deleted=1");
 }

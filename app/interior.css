@@ -903,6 +903,30 @@
   content: "";
   pointer-events: none;
 }
+.chemistry-workshop-section {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(37, 184, 141, 0.18), transparent 30%),
+    radial-gradient(circle at 92% 88%, rgba(255, 137, 47, 0.16), transparent 32%),
+    #0c0b21;
+}
+.chemistry-workshop-section .biomedical-workshop-caption > span {
+  color: #75e0bc;
+}
+.chemistry-workshop-section .biomedical-workshop-progress span {
+  background: linear-gradient(90deg, #24b887, #ff8a3d);
+}
+.electrical-workshop-section {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(32, 126, 255, 0.22), transparent 30%),
+    radial-gradient(circle at 92% 88%, rgba(247, 180, 48, 0.18), transparent 32%),
+    #080f25;
+}
+.electrical-workshop-section .biomedical-workshop-caption > span {
+  color: #74b7ff;
+}
+.electrical-workshop-section .biomedical-workshop-progress span {
+  background: linear-gradient(90deg, #2586ff, #f7b430);
+}
 .activity-gallery-section + .activity-gallery-section {
   border-top: 1px solid rgba(255, 255, 255, .08);
 }

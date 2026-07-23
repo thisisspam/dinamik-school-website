@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 import { InnerPageShell } from "../../components/SiteChrome";
 import { PageHero } from "../../components/PageHero";
 import { BiomedicalWorkshopGallery } from "../../components/BiomedicalWorkshopGallery";
+import { ChemistryWorkshopGallery } from "../../components/ChemistryWorkshopGallery";
+import { ElectricalWorkshopGallery } from "../../components/ElectricalWorkshopGallery";
 import { getDepartment, getDepartments } from "../../data/departments";
 import type { DepartmentContentBlock } from "@/lib/department-blocks";
 import { linesToList, linesToPairs, linesToTitledPairs } from "@/lib/textformat";
@@ -16,10 +18,50 @@ const CONTENT_ICONS = [Compass, Gauge, ShieldCheck];
 
 type HeadingImage = { src: string; alt: string };
 
+const departmentHeroImages: Record<string, string> = {
+  "elektrik-elektronik-teknolojileri": "/images/departments/electrical/workshops/tesisat-atolyesi.webp",
+};
+
 // Per-department photos rendered as the background of each section heading,
 // keyed by content-block id. Distributing the real workshop/lab photos behind
 // the headings ties each program section to a genuine campus visual.
 const departmentHeadingImages: Record<string, Record<string, HeadingImage>> = {
+  "kimya-teknolojileri": {
+    "program-branches": {
+      src: "/images/departments/chemistry/workshops/temel-kimya-laboratuvari.webp",
+      alt: "Temel kimya laboratuvarında deney masaları ve cam malzemeler",
+    },
+    "program-scope": {
+      src: "/images/departments/chemistry/workshops/uretimhane.webp",
+      alt: "Kimya üretimhanesindeki paslanmaz çelik kazanlar ve depolama tankları",
+    },
+    "common-competencies": {
+      src: "/images/departments/chemistry/workshops/kimya-laboratuvari-ogrenci-grubu.jpeg",
+      alt: "Kimya laboratuvarında öğretmen ve öğrencilerden oluşan uygulama grubu",
+    },
+    "laboratory-competencies": {
+      src: "/images/departments/chemistry/workshops/anorganik-analitik-kimya-laboratuvari.webp",
+      alt: "Anorganik ve analitik kimya laboratuvarındaki deney tezgâhları",
+    },
+  },
+  "elektrik-elektronik-teknolojileri": {
+    "program-branches": {
+      src: "/images/departments/electrical/workshops/tesisat-atolyesi.webp",
+      alt: "Tesisat atölyesinde elektrik devre eğitim panoları ve çalışma alanları",
+    },
+    "program-scope": {
+      src: "/images/departments/electrical/workshops/zayif-akim-atolyesi.webp",
+      alt: "Zayıf akım atölyesinde elektrik eğitim panoları ve ölçüm masaları",
+    },
+    "common-competencies": {
+      src: "/images/departments/electrical/workshops/elektrik-tesisat-atolyesi.webp",
+      alt: "Elektrik tesisat atölyesinde bağlantı panoları ve çalışma istasyonları",
+    },
+    "installation-competencies": {
+      src: "/images/departments/electrical/workshops/pano-atolyesi.webp",
+      alt: "Pano atölyesinde kumanda elemanları ve eğitim panoları",
+    },
+  },
   "biyomedikal-cihaz-teknolojileri": {
     "field-definition": {
       src: "/images/departments/biomedical/xray-system.jpeg",
@@ -241,17 +283,22 @@ export default async function DepartmentPage({ params }: DepartmentPageProps) {
   const headingImages = departmentHeadingImages[department.slug];
   const sectionImages = departmentSectionImages[department.slug];
   const accentLineBlocks = departmentAccentLineBlocks[department.slug];
+  const heroImage = departmentHeroImages[department.slug] ?? department.image;
+  const isChemistryDepartment = department.slug === "kimya-teknolojileri";
+  const isElectricalDepartment = department.slug === "elektrik-elektronik-teknolojileri";
   const isBiomedicalDepartment = department.slug === "biyomedikal-cihaz-teknolojileri";
 
   return (
     <InnerPageShell>
-      <PageHero eyebrow={heroIntroBlock?.title ?? department.branch} title={department.title} description={heroIntroBlock?.content ?? department.lead} image={department.image} current={department.shortTitle} accent={department.accent} />
+      <PageHero eyebrow={heroIntroBlock?.title ?? department.branch} title={department.title} description={heroIntroBlock?.content ?? department.lead} image={heroImage} current={department.shortTitle} accent={department.accent} />
 
       {hasDetailedProgramContent ? (
         <>
           <div className="department-program-flow">
             {visibleContentBlocks.map((block, index) => <DepartmentContentBlockView block={block} isFirst={index === 0} headingImage={headingImages?.[block.id]} sectionImage={sectionImages?.[block.id]} accentLine={accentLineBlocks?.includes(block.id)} key={block.id} />)}
           </div>
+          {isChemistryDepartment ? <ChemistryWorkshopGallery /> : null}
+          {isElectricalDepartment ? <ElectricalWorkshopGallery /> : null}
           {isBiomedicalDepartment ? <BiomedicalWorkshopGallery /> : null}
         </>
       ) : (

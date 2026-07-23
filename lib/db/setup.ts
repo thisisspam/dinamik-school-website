@@ -1,6 +1,5 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { sql } from "drizzle-orm";
 import type { NeonHttpDatabase } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
 
@@ -88,12 +87,6 @@ export const CREATE_TABLE_STATEMENTS = [
   )`,
 ];
 
-export const DATA_MIGRATION_STATEMENTS = [
-  `UPDATE staff
-   SET role = 'Kimya Teknolojileri Alan Şefi', additional_role = NULL
-   WHERE name = 'Bahri Dağdeviren' AND role = 'Müdür Yardımcısı'`,
-];
-
 const CONTENT_DIR = resolve(process.cwd(), "content");
 
 type DepartmentSeed = {
@@ -163,55 +156,6 @@ function readJson<T>(fileName: string): T {
 
 function normalizeStaffName(name: string): string {
   return name.trim().replace(/\s+/g, " ").toLocaleLowerCase("tr-TR");
-}
-
-export async function ensureAdministrativeStaff(db: NeonHttpDatabase<typeof schema>): Promise<void> {
-  const administrativeStaff = readJson<AdministrativeStaffSeed>("administrative-staff.json");
-  if (administrativeStaff.members.length === 0) return;
-
-  const rosterValues = sql.join(
-    administrativeStaff.members.map(
-      (member, index) => sql`(${member.name}::text, ${member.role}::text, ${index}::integer)`,
-    ),
-    sql.raw(", "),
-  );
-
-  await db.execute(sql`
-    WITH sync_lock AS MATERIALIZED (
-      SELECT pg_advisory_xact_lock(2026072301)
-    ),
-    roster(name, role, position) AS (
-      VALUES ${rosterValues}
-    ),
-    updated_teaching_staff AS (
-      UPDATE staff
-      SET additional_role = roster.role
-      FROM roster, sync_lock
-      WHERE staff.name = roster.name
-        AND staff.category <> 'İdari Kadro'
-        AND staff.additional_role IS DISTINCT FROM roster.role
-      RETURNING staff.id
-    ),
-    updated_administrative_staff AS (
-      UPDATE staff
-      SET role = roster.role, additional_role = NULL
-      FROM roster, sync_lock
-      WHERE staff.name = roster.name
-        AND staff.category = 'İdari Kadro'
-        AND (staff.role IS DISTINCT FROM roster.role OR staff.additional_role IS NOT NULL)
-      RETURNING staff.id
-    ),
-    ordering AS (
-      SELECT COALESCE(MIN(sort_order), 0) - (SELECT COUNT(*)::int FROM roster) AS first_position
-      FROM staff
-    )
-    INSERT INTO staff (name, category, role, additional_role, image, sort_order)
-    SELECT roster.name, 'İdari Kadro', roster.role, NULL, NULL, ordering.first_position + roster.position
-    FROM roster, ordering, sync_lock
-    WHERE NOT EXISTS (
-      SELECT 1 FROM staff WHERE staff.name = roster.name
-    )
-  `);
 }
 
 export async function ensureHomepageSections(db: NeonHttpDatabase<typeof schema>): Promise<void> {

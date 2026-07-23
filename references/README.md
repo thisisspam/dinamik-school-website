@@ -63,6 +63,28 @@ zaman özgün PDF kontrol edilmelidir.
   atölye galerisi.
 - Ayrıntılı dosya eşlemesi için klasördeki `README.md` kontrol edilmelidir.
 
+### `content/kimya-teknolojileri-fotograflari/`
+
+- Kullanıcı kaynağı: 23 Temmuz 2026 tarihinde sağlanan Kimya Teknolojileri
+  laboratuvar ve uygulama fotoğrafları.
+- Set: 4 adet laboratuvar/üretimhane görseli ve 3 adet gerçek uygulama fotoğrafı.
+- Kullanım: Kimya Teknolojileri sayfasındaki bölüm görselleri ve animasyonlu
+  laboratuvar galerisi.
+- Web için anlamlı adlarla optimize edilen kopyalar
+  `public/images/departments/chemistry/workshops/` altında tutulur.
+- Ayrıntılı dosya eşlemesi için klasördeki `README.md` kontrol edilmelidir.
+
+### `content/elektrik-elektronik-teknolojileri-fotograflari/`
+
+- Kullanıcı kaynağı: 23 Temmuz 2026 tarihinde sağlanan Elektrik-Elektronik Teknolojileri
+  atölye fotoğrafları.
+- Set: Tesisat, elektrik tesisat, zayıf akım, pano ve kumanda atölyelerini gösteren 5 görsel.
+- Kullanım: Elektrik-Elektronik Teknolojileri sayfasındaki bölüm görselleri ve animasyonlu
+  atölye galerisi.
+- Web için anlamlı adlarla optimize edilen kopyalar
+  `public/images/departments/electrical/workshops/` altında tutulur.
+- Ayrıntılı dosya eşlemesi için klasördeki `README.md` kontrol edilmelidir.
+
 ### `content/sportif-faaliyet-fotograflari/`
 
 - Kullanıcı kaynağı: 21 Temmuz 2026 tarihinde sağlanan özgün judo ve futsal fotoğrafları.

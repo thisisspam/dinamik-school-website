@@ -9,9 +9,9 @@ import { AdminPageHeader } from "../../AdminPageHeader";
 export default async function AdminStaffPage({
   searchParams,
 }: {
-  searchParams: Promise<{ saved?: string }>;
+  searchParams: Promise<{ saved?: string; deleted?: string }>;
 }) {
-  const { saved } = await searchParams;
+  const { saved, deleted } = await searchParams;
   const db = await getDb();
   const rows = await db.select().from(schema.staff).orderBy(asc(schema.staff.sortOrder));
 
@@ -30,6 +30,7 @@ export default async function AdminStaffPage({
         actions={<Link className="admin-btn" href="/admin/kadromuz/yeni"><Plus aria-hidden="true" size={16} /> Yeni kadro kaydı</Link>}
       />
       {saved ? <div className="admin-flash">Kaydedildi.</div> : null}
+      {deleted ? <div className="admin-flash">Kadro kaydı silindi.</div> : null}
       {[...grouped.entries()].map(([category, members]) => (
         <div className="admin-card" key={category}>
           <strong>{category}</strong> <span className="admin-hint">{members[0]?.role ?? ""}</span>
