@@ -977,6 +977,18 @@
     radial-gradient(circle at 10% 90%, rgba(83, 70, 190, .18), transparent 32%),
     #0c0b21;
 }
+.achievement-gallery-section {
+  background:
+    radial-gradient(circle at 88% 12%, rgba(247, 180, 48, .2), transparent 30%),
+    radial-gradient(circle at 9% 88%, rgba(255, 0, 0, .18), transparent 32%),
+    #0b0c20;
+}
+.achievement-gallery-section .biomedical-workshop-caption > span {
+  color: #ffd36c;
+}
+.achievement-gallery-section .biomedical-workshop-progress span {
+  background: linear-gradient(90deg, #f7b430, var(--brand-red));
+}
 .biomedical-workshop-heading {
   position: relative;
   z-index: 1;
@@ -1122,9 +1134,17 @@
 }
 .biomedical-workshop-thumbnails {
   display: grid;
-  grid-template-columns: repeat(var(--gallery-thumbnail-count, 6), minmax(0, 1fr));
+  grid-template-columns: none;
+  grid-auto-columns: clamp(152px, 15vw, 184px);
+  grid-auto-flow: column;
   gap: 12px;
   margin-top: 16px;
+  padding: 4px 2px 12px;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-color: rgba(255, 255, 255, .28) transparent;
+  scrollbar-width: thin;
+  scroll-snap-type: inline proximity;
 }
 .biomedical-workshop-thumbnails button {
   display: grid;
@@ -1137,6 +1157,7 @@
   color: rgba(255, 255, 255, .64);
   text-align: left;
   cursor: pointer;
+  scroll-snap-align: start;
   transition: border-color .25s ease, background-color .25s ease, color .25s ease, transform .25s ease;
 }
 .biomedical-workshop-thumbnails button:hover,
@@ -1183,15 +1204,8 @@
   .biomedical-workshop-heading { grid-template-columns: 1fr; align-items: start; }
   .biomedical-workshop-heading > p { max-width: 680px; }
   .biomedical-workshop-thumbnails {
-    grid-template-columns: none;
     grid-auto-columns: minmax(158px, 31vw);
-    grid-auto-flow: column;
-    padding: 4px 2px 10px;
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    scroll-snap-type: inline proximity;
   }
-  .biomedical-workshop-thumbnails button { scroll-snap-align: start; }
 }
 
 @media (max-width: 640px) {

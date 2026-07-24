@@ -63,6 +63,15 @@ test("renders the completed Turkish school homepage", async () => {
   assert.match(html, /Ön Kayıt Talebi/);
   assert.match(html, /Toybelen Mahallesi Anadolu Bulvarı No:225/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
+
+  const homepageGallery = html.match(/<section class="gallery-section[\s\S]*?<\/section>/i)?.[0] ?? "";
+  assert.equal((homepageGallery.match(/class="gallery-item gallery-item--/g) ?? []).length, 8);
+  assert.match(homepageGallery, /\/images\/achievements\/urfodu-bilim-yarismasi\/urfodu-bilim-yarismasi-02\.webp/i);
+  assert.match(homepageGallery, /\/images\/achievements\/tahir-oztunc-turkiye-judo-dorduncusu\/tahir-oztunc-turkiye-judo-dorduncusu-03\.webp/i);
+  assert.doesNotMatch(homepageGallery, /\/images\/gallery-[123478]\.jpg/i);
+  assert.match(homepageGallery, /Başarılar/i);
+  assert.match(homepageGallery, /Emekle büyüyen gurur tablomuz/i);
+  assert.match(homepageGallery, /Bilimden spora, öğrencilerimizin azimle ulaştığı dereceleri/i);
 });
 
 test("keeps essential navigation and accessibility contracts", async () => {
@@ -102,7 +111,7 @@ test("keeps essential navigation and accessibility contracts", async () => {
   assert.doesNotMatch(html, /href="\/haberler"|>\s*Yayınlar\s*</i, "Yayınlar/Haberler was intentionally removed");
 });
 
-test("renders three animated activity galleries and the original sport photo set", async () => {
+test("renders three animated activity galleries with the supplied activity photo sets", async () => {
   const html = await readRoute("/faaliyetlerimiz");
 
   assert.equal(
@@ -130,6 +139,41 @@ test("renders three animated activity galleries and the original sport photo set
   ]) {
     assert.match(html, new RegExp(`/images/activities/sports/${imageName}`, "i"));
   }
+
+  for (const imagePath of [
+    "/images/activities/social/ahsap-workshop/ahsap-workshop-01.webp",
+    "/images/activities/social/yil-sonu-ingilizce-zumresi-gosterisi/yil-sonu-ingilizce-zumresi-gosterisi-06.webp",
+    "/images/activities/cultural/18-mart-etkinligi/18-mart-etkinligi-01.webp",
+    "/images/activities/cultural/polonyadan-gelen-ogrenciler/polonyadan-gelen-ogrenciler-04.webp",
+  ]) {
+    assert.match(html, new RegExp(imagePath, "i"));
+  }
+
+  assert.doesNotMatch(html, /\/images\/gallery-[123478]\.jpg/i);
+});
+
+test("renders the supplied achievement albums in an animated gallery", async () => {
+  const html = await readRoute("/basarilarimiz");
+
+  assert.equal(
+    (html.match(/biomedical-workshop-section achievement-gallery-section/g) ?? []).length,
+    1,
+  );
+  assert.match(html, /id="basari-galerisi"[\s\S]*Gurur tablomuz/i);
+  assert.match(html, /id="basari-galerisi-galeri"/i);
+  assert.match(html, /href="#basari-galerisi"[^>]*>\s*Başarı galerimizi inceleyin/i);
+
+  for (const imagePath of [
+    "/images/achievements/codeweek-haftasi/codeweek-haftasi-01.webp",
+    "/images/achievements/eren-genc-turkiye-judo-sampiyonu/eren-genc-turkiye-judo-sampiyonu-04.webp",
+    "/images/achievements/mono-palet-yuzme-samsun-dereceleri/mono-palet-yuzme-samsun-dereceleri-01.webp",
+    "/images/achievements/tahir-oztunc-turkiye-judo-dorduncusu/tahir-oztunc-turkiye-judo-dorduncusu-03.webp",
+    "/images/achievements/urfodu-bilim-yarismasi/urfodu-bilim-yarismasi-02.webp",
+  ]) {
+    assert.match(html, new RegExp(imagePath, "i"));
+  }
+
+  assert.doesNotMatch(html, /\/images\/gallery-[78]\.jpg/i);
 });
 
 test("exports every primary frontend route with working internal navigation", async () => {

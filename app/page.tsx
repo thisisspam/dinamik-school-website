@@ -3,8 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { InstagramIcon, SiteFooter, SiteHeader } from "./components/SiteChrome";
 import { RegistrationForm } from "./components/RegistrationForm";
+import { homepageAchievementPhotos } from "./data/achievements";
 import { getDepartments } from "./data/departments";
-import { getGalleryImages, getHomepageSections, getSiteSettings, type HomepageSection } from "../lib/content";
+import { getHomepageSections, getSiteSettings, type HomepageSection } from "../lib/content";
 import { createWhatsappHref } from "../lib/whatsapp";
 import {
   ArrowRight,
@@ -190,9 +191,8 @@ function CustomHomepageSection({ section }: { section: HomepageSection }) {
 }
 
 export default async function Home() {
-  const [canonicalDepartments, galleryImages, settings, homepageSections] = await Promise.all([
+  const [canonicalDepartments, settings, homepageSections] = await Promise.all([
     getDepartments(),
-    getGalleryImages(),
     getSiteSettings(),
     getHomepageSections(),
   ]);
@@ -214,7 +214,7 @@ export default async function Home() {
       accent: teaser?.accent ?? theme.accent,
     };
   });
-  const gallery = galleryImages.slice(0, 6);
+  const gallery = homepageAchievementPhotos;
   const generalPhoneTel = `tel:+9${settings.generalPhone.replace(/\D/g, "")}`;
   const landlineTel = `tel:+9${settings.landlinePhone.replace(/\D/g, "")}`;
   const whatsappHref = createWhatsappHref(settings.whatsapp);
@@ -386,9 +386,9 @@ export default async function Home() {
         <section className={`gallery-section${managedThemeClass(gallerySection)}`} id="galeri" aria-labelledby="gallery-title">
           <div className="container gallery-layout">
             <div className="gallery-intro">
-              <p className="eyebrow">{gallerySection?.eyebrow ?? "Kampüs & Yaşam"}</p>
-              <h2 id="gallery-title">{gallerySection?.title ?? "Dinamik'te Yaşam"}</h2>
-              <p className="gallery-description">{gallerySection?.description ?? "Eğitim sadece sınıfta değil, hayatın her anında."}</p>
+              <p className="eyebrow">Başarılar</p>
+              <h2 id="gallery-title">Emekle büyüyen gurur tablomuz</h2>
+              <p className="gallery-description">Bilimden spora, öğrencilerimizin azimle ulaştığı dereceleri ve unutulmaz başarı anlarını birlikte kutluyoruz.</p>
               <a
                 className="button button--secondary button--small"
                 href={settings.instagramUrl}

@@ -92,6 +92,29 @@ zaman özgün PDF kontrol edilmelidir.
 - Kullanım: `Faaliyetlerimiz` sayfasındaki `Sportif Faaliyetler` animasyonlu galerisi.
 - Web için anlamlı adlarla hazırlanan birebir kopyalar `public/images/activities/sports/` altında tutulur.
 
+### Sosyal ve kültürel faaliyet fotoğrafları
+
+- Kullanıcı kaynağı: 25 Temmuz 2026 tarihinde sağlanan `sosyal faaliyetler` ve
+  `kültürel faaliyetler` klasörleri.
+- Sosyal faaliyet seti: 15 etkinlik albümünde 116 fotoğraf.
+- Kültürel faaliyet seti: 7 etkinlik albümünde 47 fotoğraf.
+- Kullanım: `Faaliyetlerimiz` sayfasındaki `Sosyal Faaliyetler` ve
+  `Kültürel Faaliyetler` animasyonlu galerileri.
+- Web için yön bilgisi düzeltilmiş ve optimize edilmiş WebP kopyalar,
+  etkinlik albümlerine göre `public/images/activities/social/` ve
+  `public/images/activities/cultural/` altında tutulur.
+
+### Başarı fotoğrafları
+
+- Kullanıcı kaynağı: 25 Temmuz 2026 tarihinde sağlanan `başarılar` klasörü.
+- Set: 5 başarı başlığı altında 14 fotoğraf.
+- İçerik: CodeWeek Haftası, Eren Genç ve Tahir Öztunç'un Türkiye judo
+  dereceleri, mono palet yüzme Samsun dereceleri ve URFODU Uluslararası
+  Bilim Temelli Bilgi Yarışması.
+- Kullanım: `Başarılarımız` sayfasındaki animasyonlu başarı galerisi.
+- Web için yön bilgisi düzeltilmiş ve optimize edilmiş WebP kopyalar,
+  başarı başlıklarına göre `public/images/achievements/` altında tutulur.
+
 ## Kaynak önceliği
 
 1. Kullanıcının en yeni açık talimatı

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowRight, FlaskConical, GraduationCap, Medal, Sparkles, Trophy, Users } from "lucide-react";
+import { AnimatedPhotoGallery } from "../components/AnimatedPhotoGallery";
+import { ScrollToSectionLink } from "../components/ScrollToSectionLink";
 import { InnerPageShell } from "../components/SiteChrome";
 import { PageHero } from "../components/PageHero";
+import { achievementPhotos } from "../data/achievements";
 
 export const metadata: Metadata = {
   title: "Başarılarımız",
@@ -22,9 +24,19 @@ export default function AchievementsPage() {
   ];
   return (
     <InnerPageShell>
-      <PageHero eyebrow="Başarının çok yönlü hâli" title="Her öğrencinin ilerleyişi, kutlanmaya değer bir başarıdır." description="Akademik sonuçların ötesinde; mesleki beceriyi, takım ruhunu, sanatı, sporu ve toplumsal katkıyı birlikte büyütüyoruz." image="/images/gallery-8.jpg" current="Başarılarımız" />
+      <PageHero eyebrow="Başarının çok yönlü hâli" title="Her öğrencinin ilerleyişi, kutlanmaya değer bir başarıdır." description="Akademik sonuçların ötesinde; mesleki beceriyi, takım ruhunu, sanatı, sporu ve toplumsal katkıyı birlikte büyütüyoruz." image="/images/achievements/codeweek-haftasi/codeweek-haftasi-01.webp" current="Başarılarımız" />
       <section className="inner-section inner-section--soft" aria-labelledby="achievement-title"><div className="container"><div className="inner-section-header"><div><p className="inner-eyebrow">Başarı kültürü</p><h2 id="achievement-title">Sonuçtan önce emeği, yarıştan önce gelişimi görüyoruz.</h2></div><p>Başarıyı tek bir sınav, derece veya sayı ile sınırlamıyor; öğrencinin bilgi, beceri ve karakter yolculuğunda gösterdiği ilerlemeyle değerlendiriyoruz.</p></div><div className="achievement-grid">{areas.map(({ icon: Icon, title, text }) => <article className="achievement-card" key={title}><span><Icon size={23} /></span><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
-      <section className="inner-section"><div className="container editorial-grid"><div className="editorial-visual"><div className="image-frame"><Image src="/images/gallery-7.jpg" alt="Dinamik öğrencileri birlikte" fill sizes="(max-width: 900px) calc(100vw - 48px), 46vw" /></div></div><div className="editorial-copy"><p className="inner-eyebrow">Birlikte büyümek</p><h2>Başarının arkasında güven, emek ve güçlü bir ekip vardır.</h2><p>Öğretmen rehberliği, aile iş birliği, öğrenci azmi ve destekleyici kampüs kültürü aynı hedefte buluştuğunda kalıcı gelişim mümkün olur.</p><div className="cta-panel-actions"><Link className="button button--primary" href="/galeri">Güncel çalışmaları gör <ArrowRight size={16} /></Link></div></div></div></section>
+      <AnimatedPhotoGallery
+        sectionId="basari-galerisi"
+        eyebrow="Gurur tablomuz"
+        title="Emek, kararlılık ve yetenekle gelen başarılar."
+        description="Bilim ve teknoloji çalışmalarından Türkiye derecelerine uzanan bu seçki, öğrencilerimizin farklı alanlarda gösterdiği gelişimi ve azmi görünür kılıyor."
+        galleryLabel="Öğrenci başarıları"
+        thumbnailLabel="Başarı fotoğrafları"
+        photos={achievementPhotos}
+        className="achievement-gallery-section"
+      />
+      <section className="inner-section"><div className="container editorial-grid"><div className="editorial-visual"><div className="image-frame"><Image src="/images/achievements/codeweek-haftasi/codeweek-haftasi-02.webp" alt="CodeWeek çalışmalarının ardından belgelerini alan Dinamik öğrencileri" fill sizes="(max-width: 900px) calc(100vw - 48px), 46vw" /></div></div><div className="editorial-copy"><p className="inner-eyebrow">Birlikte büyümek</p><h2>Başarının arkasında güven, emek ve güçlü bir ekip vardır.</h2><p>Öğretmen rehberliği, aile iş birliği, öğrenci azmi ve destekleyici kampüs kültürü aynı hedefte buluştuğunda kalıcı gelişim mümkün olur.</p><div className="cta-panel-actions"><ScrollToSectionLink className="button button--primary" targetId="basari-galerisi" scrollTargetId="basari-galerisi-galeri">Başarı galerimizi inceleyin <ArrowRight size={16} /></ScrollToSectionLink></div></div></div></section>
     </InnerPageShell>
   );
 }

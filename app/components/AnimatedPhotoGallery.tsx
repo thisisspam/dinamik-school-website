@@ -2,17 +2,10 @@
 
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, Pause, Play } from "lucide-react";
-import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
+import type { AnimatedGalleryPhoto } from "../data/animated-gallery";
 
-export type AnimatedGalleryPhoto = {
-  src: string;
-  title: string;
-  description: string;
-  alt: string;
-  fit?: "cover" | "contain";
-  objectPosition?: string;
-};
+export type { AnimatedGalleryPhoto } from "../data/animated-gallery";
 
 type AnimatedPhotoGalleryProps = {
   sectionId: string;
@@ -43,6 +36,8 @@ export function AnimatedPhotoGallery({
   const [isInView, setIsInView] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const galleryRef = useRef<HTMLDivElement>(null);
+  const thumbnailStripRef = useRef<HTMLDivElement>(null);
+  const activeThumbnailRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -75,12 +70,25 @@ export function AnimatedPhotoGallery({
     return () => window.clearTimeout(timer);
   }, [activeIndex, isInView, isPlaying, isPointerOver, photos.length, prefersReducedMotion]);
 
+  useEffect(() => {
+    const thumbnailStrip = thumbnailStripRef.current;
+    const activeThumbnail = activeThumbnailRef.current;
+    if (!thumbnailStrip || !activeThumbnail) return;
+
+    const centeredPosition = activeThumbnail.offsetLeft
+      - (thumbnailStrip.clientWidth - activeThumbnail.clientWidth) / 2;
+
+    thumbnailStrip.scrollTo({
+      left: Math.max(0, centeredPosition),
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
+  }, [activeIndex, prefersReducedMotion]);
+
   if (photos.length === 0) return null;
 
   const activePhoto = photos[activeIndex] ?? photos[0];
   const headingId = `${sectionId}-title`;
   const sectionClassName = ["biomedical-workshop-section", className].filter(Boolean).join(" ");
-  const thumbnailGridStyle = { "--gallery-thumbnail-count": photos.length } as CSSProperties;
   const showPrevious = () => {
     setActiveIndex((currentIndex) => (currentIndex - 1 + photos.length) % photos.length);
   };
@@ -101,6 +109,7 @@ export function AnimatedPhotoGallery({
 
         <div
           className="biomedical-workshop-gallery"
+          id={`${sectionId}-galeri`}
           ref={galleryRef}
           role="region"
           aria-roledescription="fotoğraf galerisi"
@@ -167,12 +176,13 @@ export function AnimatedPhotoGallery({
             </div>
           </div>
 
-          <div className="biomedical-workshop-thumbnails" aria-label={thumbnailLabel} style={thumbnailGridStyle}>
+          <div className="biomedical-workshop-thumbnails" aria-label={thumbnailLabel} ref={thumbnailStripRef}>
             {photos.map((photo, index) => (
               <button
                 className={index === activeIndex ? "is-active" : ""}
                 type="button"
                 key={photo.src}
+                ref={index === activeIndex ? activeThumbnailRef : undefined}
                 onClick={() => setActiveIndex(index)}
                 aria-label={`${index + 1}. fotoğraf: ${photo.title}`}
                 aria-current={index === activeIndex ? "true" : undefined}
