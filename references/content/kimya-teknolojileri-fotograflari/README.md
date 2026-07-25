@@ -1,7 +1,7 @@
 # Kimya Teknolojileri fotoğraf kaynakları
 
-Bu klasörde 23 Temmuz 2026 tarihinde kullanıcı tarafından sağlanan Kimya
-Teknolojileri laboratuvar ve uygulama fotoğraflarının özgün kopyaları bulunur.
+Bu klasörde 23 ve 25 Temmuz 2026 tarihlerinde kullanıcı tarafından sağlanan Kimya
+Teknolojileri laboratuvar, uygulama ve üretim fotoğraflarının özgün kopyaları bulunur.
 
 ## Dosya eşlemesi
 
@@ -12,6 +12,7 @@ Teknolojileri laboratuvar ve uygulama fotoğraflarının özgün kopyaları bulu
 - `ogrenciler-analiz-uygulamasi.jpeg` - Öğrencilerin laboratuvar analiz uygulaması
 - `kimya-laboratuvari-ogrenci-grubu.jpeg` - Öğretmen ve öğrencilerin laboratuvar grup fotoğrafı
 - `ogretmen-rehberliginde-uygulama.jpeg` - Öğretmen rehberliğinde deney uygulaması
+- `uretim-atolyesi-urunleri.jpeg` - Öğrencilerin ürettiği temizlik ve kişisel bakım ürünleri
 
 Web için optimize edilen kopyalar
 `public/images/departments/chemistry/workshops/` altında tutulur. PNG

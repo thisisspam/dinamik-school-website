@@ -11,6 +11,7 @@ export const DEPARTMENT_BLOCK_TYPES = [
   "info-cards",
   "branch-list",
   "skills",
+  "program-showcase",
   "learning-cards",
   "career-tags",
   "text",
@@ -25,6 +26,16 @@ export type DepartmentContentBlock = {
   title: string;
   content: string;
   footer?: string;
+};
+
+export type ProgramShowcaseGroup = {
+  title: string;
+  items: string[];
+};
+
+export type ProgramShowcaseContent = {
+  introduction: string;
+  groups: ProgramShowcaseGroup[];
 };
 
 export const DEPARTMENT_BLOCK_OPTIONS: Array<{
@@ -56,6 +67,13 @@ export const DEPARTMENT_BLOCK_OPTIONS: Array<{
     defaultContent: "Yeni beceri",
   },
   {
+    value: "program-showcase",
+    label: "Program vitrini",
+    description: "Giriş metnini ve ## ile başlayan başlıklar altındaki uygulama listelerini görsel kartlarla sunar.",
+    defaultTitle: "Üretiyoruz, Öğreniyoruz, Geleceği Tasarlıyoruz",
+    defaultContent: "Programı tanıtan giriş metni.\n## Uygulama alanları\nBirinci uygulama\nİkinci uygulama",
+  },
+  {
     value: "learning-cards",
     label: "Başlıklı bilgi kartları",
     description: "Birbiriyle ilişkili başlık ve açıklamaları aynı bölümde kartlar halinde gösterir.",
@@ -84,6 +102,31 @@ export const DEPARTMENT_BLOCK_OPTIONS: Array<{
     defaultContent: "Vurgulanacak bilgi metni",
   },
 ];
+
+export function parseProgramShowcaseContent(content: string): ProgramShowcaseContent {
+  const introductionLines: string[] = [];
+  const groups: ProgramShowcaseGroup[] = [];
+  let currentGroup: ProgramShowcaseGroup | undefined;
+
+  for (const rawLine of content.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line) continue;
+
+    if (line.startsWith("## ")) {
+      currentGroup = { title: line.slice(3).trim(), items: [] };
+      if (currentGroup.title) groups.push(currentGroup);
+      continue;
+    }
+
+    if (currentGroup) currentGroup.items.push(line);
+    else introductionLines.push(line);
+  }
+
+  return {
+    introduction: introductionLines.join(" "),
+    groups: groups.filter((group) => group.items.length > 0),
+  };
+}
 
 type LegacyDepartmentContent = {
   facts: Array<{ label: string; value: string }>;

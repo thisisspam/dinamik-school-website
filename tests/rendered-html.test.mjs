@@ -313,6 +313,14 @@ test("labels active and unavailable branches according to the provided program r
   assert.match(chemistryHtml, /Petrol Endüstrisi,[\s\S]*Okulumuzda bu dalda eğitim VERİLMEMEKTEDİR/i);
   assert.match(chemistryHtml, /Proses[\s\S]*Okulumuzda bu dalda eğitim VERİLMEMEKTEDİR/i);
   assert.match(chemistryHtml, /Sektörün ihtiyaçları doğrultusunda bilimsel ve teknolojik gelişmelere paralel mesleki yeterlikleri kazanan/i);
+  assert.match(chemistryHtml, /Üretiyoruz, Öğreniyoruz, Geleceği Tasarlıyoruz/i);
+  assert.match(chemistryHtml, /temizlik ürünleri, kişisel bakım ürünleri ve endüstriyel kimyasalların üretimini gerçekleştirir/i);
+  assert.match(chemistryHtml, /Üretim Atölyemiz/i);
+  assert.match(chemistryHtml, /Sıvı Sabun Üretimi/i);
+  assert.match(chemistryHtml, /Üretim Süreci/i);
+  assert.match(chemistryHtml, /Ar-Ge Laboratuvarı/i);
+  assert.match(chemistryHtml, /Kimyasal mevzuat \(SEA, GHS\)/i);
+  assert.match(chemistryHtml, /uretim-atolyesi-urunleri\.webp/i);
   assert.match(chemistryHtml, /Ultraviyole spektrofotometresi,[\s\S]*kromatografik yöntemleri kullanarak numunelerde analiz yapma/i);
   assert.match(chemistryHtml, /Alan programının toplam eğitim süresi 4 öğretim yılı olarak planlanmıştır/i);
   assert.doesNotMatch(chemistryHtml, /Teknik bilgiyi güvenli, dikkatli ve üretken bir çalışma kültürüne dönüştür/i);
@@ -337,6 +345,7 @@ test("labels active and unavailable branches according to the provided program r
     "ogrenciler-analiz-uygulamasi.jpeg",
     "kimya-laboratuvari-ogrenci-grubu.jpeg",
     "ogretmen-rehberliginde-uygulama.jpeg",
+    "uretim-atolyesi-urunleri.webp",
   ].map((fileName) => fetch(`${BASE_URL}/images/departments/chemistry/workshops/${fileName}`)));
   assert.ok(chemistryImageResponses.every((response) => response.ok), "all chemistry workshop gallery images should be served");
 

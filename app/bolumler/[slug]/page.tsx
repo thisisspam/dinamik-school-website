@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, CircleX, Compass, Gauge, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, CircleX, Compass, Factory, FlaskConical, Gauge, GraduationCap, Microscope, ShieldCheck } from "lucide-react";
 import { notFound } from "next/navigation";
 import { InnerPageShell } from "../../components/SiteChrome";
 import { PageHero } from "../../components/PageHero";
@@ -9,7 +9,7 @@ import { BiomedicalWorkshopGallery } from "../../components/BiomedicalWorkshopGa
 import { ChemistryWorkshopGallery } from "../../components/ChemistryWorkshopGallery";
 import { ElectricalWorkshopGallery } from "../../components/ElectricalWorkshopGallery";
 import { getDepartment, getDepartments } from "../../data/departments";
-import type { DepartmentContentBlock } from "@/lib/department-blocks";
+import { parseProgramShowcaseContent, type DepartmentContentBlock } from "@/lib/department-blocks";
 import { linesToList, linesToPairs, linesToTitledPairs } from "@/lib/textformat";
 
 type DepartmentPageProps = { params: Promise<{ slug: string }> };
@@ -194,6 +194,44 @@ function DepartmentContentBlockView({ block, isFirst, headingImage, sectionImage
             {linesToList(block.content).map((skill, index) => <li key={`${block.id}-${index}`}><CheckCircle2 size={17} aria-hidden="true" />{skill}</li>)}
           </ul>
           {block.footer ? <p className="department-list-footer">{block.footer}</p> : null}
+        </div>
+      </section>
+    );
+  }
+
+  if (block.type === "program-showcase") {
+    const showcase = parseProgramShowcaseContent(block.content);
+    const groupIcons = [FlaskConical, Factory, Microscope, GraduationCap];
+
+    return (
+      <section className="inner-section department-content-block department-program-showcase" aria-labelledby={headingId}>
+        <div className="container">
+          <BlockHeading eyebrow="Programın kapsamı" title={block.title} headingId={headingId} image={headingImage} />
+          <p className="department-program-showcase-intro">{showcase.introduction}</p>
+          {block.id === "program-scope" ? (
+            <figure className="department-program-showcase-media">
+              <Image src="/images/departments/chemistry/workshops/uretim-atolyesi-urunleri.webp" alt="Kimya Teknolojileri Bölümünde öğrencilerin ürettiği temizlik ve kişisel bakım ürünleri" width={1448} height={1086} sizes="(max-width: 1180px) calc(100vw - 48px), 1120px" />
+            </figure>
+          ) : null}
+          <div className="department-program-showcase-grid">
+            {showcase.groups.map((group, groupIndex) => {
+              const Icon = groupIcons[groupIndex % groupIcons.length];
+              const isProcess = group.title === "Üretim Süreci";
+              return (
+                <article className={`department-program-showcase-card${isProcess ? " is-process" : ""}`} key={`${block.id}-${group.title}`}>
+                  <div className="department-program-showcase-card-heading">
+                    <span><Icon size={21} aria-hidden="true" /></span>
+                    <h3>{group.title}</h3>
+                  </div>
+                  {isProcess ? (
+                    <ol>{group.items.map((item, index) => <li key={`${group.title}-${item}`}><span>{index + 1}</span>{item}</li>)}</ol>
+                  ) : (
+                    <ul>{group.items.map((item) => <li key={`${group.title}-${item}`}><CheckCircle2 size={16} aria-hidden="true" />{item}</li>)}</ul>
+                  )}
+                </article>
+              );
+            })}
+          </div>
         </div>
       </section>
     );

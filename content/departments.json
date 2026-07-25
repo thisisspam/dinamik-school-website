@@ -37,9 +37,9 @@
       },
       {
         "id": "program-scope",
-        "type": "text",
-        "title": "Programın kapsamı",
-        "content": "Bu doğrultuda Kimya Teknolojisi alanı ve alan altında yer alan mesleklerde ulusal ve uluslararası düzeyde standartlara uygun örgün öğretim programı hazırlanmıştır."
+        "type": "program-showcase",
+        "title": "Üretiyoruz, Öğreniyoruz, Geleceği Tasarlıyoruz",
+        "content": "Öğrencilerimiz teorik bilgiyi modern laboratuvarlarımızda ve üretim atölyelerimizde uygulayarak; temizlik ürünleri, kişisel bakım ürünleri ve endüstriyel kimyasalların üretimini gerçekleştirir. Eğitimimiz; kalite, güvenlik ve sürdürülebilir üretim anlayışıyla geleceğin kimyagerlerini yetiştirir.\n## Üretim Atölyemiz\nSıvı Sabun Üretimi\nKöpük Sabun Üretimi\nBulaşık Deterjanı Üretimi\nÇamaşır Suyu Üretimi\nYüzey Temizleyici Üretimi\nKolonya Üretimi\nKalite Kontrol Laboratuvarı\n## Üretim Süreci\nFormül Hazırlama\nHammadde Tartımı\nKarıştırma ve Üretim\nKalite Kontrol Analizleri\nDolum\nEtiketleme\nPaketleme\nDepolama\n## Laboratuvarlarımız\nAnalitik Kimya Laboratuvarı\nÜretim Laboratuvarı\nMikrobiyoloji Laboratuvarı\nKalite Kontrol Laboratuvarı\nAr-Ge Laboratuvarı\n## Öğrencilerimiz Neler Öğreniyor?\nKimyasal üretim teknikleri\nFormül geliştirme\nLaboratuvar analizleri\nİş sağlığı ve güvenliği\nKalite yönetim sistemleri\nKimyasal mevzuat (SEA, GHS)\nEndüstriyel dolum ve ambalajlama"
       },
       {
         "id": "common-competencies",
