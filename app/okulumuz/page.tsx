@@ -86,8 +86,8 @@ export default function SchoolPage() {
           <div className="editorial-visual">
             <div className="image-frame">
               <Image
-                src="/images/hero-lab.jpg"
-                alt="Dinamik öğrencileri laboratuvar uygulamasında"
+                src="/images/departments/chemistry/workshops/ogrenciler-analiz-uygulamasi.jpeg"
+                alt="Dinamik öğrencileri Kimya laboratuvarında analiz uygulaması yaparken"
                 fill
                 sizes="(max-width: 900px) calc(100vw - 48px), 46vw"
               />

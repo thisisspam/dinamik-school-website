@@ -5,7 +5,6 @@ import {
   ArrowRight,
   ArrowUpRight,
   BookOpenCheck,
-  Building2,
   Check,
   CircuitBoard,
   Factory,
@@ -15,7 +14,6 @@ import {
   ShieldCheck,
   Sparkles,
   Target,
-  Users,
 } from "lucide-react";
 import { SiteFooter, SiteHeader } from "../components/SiteChrome";
 import "./hakkimizda.css";
@@ -26,13 +24,6 @@ export const metadata: Metadata = {
     "Dinamik Mesleki ve Teknik Anadolu Lisesi'nin eğitim yaklaşımı, vizyonu, misyonu ve kalite politikası.",
   alternates: { canonical: "/hakkimizda" },
 };
-
-const facts = [
-  { value: "4 Yıl", label: "Ücretsiz eğitim", icon: GraduationCap },
-  { value: "3 Alan", label: "Teknoloji programı", icon: CircuitBoard },
-  { value: "1.400", label: "Öğrenci kapasitesi", icon: Users },
-  { value: "400", label: "Kişilik konferans salonu", icon: Building2 },
-];
 
 const activeFields = [
   {
@@ -136,32 +127,21 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="about-facts" aria-label="Okulumuzun öne çıkan bilgileri">
-          <div className="container about-facts-grid">
-            {facts.map(({ value, label, icon: Icon }) => (
-              <div className="about-fact" key={label}>
-                <span><Icon size={21} strokeWidth={1.8} aria-hidden="true" /></span>
-                <div><strong>{value}</strong><small>{label}</small></div>
-              </div>
-            ))}
-          </div>
-        </section>
-
         <section className="about-story" id="egitim-yaklasimimiz">
           <div className="container about-story-grid">
             <div className="about-story-visual">
               <div className="about-story-image about-story-image--main">
                 <Image
-                  src="/images/electronics.jpg"
-                  alt="Elektrik-elektronik alanında uygulamalı eğitim"
+                  src="/images/departments/chemistry/workshops/ogrenciler-analiz-uygulamasi.jpeg"
+                  alt="Kimya laboratuvarında analiz uygulaması yapan öğrenciler"
                   fill
                   sizes="(max-width: 800px) calc(100vw - 40px), 42vw"
                 />
               </div>
               <div className="about-story-image about-story-image--secondary">
                 <Image
-                  src="/images/biomedical.jpg"
-                  alt="Biyomedikal laboratuvarında uygulama"
+                  src="/images/departments/biomedical/applied-workshop.jpeg"
+                  alt="Biyomedikal uygulama etkinliğinde devre üzerinde çalışan öğrenciler"
                   fill
                   sizes="(max-width: 600px) 42vw, 230px"
                 />

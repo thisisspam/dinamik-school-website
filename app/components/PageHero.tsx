@@ -9,13 +9,16 @@ type PageHeroProps = {
   current: string;
   imageAlt?: string;
   imagePosition?: string;
-  compact?: boolean;
+  size?: "default" | "slim";
   accent?: "red" | "indigo" | "cyan";
 };
 
-export function PageHero({ eyebrow, title, description, image, current, imageAlt = "", imagePosition, compact = false, accent }: PageHeroProps) {
+export function PageHero({ eyebrow, title, description, image, current, imageAlt = "", imagePosition, size = "slim", accent }: PageHeroProps) {
+  const resolvedSize = size;
+  const sizeClassName = resolvedSize === "default" ? "" : ` inner-hero--${resolvedSize}`;
+
   return (
-    <section className={`inner-hero${compact ? " inner-hero--compact" : ""}${accent ? ` inner-hero--${accent}` : ""}`} aria-labelledby="page-title">
+    <section className={`inner-hero${sizeClassName}${accent ? ` inner-hero--${accent}` : ""}`} aria-labelledby="page-title">
       <div className="inner-hero-media" aria-hidden={imageAlt ? undefined : true}>
         <Image src={image} alt={imageAlt} fill priority sizes="100vw" style={imagePosition ? { objectPosition: imagePosition } : undefined} />
       </div>

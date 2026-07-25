@@ -12,6 +12,19 @@ export const metadata: Metadata = {
   alternates: { canonical: "/bolumler" },
 };
 
+const departmentCardSummaries: Record<string, string> = {
+  "kimya-teknolojileri":
+    "Kimya Laboratuvarı Dalında analiz, cihaz kullanımı ve güvenli laboratuvar uygulamalarına odaklanan eğitim.",
+  "elektrik-elektronik-teknolojileri":
+    "Elektrik Tesisatları ve Dağıtımı Dalında devre, tesisat, pano ve kontrol uygulamalarına odaklanan eğitim.",
+  "biyomedikal-cihaz-teknolojileri":
+    "Tıbbi Görüntüleme Sistemleri Dalında cihaz kurulumu, bakım, ölçüm ve kalibrasyon becerileri kazandıran eğitim.",
+};
+
+function getDepartmentCardTitle(title: string) {
+  return title.replace(/\s+BÖLÜMÜ$/i, "");
+}
+
 export default async function DepartmentsPage() {
   const departments = await getDepartments();
   return (
@@ -44,8 +57,8 @@ export default async function DepartmentsPage() {
                 <span className="department-index-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                 <span className="department-index-card-content">
                   <small>{department.branch}</small>
-                  <h2>{department.title}</h2>
-                  <p>{department.lead}</p>
+                  <h2>{getDepartmentCardTitle(department.title)}</h2>
+                  <p>{departmentCardSummaries[department.slug] ?? department.lead}</p>
                   <span className="card-link">Programı keşfet <span><ArrowRight size={15} /></span></span>
                 </span>
               </Link>

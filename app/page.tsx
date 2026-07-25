@@ -282,8 +282,8 @@ export default async function Home() {
                   href="/okulumuz#okulumuzu-taniyin"
                 >
                   <Image
-                    src="/images/gallery-4.jpg"
-                    alt="Dinamik Okulları tanıtımı"
+                    src="/images/okulumuzu-taniyin-thumb.webp"
+                    alt="Dinamik Okulları tanıtım videosu"
                     fill
                     sizes="184px"
                   />
@@ -294,8 +294,8 @@ export default async function Home() {
                 </a>
                 <a className="hero-tile" href="#bolumler">
                   <Image
-                    src="/images/electronics.jpg"
-                    alt="Uygulamalı eğitim çalışması"
+                    src="/images/uygulamali-egitim-kimya.webp"
+                    alt="Kimya laboratuvarında uygulamalı analiz çalışması"
                     fill
                     sizes="184px"
                   />
@@ -303,8 +303,8 @@ export default async function Home() {
                 </a>
                 <a className="hero-tile" href="#galeri">
                   <Image
-                    src="/images/gallery-7.jpg"
-                    alt="Dinamik öğrenci etkinliği"
+                    src="/images/activities/social/meb-robot-yarismasi/meb-robot-yarismasi-01.webp"
+                    alt="Dinamik Okulları öğrencileri MEB Robot Yarışması'nda"
                     fill
                     sizes="184px"
                   />
@@ -420,19 +420,11 @@ export default async function Home() {
           <div className="container campus-grid">
             <div className="campus-media">
               <Image
-                src="/images/gallery-8.jpg"
-                alt="Dinamik öğrencileri okul etkinliğinde"
+                src="/images/campus-meb-robot-yarismasi.webp"
+                alt="Dinamik öğrencileri 18. Uluslararası MEB Robot Yarışması'nda"
                 fill
                 sizes="(max-width: 800px) calc(100vw - 32px), 50vw"
               />
-              <div className="campus-stat campus-stat--top">
-                <strong>400</strong>
-                <span>Kişilik konferans salonu</span>
-              </div>
-              <div className="campus-stat campus-stat--bottom">
-                <strong>1.400</strong>
-                <span>Öğrenci kapasitesi</span>
-              </div>
             </div>
             <div className="campus-copy">
               <p className="eyebrow">{campusSection?.eyebrow ?? "Neden Dinamik?"}</p>

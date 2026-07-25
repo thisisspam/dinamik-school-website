@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function SchoolUniformPage() {
   return (
     <InnerPageShell>
-      <PageHero eyebrow="Kurumsal aidiyet" title="Sade, rahat ve Dinamik okul kültürüne ait." description="Öğrencilerimizin okul gününde düzenli, rahat ve ortak kimliği yansıtan bir görünümle hareket etmesi için belirlenen kıyafet düzeni." image="/images/gallery-2.jpg" current="Okul Kıyafetlerimiz" compact />
+      <PageHero eyebrow="Kurumsal aidiyet" title="Sade, rahat ve Dinamik okul kültürüne ait." description="Öğrencilerimizin okul gününde düzenli, rahat ve ortak kimliği yansıtan bir görünümle hareket etmesi için belirlenen kıyafet düzeni." image="/images/gallery-2.jpg" current="Okul Kıyafetlerimiz" size="slim" />
       <section className="inner-section inner-section--soft">
         <div className="container uniform-layout">
           <div className="uniform-image"><Image src="/images/school-uniforms.jpg" alt="Dinamik Okulları bordo polo yaka üst ve siyah pantolondan oluşan okul kıyafeti" fill sizes="(max-width: 900px) calc(100vw - 48px), 55vw" /></div>

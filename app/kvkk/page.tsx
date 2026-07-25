@@ -43,7 +43,7 @@ export default async function KvkkPage() {
         description="Ön kayıt talebiniz sırasında hangi bilgileri, neden ve ne kadar süreyle işlediğimizi açık ve anlaşılır biçimde öğrenin."
         image="/images/about-school-campus.png"
         current="KVKK"
-        compact
+        size="slim"
       />
 
       <section className="inner-section inner-section--soft privacy-section" id="aydinlatma">

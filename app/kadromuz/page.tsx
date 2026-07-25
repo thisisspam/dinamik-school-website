@@ -24,8 +24,9 @@ export default async function StaffPage() {
         description="Mesleki alan öğretmenlerinden akademik branşlara, rehberlikten sanat ve spora uzanan çok yönlü bir kadro."
         image="/images/kadromuz-banner.png"
         imageAlt="Dinamik Okulları eğitim kadrosu okul binası önünde"
-        imagePosition="center 15%"
+        imagePosition="center 70%"
         current="Kadromuz"
+        size="slim"
       />
       <section className="inner-section inner-section--soft" aria-labelledby="staff-title">
         <div className="container">

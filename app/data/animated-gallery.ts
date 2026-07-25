@@ -3,6 +3,8 @@ export type AnimatedGalleryPhoto = {
   title: string;
   description: string;
   alt: string;
+  albumId?: string;
+  albumTitle?: string;
   fit?: "cover" | "contain";
   objectPosition?: string;
 };
@@ -29,6 +31,8 @@ export function createAlbumPhotos(
         title: album.title,
         description: album.description,
         alt: `${album.title} içeriğinden ${photoNumber}. fotoğraf`,
+        albumId: album.slug,
+        albumTitle: album.title,
         fit: album.fit ?? "contain",
         objectPosition: album.objectPosition,
       };

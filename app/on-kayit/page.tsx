@@ -15,7 +15,7 @@ export default async function RegistrationPage() {
   const settings = await getSiteSettings();
   return (
     <InnerPageShell>
-      <PageHero eyebrow="Geleceğin için ilk adım" title="Seni tanıyalım, doğru programı birlikte keşfedelim." description="Kısa bilgi talebini ilet; bölümler, kampüs ve kayıt süreci hakkında okul ekibimizden destek al." image="/images/hero-banner.png" current="Ön Kayıt" compact />
+      <PageHero eyebrow="Geleceğin için ilk adım" title="Seni tanıyalım, doğru programı birlikte keşfedelim." description="Kısa bilgi talebini ilet; bölümler, kampüs ve kayıt süreci hakkında okul ekibimizden destek al." image="/images/hero-banner.png" current="Ön Kayıt" size="slim" />
       <section className="inner-section inner-section--soft">
         <div className="container registration-page-panel">
           <div className="registration-page-copy">

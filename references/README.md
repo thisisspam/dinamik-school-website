@@ -65,9 +65,10 @@ zaman özgün PDF kontrol edilmelidir.
 
 ### `content/kimya-teknolojileri-fotograflari/`
 
-- Kullanıcı kaynağı: 23 ve 25 Temmuz 2026 tarihlerinde sağlanan Kimya Teknolojileri
-  laboratuvar ve uygulama fotoğrafları.
-- Set: 4 adet laboratuvar/üretimhane görseli ve 4 adet gerçek uygulama/üretim fotoğrafı.
+- Kullanıcı kaynağı: 23, 25 ve 26 Temmuz 2026 tarihlerinde sağlanan Kimya Teknolojileri
+  laboratuvar, uygulama ve ürün kataloğu görselleri.
+- Set: 4 adet laboratuvar/üretimhane görseli, 4 adet gerçek uygulama/üretim fotoğrafı
+  ve 1 adet DinamiKimya ürün kataloğu.
 - Kullanım: Kimya Teknolojileri sayfasındaki bölüm görselleri ve animasyonlu
   laboratuvar galerisi.
 - Web için anlamlı adlarla optimize edilen kopyalar

@@ -122,8 +122,8 @@ main > section[id] {
 
 .hero-wash {
   background:
-    linear-gradient(90deg, rgba(5, 11, 22, 0.97) 0%, rgba(6, 13, 26, 0.9) 38%, rgba(7, 14, 28, 0.52) 72%, rgba(7, 14, 28, 0.3) 100%),
-    linear-gradient(180deg, rgba(7, 13, 26, 0.08) 45%, rgba(4, 9, 19, 0.92) 100%);
+    linear-gradient(90deg, rgba(5, 11, 22, 0.91) 0%, rgba(6, 13, 26, 0.82) 33%, rgba(7, 14, 28, 0.43) 67%, rgba(7, 14, 28, 0.22) 100%),
+    linear-gradient(180deg, rgba(7, 13, 26, 0.06) 45%, rgba(4, 9, 19, 0.85) 100%);
 }
 
 .hero-layout {
@@ -1082,8 +1082,8 @@ main > section[id] {
   .hero-wash {
     display: block;
     background:
-      linear-gradient(90deg, rgba(5, 11, 22, 0.96), rgba(5, 11, 22, 0.72)),
-      linear-gradient(180deg, transparent 32%, rgba(5, 11, 22, 0.96) 100%);
+      linear-gradient(90deg, rgba(5, 11, 22, 0.9), rgba(5, 11, 22, 0.64)),
+      linear-gradient(180deg, transparent 32%, rgba(5, 11, 22, 0.89) 100%);
   }
 
   .hero-layout {
@@ -1483,11 +1483,11 @@ main > section[id] {
 }
 
 .hero.homepage-theme-navy .hero-wash {
-  background: linear-gradient(90deg, rgba(23, 20, 51, 0.98) 0%, rgba(23, 20, 51, 0.78) 45%, rgba(23, 20, 51, 0.08) 100%);
+  background: linear-gradient(90deg, rgba(23, 20, 51, 0.91) 0%, rgba(23, 20, 51, 0.68) 40%, rgba(23, 20, 51, 0.05) 100%);
 }
 
 .hero.homepage-theme-red .hero-wash {
-  background: linear-gradient(90deg, rgba(133, 10, 16, 0.96) 0%, rgba(204, 18, 25, 0.72) 45%, rgba(133, 10, 16, 0.08) 100%);
+  background: linear-gradient(90deg, rgba(133, 10, 16, 0.9) 0%, rgba(204, 18, 25, 0.64) 40%, rgba(133, 10, 16, 0.05) 100%);
 }
 
 .hero.homepage-theme-navy :is(h1, .hero-lead),

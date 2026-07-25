@@ -127,6 +127,23 @@ test("renders three animated activity galleries with the supplied activity photo
     "activity galleries should render in sporting, social, cultural order",
   );
   assert.match(html, /aria-label="Otomatik geçişi durdur"/i);
+  assert.equal(
+    (html.match(/class="biomedical-workshop-albums"/g) ?? []).length,
+    2,
+  );
+  assert.equal(
+    (html.match(/aria-label="[^"]+ albümünü seç, \d+ fotoğraf"/gi) ?? []).length,
+    22,
+  );
+  const sportingGalleryHtml = html.match(
+    /<section class="biomedical-workshop-section activity-gallery-section activity-gallery-section--sporting"[\s\S]*?<\/section>/i,
+  )?.[0] ?? "";
+  assert.ok(sportingGalleryHtml, "sporting activity gallery should be rendered");
+  assert.match(sportingGalleryHtml, /biomedical-workshop-player--single-album/i);
+  assert.doesNotMatch(sportingGalleryHtml, /class="biomedical-workshop-albums"/i);
+  assert.match(html, /aria-label="Ahşap Workshop albümünü seç, 5 fotoğraf"/i);
+  assert.match(html, /aria-label="Bilim Şenliği albümünü seç, 24 fotoğraf"/i);
+  assert.match(html, /aria-label="Ankara Gezisi albümünü seç, 6 fotoğraf"/i);
 
   for (const imageName of [
     "judo-basari-takimi.jpeg",
@@ -142,9 +159,9 @@ test("renders three animated activity galleries with the supplied activity photo
 
   for (const imagePath of [
     "/images/activities/social/ahsap-workshop/ahsap-workshop-01.webp",
-    "/images/activities/social/yil-sonu-ingilizce-zumresi-gosterisi/yil-sonu-ingilizce-zumresi-gosterisi-06.webp",
+    "/images/activities/social/yil-sonu-ingilizce-zumresi-gosterisi/yil-sonu-ingilizce-zumresi-gosterisi-01.webp",
     "/images/activities/cultural/18-mart-etkinligi/18-mart-etkinligi-01.webp",
-    "/images/activities/cultural/polonyadan-gelen-ogrenciler/polonyadan-gelen-ogrenciler-04.webp",
+    "/images/activities/cultural/polonyadan-gelen-ogrenciler/polonyadan-gelen-ogrenciler-01.webp",
   ]) {
     assert.match(html, new RegExp(imagePath, "i"));
   }
@@ -162,13 +179,20 @@ test("renders the supplied achievement albums in an animated gallery", async () 
   assert.match(html, /id="basari-galerisi"[\s\S]*Gurur tablomuz/i);
   assert.match(html, /id="basari-galerisi-galeri"/i);
   assert.match(html, /href="#basari-galerisi"[^>]*>\s*Başarı galerimizi inceleyin/i);
+  assert.equal(
+    (html.match(/aria-label="[^"]+ albümünü seç, \d+ fotoğraf"/gi) ?? []).length,
+    5,
+  );
+  assert.match(html, /aria-label="CodeWeek Haftası Etkinlikleri albümünü seç, 4 fotoğraf"/i);
+  assert.match(html, /aria-label="Mono Palet Yüzmede Samsun Dereceleri albümünü seç, 1 fotoğraf"/i);
+  assert.equal((html.match(/aria-label="[1-4]\. fotoğraf:/gi) ?? []).length, 4);
 
   for (const imagePath of [
     "/images/achievements/codeweek-haftasi/codeweek-haftasi-01.webp",
-    "/images/achievements/eren-genc-turkiye-judo-sampiyonu/eren-genc-turkiye-judo-sampiyonu-04.webp",
+    "/images/achievements/eren-genc-turkiye-judo-sampiyonu/eren-genc-turkiye-judo-sampiyonu-01.webp",
     "/images/achievements/mono-palet-yuzme-samsun-dereceleri/mono-palet-yuzme-samsun-dereceleri-01.webp",
-    "/images/achievements/tahir-oztunc-turkiye-judo-dorduncusu/tahir-oztunc-turkiye-judo-dorduncusu-03.webp",
-    "/images/achievements/urfodu-bilim-yarismasi/urfodu-bilim-yarismasi-02.webp",
+    "/images/achievements/tahir-oztunc-turkiye-judo-dorduncusu/tahir-oztunc-turkiye-judo-dorduncusu-01.webp",
+    "/images/achievements/urfodu-bilim-yarismasi/urfodu-bilim-yarismasi-01.webp",
   ]) {
     assert.match(html, new RegExp(imagePath, "i"));
   }
@@ -321,6 +345,9 @@ test("labels active and unavailable branches according to the provided program r
   assert.match(chemistryHtml, /Ar-Ge Laboratuvarı/i);
   assert.match(chemistryHtml, /Kimyasal mevzuat \(SEA, GHS\)/i);
   assert.match(chemistryHtml, /uretim-atolyesi-urunleri\.webp/i);
+  assert.match(chemistryHtml, /DinamiKimya ürün kataloğu/i);
+  assert.match(chemistryHtml, /dinamikimya-urun-katalogu\.webp/i);
+  assert.match(chemistryHtml, /class="chemistry-product-catalog-link"[\s\S]{0,200}aria-haspopup="dialog"/i);
   assert.match(chemistryHtml, /Ultraviyole spektrofotometresi,[\s\S]*kromatografik yöntemleri kullanarak numunelerde analiz yapma/i);
   assert.match(chemistryHtml, /Alan programının toplam eğitim süresi 4 öğretim yılı olarak planlanmıştır/i);
   assert.doesNotMatch(chemistryHtml, /Teknik bilgiyi güvenli, dikkatli ve üretken bir çalışma kültürüne dönüştür/i);
@@ -328,6 +355,8 @@ test("labels active and unavailable branches according to the provided program r
   assert.match(chemistryHtml, /Bilimsel merak, laboratuvarda deneyime dönüşür\./i);
   assert.match(chemistryHtml, /id="chemistry-workshop"/i);
   assert.match(chemistryHtml, /class="biomedical-workshop-section chemistry-workshop-section"/i);
+  assert.match(chemistryHtml, /biomedical-workshop-player--single-album/i);
+  assert.doesNotMatch(chemistryHtml, /aria-label="Kimya teknolojileri laboratuvarları ve uygulama çalışmaları albümünü seç/i);
   assert.equal((chemistryHtml.match(/aria-label="[1-7]\. fotoğraf:/gi) ?? []).length, 7);
   assert.match(chemistryHtml, /Temel Kimya Laboratuvarı/i);
   assert.match(chemistryHtml, /Organik Kimya Laboratuvarı/i);
@@ -363,6 +392,8 @@ test("labels active and unavailable branches according to the provided program r
   assert.match(electronicsHtml, /Teknik bilgi, atölyede güvenli uygulamaya dönüşür\./i);
   assert.match(electronicsHtml, /id="electrical-workshop"/i);
   assert.match(electronicsHtml, /class="biomedical-workshop-section electrical-workshop-section"/i);
+  assert.match(electronicsHtml, /biomedical-workshop-player--single-album/i);
+  assert.doesNotMatch(electronicsHtml, /aria-label="Elektrik elektronik teknolojileri atölyeleri albümünü seç/i);
   assert.equal((electronicsHtml.match(/aria-label="[1-5]\. fotoğraf:/gi) ?? []).length, 5);
   assert.match(electronicsHtml, /Tesisat Atölyesi/i);
   assert.match(electronicsHtml, /Elektrik Tesisat Atölyesi/i);
@@ -401,6 +432,8 @@ test("labels active and unavailable branches according to the provided program r
   assert.ok((biomedicalHtml.match(/department-branch-card is-unavailable/g) ?? []).length >= 3);
   assert.match(biomedicalHtml, /Sağlık teknolojisinin geleceği, bu atölyelerde üretilir\./i);
   assert.match(biomedicalHtml, /class="biomedical-workshop-gallery"/i);
+  assert.match(biomedicalHtml, /biomedical-workshop-player--single-album/i);
+  assert.doesNotMatch(biomedicalHtml, /aria-label="Biyomedikal cihaz teknolojileri atölyeleri albümünü seç/i);
   assert.equal((biomedicalHtml.match(/aria-label="[1-6]\. fotoğraf:/gi) ?? []).length, 6);
   assert.match(biomedicalHtml, /Tıbbi Görüntüleme Cihazları Atölyesi/i);
   assert.match(biomedicalHtml, /Kalibrasyon Atölyesi/i);

@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { InnerPageShell } from "../../components/SiteChrome";
 import { PageHero } from "../../components/PageHero";
 import { BiomedicalWorkshopGallery } from "../../components/BiomedicalWorkshopGallery";
+import { ChemistryProductCatalog } from "../../components/ChemistryProductCatalog";
 import { ChemistryWorkshopGallery } from "../../components/ChemistryWorkshopGallery";
 import { ElectricalWorkshopGallery } from "../../components/ElectricalWorkshopGallery";
 import { getDepartment, getDepartments } from "../../data/departments";
@@ -202,23 +203,31 @@ function DepartmentContentBlockView({ block, isFirst, headingImage, sectionImage
   if (block.type === "program-showcase") {
     const showcase = parseProgramShowcaseContent(block.content);
     const groupIcons = [FlaskConical, Factory, Microscope, GraduationCap];
+    const hasShowcaseMedia = block.id === "program-scope";
 
     return (
       <section className="inner-section department-content-block department-program-showcase" aria-labelledby={headingId}>
         <div className="container">
           <BlockHeading eyebrow="Programın kapsamı" title={block.title} headingId={headingId} image={headingImage} />
           <p className="department-program-showcase-intro">{showcase.introduction}</p>
-          {block.id === "program-scope" ? (
-            <figure className="department-program-showcase-media">
-              <Image src="/images/departments/chemistry/workshops/uretim-atolyesi-urunleri.webp" alt="Kimya Teknolojileri Bölümünde öğrencilerin ürettiği temizlik ve kişisel bakım ürünleri" width={1448} height={1086} sizes="(max-width: 1180px) calc(100vw - 48px), 1120px" />
-            </figure>
-          ) : null}
-          <div className="department-program-showcase-grid">
+          <div className={`department-program-showcase-grid${hasShowcaseMedia ? " department-program-showcase-grid--with-media" : ""}`}>
+            {hasShowcaseMedia ? (
+              <figure className="department-program-showcase-media">
+                <Image src="/images/departments/chemistry/workshops/uretim-atolyesi-urunleri.webp" alt="Kimya Teknolojileri Bölümünde öğrencilerin ürettiği temizlik ve kişisel bakım ürünleri" width={1448} height={1086} sizes="(max-width: 900px) calc(100vw - 48px), (max-width: 1180px) 62vw, 730px" />
+              </figure>
+            ) : null}
             {showcase.groups.map((group, groupIndex) => {
               const Icon = groupIcons[groupIndex % groupIcons.length];
               const isProcess = group.title === "Üretim Süreci";
+              const placementClass = hasShowcaseMedia
+                ? groupIndex < 2
+                  ? " is-side"
+                  : groupIndex === 2
+                    ? " is-bottom is-bottom-start"
+                    : " is-bottom is-bottom-end"
+                : "";
               return (
-                <article className={`department-program-showcase-card${isProcess ? " is-process" : ""}`} key={`${block.id}-${group.title}`}>
+                <article className={`department-program-showcase-card${isProcess ? " is-process" : ""}${placementClass}`} key={`${block.id}-${group.title}`}>
                   <div className="department-program-showcase-card-heading">
                     <span><Icon size={21} aria-hidden="true" /></span>
                     <h3>{group.title}</h3>
@@ -335,6 +344,7 @@ export default async function DepartmentPage({ params }: DepartmentPageProps) {
           <div className="department-program-flow">
             {visibleContentBlocks.map((block, index) => <DepartmentContentBlockView block={block} isFirst={index === 0} headingImage={headingImages?.[block.id]} sectionImage={sectionImages?.[block.id]} accentLine={accentLineBlocks?.includes(block.id)} key={block.id} />)}
           </div>
+          {isChemistryDepartment ? <ChemistryProductCatalog /> : null}
           {isChemistryDepartment ? <ChemistryWorkshopGallery /> : null}
           {isElectricalDepartment ? <ElectricalWorkshopGallery /> : null}
           {isBiomedicalDepartment ? <BiomedicalWorkshopGallery /> : null}

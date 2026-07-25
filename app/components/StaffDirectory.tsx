@@ -20,6 +20,27 @@ function getAdministrativeRole(member: StaffMember) {
   );
 }
 
+function isDepartmentChief(member: StaffMember) {
+  return [member.additionalRole, member.role].some(
+    (role) => role?.toLocaleLowerCase("tr-TR").includes("alan şefi"),
+  );
+}
+
+function orderTeachingStaff(staffMembers: StaffMember[]) {
+  const membersByCategory = new Map<string, StaffMember[]>();
+
+  for (const member of staffMembers) {
+    const categoryMembers = membersByCategory.get(member.category) ?? [];
+    categoryMembers.push(member);
+    membersByCategory.set(member.category, categoryMembers);
+  }
+
+  return Array.from(membersByCategory.values()).flatMap((categoryMembers) => [
+    ...categoryMembers.filter(isDepartmentChief),
+    ...categoryMembers.filter((member) => !isDepartmentChief(member)),
+  ]);
+}
+
 function StaffCard({ member, nameHeadingLevel }: { member: StaffMember; nameHeadingLevel: 4 | 5 }) {
   const NameHeading = nameHeadingLevel === 5 ? "h5" : "h4";
 
@@ -53,7 +74,7 @@ export function StaffDirectory({ staffGroups, staffMembers }: { staffGroups: Sta
   const [query, setQuery] = useState("");
 
   const teachingStaff = useMemo(
-    () => staffMembers.filter((member) => member.category !== "İdari Kadro"),
+    () => orderTeachingStaff(staffMembers.filter((member) => member.category !== "İdari Kadro")),
     [staffMembers],
   );
   const administrativeGroups = useMemo(() => {

@@ -44,8 +44,30 @@
   color: #fff;
 }
 
-.inner-hero--compact {
-  min-height: clamp(360px, 45vw, 500px);
+.inner-hero--slim {
+  min-height: clamp(280px, 30vw, 320px);
+}
+
+.inner-hero--slim .inner-hero-content {
+  padding-block: 42px 34px;
+}
+
+.inner-hero--slim .breadcrumbs {
+  margin-bottom: 18px;
+}
+
+.inner-hero.inner-hero--slim h1 {
+  max-width: 960px;
+  font-size: clamp(2.2rem, 3.3vw, 3rem);
+  line-height: 1;
+  text-wrap: wrap;
+}
+
+.inner-hero.inner-hero--slim .inner-hero-content > p:last-child {
+  max-width: 850px;
+  margin-top: 16px;
+  font-size: clamp(0.88rem, 1.15vw, 1rem);
+  line-height: 1.55;
 }
 
 .inner-hero-media,
@@ -56,20 +78,20 @@
 
 .inner-hero--red .inner-hero-overlay {
   background:
-    linear-gradient(90deg, rgba(93, 8, 14, 0.97) 0%, rgba(149, 13, 20, 0.82) 42%, rgba(88, 8, 14, 0.22) 76%, rgba(88, 8, 14, 0.06) 100%),
-    linear-gradient(0deg, rgba(80, 7, 12, 0.58) 0%, transparent 54%);
+    linear-gradient(90deg, rgba(93, 8, 14, 0.91) 0%, rgba(149, 13, 20, 0.74) 36%, rgba(88, 8, 14, 0.16) 70%, rgba(88, 8, 14, 0.04) 100%),
+    linear-gradient(0deg, rgba(80, 7, 12, 0.5) 0%, transparent 54%);
 }
 
 .inner-hero--indigo .inner-hero-overlay {
   background:
-    linear-gradient(90deg, rgba(23, 20, 51, 0.98) 0%, rgba(45, 41, 88, 0.86) 42%, rgba(45, 41, 88, 0.26) 76%, rgba(23, 20, 51, 0.07) 100%),
-    linear-gradient(0deg, rgba(23, 20, 51, 0.58) 0%, transparent 54%);
+    linear-gradient(90deg, rgba(23, 20, 51, 0.92) 0%, rgba(45, 41, 88, 0.78) 36%, rgba(45, 41, 88, 0.18) 70%, rgba(23, 20, 51, 0.04) 100%),
+    linear-gradient(0deg, rgba(23, 20, 51, 0.5) 0%, transparent 54%);
 }
 
 .inner-hero--cyan .inner-hero-overlay {
   background:
-    linear-gradient(90deg, rgba(7, 57, 68, 0.97) 0%, rgba(11, 99, 114, 0.82) 42%, rgba(11, 99, 114, 0.22) 76%, rgba(7, 57, 68, 0.06) 100%),
-    linear-gradient(0deg, rgba(7, 57, 68, 0.58) 0%, transparent 54%);
+    linear-gradient(90deg, rgba(7, 57, 68, 0.91) 0%, rgba(11, 99, 114, 0.74) 36%, rgba(11, 99, 114, 0.16) 70%, rgba(7, 57, 68, 0.04) 100%),
+    linear-gradient(0deg, rgba(7, 57, 68, 0.5) 0%, transparent 54%);
 }
 
 .inner-hero-media {
@@ -85,8 +107,8 @@
 .inner-hero-overlay {
   z-index: -2;
   background:
-    linear-gradient(90deg, rgba(20, 18, 47, 0.97) 0%, rgba(26, 23, 57, 0.88) 42%, rgba(26, 23, 57, 0.28) 76%, rgba(26, 23, 57, 0.08) 100%),
-    linear-gradient(0deg, rgba(20, 18, 47, 0.55) 0%, transparent 54%);
+    linear-gradient(90deg, rgba(20, 18, 47, 0.91) 0%, rgba(26, 23, 57, 0.8) 36%, rgba(26, 23, 57, 0.2) 70%, rgba(26, 23, 57, 0.05) 100%),
+    linear-gradient(0deg, rgba(20, 18, 47, 0.48) 0%, transparent 54%);
 }
 
 .inner-hero::after {
@@ -700,19 +722,28 @@
 }
 
 .department-index-card-content small {
-  display: block;
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
   margin-bottom: 10px;
-  color: var(--department-card-accent, #ff7b7b);
+  padding: 6px 9px;
+  border: 0;
+  border-radius: 4px;
+  background: rgba(12, 10, 32, 0.76);
+  color: #fff;
   font-size: 0.73rem;
   font-weight: 800;
+  line-height: 1.25;
   letter-spacing: 0.08em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.72);
   text-transform: uppercase;
+  backdrop-filter: blur(10px);
 }
 
 .department-index-card-content h2 {
   margin: 0 0 14px;
   color: #fff;
-  font-size: clamp(1.55rem, 2.6vw, 2.25rem);
+  font-size: clamp(1.35rem, 2.1vw, 1.9rem);
   font-weight: 830;
   line-height: 1.07;
   letter-spacing: -0.045em;
@@ -884,7 +915,8 @@
   line-height: 1.85;
 }
 .department-program-showcase-media {
-  margin: 0 0 clamp(30px, 5vw, 48px);
+  grid-column: 1 / -1;
+  margin: 0;
   border-radius: 22px;
   overflow: hidden;
   box-shadow: 0 18px 50px rgba(33, 30, 68, 0.12);
@@ -898,6 +930,34 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
+}
+@media (min-width: 901px) {
+  .department-program-showcase-grid--with-media {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    align-items: stretch;
+  }
+  .department-program-showcase-grid--with-media .department-program-showcase-media {
+    grid-column: 1 / 5;
+    grid-row: 1 / span 2;
+    min-height: 100%;
+  }
+  .department-program-showcase-grid--with-media .department-program-showcase-media img {
+    height: 100%;
+    object-fit: cover;
+  }
+  .department-program-showcase-grid--with-media .department-program-showcase-card.is-side {
+    grid-column: 5 / 7;
+    padding: clamp(21px, 2.25vw, 28px);
+  }
+  .department-program-showcase-grid--with-media .department-program-showcase-card.is-bottom {
+    grid-row: 3;
+  }
+  .department-program-showcase-grid--with-media .department-program-showcase-card.is-bottom-start {
+    grid-column: 1 / 4;
+  }
+  .department-program-showcase-grid--with-media .department-program-showcase-card.is-bottom-end {
+    grid-column: 4 / 7;
+  }
 }
 .department-program-showcase-card {
   padding: clamp(24px, 3vw, 34px);
@@ -969,6 +1029,220 @@
 .department-highlight-card h2 { margin: 0; color: #fff; font-size: clamp(1.75rem, 3vw, 2.8rem); letter-spacing: -0.04em; }
 .department-highlight-card p:last-child { margin: 12px 0 0; color: rgba(255, 255, 255, 0.82); font-size: 1rem; line-height: 1.7; }
 
+.chemistry-product-catalog-section {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 4% 10%, rgba(0, 116, 164, 0.12), transparent 32%),
+    radial-gradient(circle at 96% 92%, rgba(12, 143, 111, 0.1), transparent 30%),
+    #f6f7fb;
+}
+.chemistry-product-catalog-section::before {
+  position: absolute;
+  top: -150px;
+  right: -170px;
+  width: 420px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(45, 41, 88, 0.06);
+  border-radius: 50%;
+  box-shadow: 0 0 0 72px rgba(45, 41, 88, 0.025), 0 0 0 144px rgba(45, 41, 88, 0.018);
+  content: "";
+  pointer-events: none;
+}
+.chemistry-product-catalog-layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(380px, 0.78fr);
+  align-items: center;
+  gap: clamp(54px, 8vw, 112px);
+}
+.chemistry-product-catalog-copy {
+  max-width: 580px;
+}
+.chemistry-product-catalog-copy h2 {
+  margin: 0;
+  color: var(--brand-navy-deep);
+  font-size: clamp(2.3rem, 4.5vw, 4.4rem);
+  font-weight: 880;
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+  text-wrap: balance;
+}
+.chemistry-product-catalog-copy > p:last-of-type {
+  margin: 25px 0 0;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.4vw, 1.1rem);
+  line-height: 1.85;
+}
+.chemistry-product-catalog-copy ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 30px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.chemistry-product-catalog-copy li {
+  padding: 9px 12px;
+  border: 1px solid rgba(45, 41, 88, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--brand-navy-deep);
+  font-size: 0.77rem;
+  font-weight: 760;
+  box-shadow: 0 8px 24px rgba(33, 30, 68, 0.05);
+}
+.chemistry-product-catalog-figure {
+  width: min(100%, 560px);
+  margin: 0;
+  justify-self: end;
+  padding: clamp(9px, 1.2vw, 14px);
+  border: 1px solid rgba(45, 41, 88, 0.1);
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: 0 30px 80px rgba(33, 30, 68, 0.18);
+}
+.chemistry-product-catalog-link {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 19px;
+  background: #eef1f7;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: zoom-in;
+}
+.chemistry-product-catalog-link:focus-visible {
+  outline: 3px solid var(--brand-red);
+  outline-offset: 4px;
+}
+.chemistry-product-catalog-link img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.35s ease;
+}
+.chemistry-product-catalog-link:hover img {
+  transform: scale(1.012);
+}
+.chemistry-product-catalog-link > span {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(10, 15, 40, 0.86);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  backdrop-filter: blur(10px);
+}
+.chemistry-product-catalog-figure figcaption {
+  padding: 13px 8px 2px;
+  color: var(--muted);
+  font-size: 0.73rem;
+  font-weight: 650;
+  line-height: 1.5;
+  text-align: center;
+}
+.chemistry-catalog-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  padding: clamp(8px, 2vw, 24px);
+  place-items: center;
+  background: rgba(7, 9, 27, 0.88);
+  backdrop-filter: blur(12px);
+  animation: chemistry-catalog-backdrop-in 0.22s ease-out both;
+}
+.chemistry-catalog-lightbox-dialog {
+  display: flex;
+  width: min(1120px, 100%);
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 26px;
+  background: #fff;
+  box-shadow: 0 38px 110px rgba(0, 0, 0, 0.5);
+  flex-direction: column;
+  animation: chemistry-catalog-dialog-in 0.3s cubic-bezier(0.2, 0.82, 0.24, 1) both;
+}
+.chemistry-catalog-lightbox-header {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 17px 18px 17px 24px;
+  border-bottom: 1px solid rgba(45, 41, 88, 0.1);
+  background: #fff;
+}
+.chemistry-catalog-lightbox-header h2 {
+  margin: 0;
+  color: var(--brand-navy-deep);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 850;
+  letter-spacing: -0.025em;
+}
+.chemistry-catalog-lightbox-header button {
+  display: grid;
+  flex: 0 0 44px;
+  aspect-ratio: 1;
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgba(45, 41, 88, 0.12);
+  border-radius: 50%;
+  background: #f3f4f8;
+  color: var(--brand-navy-deep);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.chemistry-catalog-lightbox-header button:hover,
+.chemistry-catalog-lightbox-header button:focus-visible {
+  border-color: rgba(255, 0, 0, 0.38);
+  background: rgba(255, 0, 0, 0.08);
+  color: var(--brand-red);
+  outline: none;
+  transform: rotate(4deg);
+}
+.chemistry-catalog-lightbox-stage {
+  min-height: 0;
+  padding: clamp(10px, 2vw, 22px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  background:
+    radial-gradient(circle at 12% 10%, rgba(36, 184, 135, 0.09), transparent 32%),
+    #e9ebf2;
+  scrollbar-color: rgba(45, 41, 88, 0.48) rgba(45, 41, 88, 0.08);
+}
+.chemistry-catalog-lightbox-stage img {
+  display: block;
+  width: min(100%, 1024px);
+  height: auto;
+  margin: 0 auto;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(33, 30, 68, 0.18);
+}
+@keyframes chemistry-catalog-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes chemistry-catalog-dialog-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.965); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .biomedical-workshop-section {
   position: relative;
   padding: clamp(82px, 9vw, 124px) 0;
@@ -1036,6 +1310,55 @@
 .activity-gallery-section--social .biomedical-workshop-gallery:focus-visible .biomedical-workshop-stage {
   box-shadow: 0 0 0 3px var(--brand-navy-deep), 0 0 0 7px var(--brand-red), 0 34px 90px rgba(0, 0, 0, .22);
 }
+.activity-gallery-section--social .biomedical-workshop-albums {
+  border-color: rgba(45, 41, 88, .13);
+  background: #f7f7fb;
+  box-shadow: 0 20px 55px rgba(33, 30, 68, .1);
+}
+.activity-gallery-section--social .biomedical-workshop-albums-heading {
+  border-bottom-color: rgba(45, 41, 88, .11);
+}
+.activity-gallery-section--social .biomedical-workshop-albums-heading strong,
+.activity-gallery-section--social .biomedical-workshop-album-copy strong {
+  color: var(--brand-navy-deep);
+}
+.activity-gallery-section--social .biomedical-workshop-albums-heading span,
+.activity-gallery-section--social .biomedical-workshop-album-copy small {
+  color: var(--muted);
+}
+.activity-gallery-section--social .biomedical-workshop-album-list {
+  scrollbar-color: rgba(45, 41, 88, .24) transparent;
+}
+.activity-gallery-section--social .biomedical-workshop-thumbnails {
+  scrollbar-color: rgba(45, 41, 88, .58) rgba(45, 41, 88, .08);
+}
+.activity-gallery-section--social .biomedical-workshop-thumbnails::-webkit-scrollbar {
+  height: 8px;
+}
+.activity-gallery-section--social .biomedical-workshop-thumbnails::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: rgba(45, 41, 88, .08);
+}
+.activity-gallery-section--social .biomedical-workshop-thumbnails::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(45, 41, 88, .58);
+}
+.activity-gallery-section--social .biomedical-workshop-thumbnails::-webkit-scrollbar-thumb:hover {
+  background: rgba(45, 41, 88, .78);
+}
+.activity-gallery-section--social .biomedical-workshop-album-list button {
+  border-color: rgba(45, 41, 88, .11);
+  background: #fff;
+}
+.activity-gallery-section--social .biomedical-workshop-album-list button:hover,
+.activity-gallery-section--social .biomedical-workshop-album-list button:focus-visible {
+  border-color: rgba(45, 41, 88, .28);
+  background: #f1f1f8;
+}
+.activity-gallery-section--social .biomedical-workshop-album-list button.is-active {
+  border-color: rgba(255, 0, 0, .58);
+  background: rgba(255, 0, 0, .055);
+}
 .activity-gallery-section--social .biomedical-workshop-thumbnails button {
   border-color: rgba(45, 41, 88, .13);
   background: #fff;
@@ -1051,6 +1374,11 @@
   border-color: rgba(255, 0, 0, .58);
   background: rgba(255, 0, 0, .045);
   color: var(--brand-navy-deep);
+}
+@media (min-width: 901px) {
+  .activity-gallery-section--social .biomedical-workshop-thumbnails {
+    grid-auto-columns: clamp(220px, 22vw, 260px);
+  }
 }
 .activity-gallery-section--cultural {
   background:
@@ -1109,9 +1437,18 @@
 .biomedical-workshop-gallery:focus-visible .biomedical-workshop-stage {
   box-shadow: 0 0 0 3px #fff, 0 0 0 7px var(--brand-red), 0 34px 90px rgba(0, 0, 0, .4);
 }
+.biomedical-workshop-player {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(230px, 22vw, 286px);
+  align-items: stretch;
+  gap: 18px;
+}
+.biomedical-workshop-player--single-album {
+  grid-template-columns: minmax(0, 1fr);
+}
 .biomedical-workshop-stage {
   position: relative;
-  height: clamp(440px, 57vw, 680px);
+  height: clamp(440px, 48vw, 650px);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, .12);
   border-radius: clamp(24px, 3vw, 36px);
@@ -1169,6 +1506,13 @@
   outline: none;
   transform: translateY(-2px);
 }
+.biomedical-workshop-controls button:disabled {
+  border-color: rgba(255, 255, 255, .12);
+  background: rgba(8, 7, 25, .34);
+  color: rgba(255, 255, 255, .38);
+  cursor: not-allowed;
+  transform: none;
+}
 .biomedical-workshop-caption {
   position: absolute;
   z-index: 3;
@@ -1218,6 +1562,104 @@
 }
 .biomedical-workshop-progress span.is-running {
   animation: biomedical-gallery-progress 5.5s linear forwards;
+}
+.biomedical-workshop-albums {
+  display: flex;
+  min-width: 0;
+  height: clamp(440px, 48vw, 650px);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .11);
+  border-radius: clamp(20px, 2vw, 28px);
+  background: rgba(255, 255, 255, .045);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, .24);
+  flex-direction: column;
+}
+.biomedical-workshop-albums-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 19px 18px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, .09);
+}
+.biomedical-workshop-albums-heading strong {
+  color: #fff;
+  font-size: .9rem;
+  font-weight: 830;
+  letter-spacing: -.01em;
+}
+.biomedical-workshop-albums-heading span {
+  color: rgba(255, 255, 255, .5);
+  font-size: .68rem;
+  font-weight: 760;
+  white-space: nowrap;
+}
+.biomedical-workshop-album-list {
+  display: grid;
+  min-height: 0;
+  gap: 9px;
+  padding: 11px;
+  overflow-y: auto;
+  overscroll-behavior-block: contain;
+  scrollbar-color: rgba(255, 255, 255, .24) transparent;
+  scrollbar-width: thin;
+}
+.biomedical-workshop-album-list button {
+  display: grid;
+  grid-template-columns: minmax(82px, 42%) minmax(0, 1fr);
+  align-items: center;
+  min-width: 0;
+  gap: 11px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .025);
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .2s ease, background-color .2s ease, transform .2s ease;
+}
+.biomedical-workshop-album-list button:hover,
+.biomedical-workshop-album-list button:focus-visible {
+  border-color: rgba(255, 255, 255, .28);
+  background: rgba(255, 255, 255, .085);
+  outline: none;
+  transform: translateY(-1px);
+}
+.biomedical-workshop-album-list button.is-active {
+  border-color: rgba(255, 77, 77, .8);
+  background: rgba(255, 0, 0, .1);
+}
+.biomedical-workshop-album-cover {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 9px;
+  background: #17152e;
+}
+.biomedical-workshop-album-cover img {
+  object-fit: cover;
+}
+.biomedical-workshop-album-copy {
+  display: grid;
+  min-width: 0;
+  gap: 7px;
+}
+.biomedical-workshop-album-copy strong {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 790;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+.biomedical-workshop-album-copy small {
+  color: rgba(255, 255, 255, .5);
+  font-size: .63rem;
+  font-weight: 720;
 }
 .biomedical-workshop-thumbnails {
   display: grid;
@@ -1290,6 +1732,25 @@
 @media (max-width: 900px) {
   .biomedical-workshop-heading { grid-template-columns: 1fr; align-items: start; }
   .biomedical-workshop-heading > p { max-width: 680px; }
+  .biomedical-workshop-player { grid-template-columns: 1fr; }
+  .biomedical-workshop-stage { height: clamp(440px, 68vw, 610px); }
+  .biomedical-workshop-albums {
+    height: auto;
+    min-height: 0;
+  }
+  .biomedical-workshop-album-list {
+    grid-template-columns: none;
+    grid-auto-columns: minmax(220px, 34vw);
+    grid-auto-flow: column;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline proximity;
+  }
+  .biomedical-workshop-album-list button {
+    grid-template-columns: 88px minmax(0, 1fr);
+    scroll-snap-align: start;
+  }
   .biomedical-workshop-thumbnails {
     grid-auto-columns: minmax(158px, 31vw);
   }
@@ -1302,12 +1763,14 @@
   .biomedical-workshop-caption { right: 22px; bottom: 30px; left: 22px; }
   .biomedical-workshop-caption h3 { font-size: clamp(1.8rem, 8vw, 2.5rem); }
   .biomedical-workshop-caption p { font-size: .86rem; line-height: 1.55; }
+  .biomedical-workshop-album-list { grid-auto-columns: minmax(210px, 76vw); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .biomedical-workshop-image,
   .biomedical-workshop-progress span.is-running { animation: none; }
   .biomedical-workshop-controls button,
+  .biomedical-workshop-album-list button,
   .biomedical-workshop-thumbnails button { transition: none; }
 }
 
@@ -2604,6 +3067,9 @@
 @media (max-width: 900px) {
   .department-text-block { grid-template-columns: 1fr; gap: 28px; }
   .department-program-showcase-grid { grid-template-columns: 1fr; }
+  .chemistry-product-catalog-layout { grid-template-columns: 1fr; gap: 44px; }
+  .chemistry-product-catalog-copy { max-width: 680px; }
+  .chemistry-product-catalog-figure { width: min(100%, 620px); justify-self: center; }
   .department-branch-grid { grid-template-columns: 1fr; }
   .department-branch-grid--four { grid-template-columns: 1fr; }
   .department-branch-card { min-height: 0; border-right: 0; border-bottom: 1px solid rgba(45, 41, 88, 0.1); }
@@ -2677,8 +3143,40 @@
     min-height: 440px;
   }
 
+  .inner-hero--slim {
+    min-height: 340px;
+  }
+
+  .inner-hero--slim .inner-hero-content {
+    padding-block: 32px 28px;
+  }
+
+  .inner-hero--slim .breadcrumbs {
+    margin-bottom: 12px;
+  }
+
+  .inner-hero--slim .inner-eyebrow {
+    margin-bottom: 10px;
+    font-size: 0.65rem;
+  }
+
+  .inner-hero.inner-hero--slim h1 {
+    font-size: clamp(1.75rem, 7.2vw, 2.25rem);
+    line-height: 1.02;
+  }
+
+  .inner-hero.inner-hero--slim .inner-hero-content > p:last-child {
+    display: -webkit-box;
+    margin-top: 10px;
+    overflow: hidden;
+    font-size: 0.78rem;
+    line-height: 1.42;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
   .inner-hero-overlay {
-    background: linear-gradient(90deg, rgba(20, 18, 47, 0.96), rgba(20, 18, 47, 0.63));
+    background: linear-gradient(90deg, rgba(20, 18, 47, 0.9), rgba(20, 18, 47, 0.55));
   }
 
   .inner-hero-content {
@@ -2856,6 +3354,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .chemistry-catalog-lightbox,
+  .chemistry-catalog-lightbox-dialog { animation: none; }
+  .chemistry-product-catalog-link img,
+  .chemistry-catalog-lightbox-header button,
   .department-index-card,
   .department-index-card img,
   .gallery-card img {
