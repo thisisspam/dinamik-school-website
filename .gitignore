@@ -57,3 +57,6 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# local build artifact for cPanel upload
+next-build.zip
