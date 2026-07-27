@@ -70,6 +70,7 @@ export default async function TumGorsellerPage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 14 }}>
             {files.map((p) => (
               <a key={p} href={`/${p}`} target="_blank" rel="noreferrer" style={{ display: "block", textDecoration: "none", color: "#333" }}>
+                {/* eslint-disable-next-line @next/next/no-img-element -- internal asset inventory supports arbitrary source dimensions */}
                 <img
                   src={`/${p}`}
                   alt={p}

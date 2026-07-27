@@ -5,6 +5,8 @@ import { ArrowRight, BookOpenCheck, GraduationCap, Shirt, Users } from "lucide-r
 import { InnerPageShell } from "../components/SiteChrome";
 import { PageHero } from "../components/PageHero";
 import { SchoolVideoGallery } from "../components/SchoolVideoGallery";
+import { getContentPage } from "@/lib/cms/content";
+import { parseContentRows, safeContentHref } from "@/lib/cms/helpers";
 
 export const metadata: Metadata = {
   title: "Okulumuz",
@@ -13,57 +15,38 @@ export const metadata: Metadata = {
   alternates: { canonical: "/okulumuz" },
 };
 
-const schoolPages = [
-  {
-    icon: BookOpenCheck,
-    title: "Hakkımızda",
-    text: "Eğitim yaklaşımımızı, vizyonumuzu, misyonumuzu ve kalite anlayışımızı keşfedin.",
-    href: "/hakkimizda",
-  },
-  {
-    icon: Users,
-    title: "Kadromuz",
-    text: "Öğrencilerin akademik, mesleki ve kişisel gelişimine eşlik eden eğitim ekibimizi tanıyın.",
-    href: "/kadromuz",
-  },
-  {
-    icon: GraduationCap,
-    title: "Rehberlik",
-    text: "Kariyer planlama, sınav süreci ve öğrenci gelişimini destekleyen rehberlik çalışmalarını inceleyin.",
-    href: "/rehberlik",
-  },
-  {
-    icon: Shirt,
-    title: "Okul Kıyafetlerimiz",
-    text: "Okul kültürünü yansıtan güncel kıyafet düzeni ve kullanım bilgilerine ulaşın.",
-    href: "/okul-kiyafetlerimiz",
-  },
-];
-
-export default function SchoolPage() {
+export default async function SchoolPage() {
+  const page = await getContentPage("school");
+  const content = page.content;
+  const icons = [BookOpenCheck, Users, GraduationCap, Shirt];
+  const schoolPages = parseContentRows(content.hubCards, 3).map(([title, text, href], index) => ({
+    title,
+    text,
+    href: safeContentHref(href, "/"),
+    icon: icons[index % icons.length],
+  }));
   return (
-    <InnerPageShell>
+    <InnerPageShell theme={page.theme}>
       <PageHero
-        eyebrow="Dinamik okul kültürü"
-        title="Öğrenmenin, üretmenin ve birlikte gelişmenin güçlü kampüsü."
-        description="Modern eğitim ortamlarını, uygulamalı mesleki eğitimi ve öğrenciyi merkeze alan okul yaşamını tek bir bütün olarak sunuyoruz."
-        image="/images/about-school-campus.png"
-        imageAlt="Dinamik Mesleki ve Teknik Anadolu Lisesi kampüsü ve öğrencileri"
+        eyebrow={content.heroEyebrow}
+        title={content.heroTitle}
+        description={content.heroDescription}
+        image={content.heroImage}
+        imageAlt={content.heroImageAlt}
         current="Okulumuz"
       />
 
-      <SchoolVideoGallery />
+      <SchoolVideoGallery content={content} />
 
       <section className="inner-section inner-section--soft" aria-labelledby="school-pages-title">
         <div className="container">
           <div className="inner-section-header">
             <div>
-              <p className="inner-eyebrow">Okulumuzu keşfedin</p>
-              <h2 id="school-pages-title">Dinamik&apos;te okul yaşamının her yönüne ulaşın.</h2>
+              <p className="inner-eyebrow">{content.hubEyebrow}</p>
+              <h2 id="school-pages-title">{content.hubTitle}</h2>
             </div>
             <p>
-              Kurumsal yaklaşımımızdan öğrenci rehberliğine kadar okul hakkında aradığınız
-              her başlık, ayrıntılı ve bağımsız bir sayfada sunulur.
+              {content.hubDescription}
             </p>
           </div>
           <div className="school-hub-grid">
@@ -86,7 +69,7 @@ export default function SchoolPage() {
           <div className="editorial-visual">
             <div className="image-frame">
               <Image
-                src="/images/departments/chemistry/workshops/ogrenciler-analiz-uygulamasi.jpeg"
+                src={content.modelImage}
                 alt="Dinamik öğrencileri Kimya laboratuvarında analiz uygulaması yaparken"
                 fill
                 sizes="(max-width: 900px) calc(100vw - 48px), 46vw"
@@ -95,12 +78,9 @@ export default function SchoolPage() {
             <span className="image-frame-accent" aria-hidden="true" />
           </div>
           <div className="editorial-copy">
-            <p className="inner-eyebrow">Eğitim modelimiz</p>
-            <h2 id="school-model-title">Teoriyi, uygulamayı ve kariyer hedefini aynı yolculukta buluşturuyoruz.</h2>
-            <p>
-              Üç aktif mesleki alanda güvenli çalışma kültürü, güncel teknik altyapı ve
-              uygulamalı öğrenme yaklaşımıyla öğrencilerimizin yetkinliklerini geliştiriyoruz.
-            </p>
+            <p className="inner-eyebrow">{content.modelEyebrow}</p>
+            <h2 id="school-model-title">{content.modelTitle}</h2>
+            <p>{content.modelDescription}</p>
             <div className="cta-panel-actions">
               <Link className="button button--primary" href="/bolumler">
                 Bölümleri incele <ArrowRight size={16} aria-hidden="true" />
@@ -116,12 +96,12 @@ export default function SchoolPage() {
       <section className="inner-section inner-section--soft">
         <div className="container cta-panel">
           <div>
-            <h2>Okulumuzu yerinde tanıyın.</h2>
-            <p>Atölyeleri, laboratuvarları ve kampüs ortamını görmek için ziyaret planlayın.</p>
+            <h2>{content.ctaTitle}</h2>
+            <p>{content.ctaDescription}</p>
           </div>
           <div className="cta-panel-actions">
-            <Link className="button button--primary" href="/on-kayit">
-              Ziyaret talebi oluştur <ArrowRight size={16} aria-hidden="true" />
+            <Link className="button button--primary" href={safeContentHref(content.ctaHref, "/on-kayit")}>
+              {content.ctaLabel} <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </div>
         </div>

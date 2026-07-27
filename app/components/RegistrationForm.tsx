@@ -7,11 +7,19 @@ import Link from "next/link";
 import { createRegistrationApplicationAction } from "@/lib/actions/registration-applications";
 import { PRIVACY_NOTICE_VERSION } from "@/lib/privacy";
 import { createWhatsappHref } from "@/lib/whatsapp";
+import { parseContentList } from "@/lib/cms/helpers";
 
-export function RegistrationForm({ whatsappNumber }: { whatsappNumber: string }) {
+export function RegistrationForm({
+  whatsappNumber,
+  content,
+}: {
+  whatsappNumber: string;
+  content: Record<string, string>;
+}) {
   const pathname = usePathname();
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [statusMessage, setStatusMessage] = useState("");
+  const departmentOptions = parseContentList(content.departmentOptions);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -70,18 +78,18 @@ export function RegistrationForm({ whatsappNumber }: { whatsappNumber: string })
     <form className="registration-form" onSubmit={handleSubmit} noValidate>
       <div className="form-row form-row--two">
         <label>
-          <span>Öğrencinin adı soyadı</span>
+          <span>{content.studentLabel}</span>
           <input name="studentName" autoComplete="name" required maxLength={80} />
         </label>
         <label>
-          <span>Velinin adı soyadı</span>
+          <span>{content.parentLabel}</span>
           <input name="parentName" autoComplete="name" required maxLength={80} />
         </label>
       </div>
 
       <div className="form-row form-row--two">
         <label>
-          <span>Mevcut sınıf</span>
+          <span>{content.gradeLabel}</span>
           <select name="grade" required defaultValue="">
             <option value="" disabled>Seçiniz</option>
             <option>8. Sınıf</option>
@@ -91,7 +99,7 @@ export function RegistrationForm({ whatsappNumber }: { whatsappNumber: string })
           </select>
         </label>
         <label>
-          <span>Telefon</span>
+          <span>{content.phoneLabel}</span>
           <input
             name="phone"
             type="tel"
@@ -107,12 +115,9 @@ export function RegistrationForm({ whatsappNumber }: { whatsappNumber: string })
       </div>
 
       <label>
-        <span>İlgilenilen alan</span>
-        <select name="department" defaultValue="Kararsızım">
-          <option>Kararsızım</option>
-          <option>Kimya Teknolojileri</option>
-          <option>Elektrik-Elektronik Teknolojileri</option>
-          <option>Biyomedikal Cihaz Teknolojileri</option>
+        <span>{content.departmentLabel}</span>
+        <select name="department" defaultValue={departmentOptions[0] ?? "Kararsızım"}>
+          {departmentOptions.map((option) => <option key={option}>{option}</option>)}
         </select>
       </label>
 
@@ -124,8 +129,8 @@ export function RegistrationForm({ whatsappNumber }: { whatsappNumber: string })
       <input name="privacyNoticeVersion" type="hidden" value={PRIVACY_NOTICE_VERSION} />
 
       <div className="privacy-consent-panel">
-        <strong>Gizlilik tercihleri</strong>
-        <p>Bilgilerinizi yalnızca başvurunuzu yanıtlamak ve kayıt sürecini yürütmek için kullanırız.</p>
+        <strong>{content.privacyTitle}</strong>
+        <p>{content.privacyDescription}</p>
       </div>
 
       <label className="consent-field">
@@ -150,7 +155,7 @@ export function RegistrationForm({ whatsappNumber }: { whatsappNumber: string })
           Gizlilik tercihiniz ve aydınlatma metni sürümü başvuruyla birlikte kaydedilir.
         </p>
         <button className="button button--primary" type="submit" disabled={status === "submitting"}>
-          {status === "submitting" ? "Başvuru kaydediliyor..." : "Başvuruyu Gönder"}
+          {status === "submitting" ? "Başvuru kaydediliyor..." : content.submitLabel}
           <ArrowRight size={17} aria-hidden="true" />
         </button>
       </div>

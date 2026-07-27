@@ -4,21 +4,15 @@ import { InnerPageShell } from "../components/SiteChrome";
 import { PageHero } from "../components/PageHero";
 import { AnimatedPhotoGallery } from "../components/AnimatedPhotoGallery";
 import { createAlbumPhotos, type AnimatedGalleryPhoto } from "../data/animated-gallery";
+import { getContentPage } from "@/lib/cms/content";
+import { parseContentRows } from "@/lib/cms/helpers";
+import { getActivityCollectionPhotos } from "@/lib/cms/activity-albums";
 
 export const metadata: Metadata = {
   title: "Faaliyetlerimiz",
   description: "Dinamik Samsun'da sosyal, kültürel, bilimsel ve sportif öğrenci çalışmaları.",
   alternates: { canonical: "/faaliyetlerimiz" },
 };
-
-const activities = [
-  { icon: FlaskConical, title: "Bilim ve teknoloji", text: "Atölye üretimleri, laboratuvar uygulamaları, proje günleri ve teknik geziler." },
-  { icon: Drama, title: "Kültür ve sahne", text: "Törenler, tiyatro, söyleşi, şiir ve öğrencilerin kendini ifade ettiği sahne çalışmaları." },
-  { icon: Dumbbell, title: "Spor ve takım ruhu", text: "Turnuvalar, hareketli yaşam etkinlikleri ve birlikte hedefe ilerleme kültürü." },
-  { icon: Palette, title: "Sanat ve tasarım", text: "Görsel üretim, sergi, müzik ve öğrencilerin özgün fikirlerini görünür kılan çalışmalar." },
-  { icon: Users, title: "Sosyal sorumluluk", text: "Topluma duyarlılık, paylaşma, gönüllülük ve dayanışmayı büyüten okul projeleri." },
-  { icon: Music, title: "Kampüs yaşamı", text: "Öğrencilerin bir araya geldiği kutlamalar, kulüp günleri ve sosyal buluşmalar." },
-];
 
 const socialActivityPhotos = createAlbumPhotos("/images/activities/social", [
   {
@@ -213,44 +207,53 @@ const sportingActivityPhotos: AnimatedGalleryPhoto[] = [
   },
 ];
 
-export default function ActivitiesPage() {
+export default async function ActivitiesPage() {
+  const [page, managedSportingPhotos, managedSocialPhotos, managedCulturalPhotos] = await Promise.all([
+    getContentPage("activities"),
+    getActivityCollectionPhotos("activities-sport", sportingActivityPhotos),
+    getActivityCollectionPhotos("activities-social", socialActivityPhotos),
+    getActivityCollectionPhotos("activities-cultural", culturalActivityPhotos),
+  ]);
+  const content = page.content;
+  const icons = [FlaskConical, Drama, Dumbbell, Palette, Users, Music];
+  const activities = parseContentRows(content.areas, 2).map(([title, text], index) => ({ title, text, icon: icons[index % icons.length] }));
   return (
-    <InnerPageShell>
-      <PageHero eyebrow="Sınıfın ötesinde öğrenme" title="Merakın, yeteneğin ve takım ruhunun kampüste hayat bulduğu anlar." description="Eğitim; bilim, sanat, spor, kültür ve sosyal sorumlulukla zenginleştiğinde kalıcı bir deneyime dönüşür." image="/images/activities/cultural/ankara-gezisi/ankara-gezisi-01.webp" current="Faaliyetlerimiz" />
+    <InnerPageShell theme={page.theme}>
+      <PageHero eyebrow={content.heroEyebrow} title={content.heroTitle} description={content.heroDescription} image={content.heroImage} imageAlt={content.heroImageAlt} current="Faaliyetlerimiz" />
       <section className="inner-section inner-section--soft" aria-labelledby="activity-title">
         <div className="container">
-          <div className="inner-section-header"><div><p className="inner-eyebrow">Dinamik&apos;te yaşam</p><h2 id="activity-title">Her öğrenci için kendini gösterecek yeni bir alan.</h2></div><p>Faaliyetler; öğrencinin iletişim, sorumluluk, yaratıcılık ve ekip çalışması becerilerini günlük okul yaşamının doğal bir parçası hâline getirir.</p></div>
+          <div className="inner-section-header"><div><p className="inner-eyebrow">{content.introEyebrow}</p><h2 id="activity-title">{content.introTitle}</h2></div><p>{content.introDescription}</p></div>
           <div className="support-grid">{activities.map(({ icon: Icon, title, text }) => <article className="support-card" key={title}><span><Icon size={23} /></span><h3>{title}</h3><p>{text}</p></article>)}</div>
         </div>
       </section>
       <AnimatedPhotoGallery
         sectionId="sportif-faaliyetler"
-        eyebrow="Sportif faaliyetler"
-        title="Emek, disiplin ve takım ruhuyla gelen başarı."
-        description="Judo ve futsal çalışmalarımızda öğrencilerimiz; teknik becerilerini geliştirirken dayanıklılık, öz güven ve birlikte mücadele etme kültürü kazanır."
+        eyebrow={content.sportEyebrow}
+        title={content.sportTitle}
+        description={content.sportDescription}
         galleryLabel="Sportif faaliyetler"
         thumbnailLabel="Sportif faaliyet fotoğrafları"
-        photos={sportingActivityPhotos}
+        photos={managedSportingPhotos}
         className="activity-gallery-section activity-gallery-section--sporting"
       />
       <AnimatedPhotoGallery
         sectionId="sosyal-faaliyetler"
-        eyebrow="Sosyal faaliyetler"
-        title="Arkadaşlık, paylaşım ve dayanışma okul yaşamının her anında."
-        description="Gezi, buluşma ve ortak etkinlikler; öğrencilerimizin iletişim kurduğu, sorumluluk aldığı ve birlikte güzel anılar biriktirdiği sosyal alanlar oluşturur."
+        eyebrow={content.socialEyebrow}
+        title={content.socialTitle}
+        description={content.socialDescription}
         galleryLabel="Sosyal faaliyetler"
         thumbnailLabel="Sosyal faaliyet fotoğrafları"
-        photos={socialActivityPhotos}
+        photos={managedSocialPhotos}
         className="activity-gallery-section activity-gallery-section--social"
       />
       <AnimatedPhotoGallery
         sectionId="kulturel-faaliyetler"
-        eyebrow="Kültürel faaliyetler"
-        title="Merak, sanat ve kültürle beslenen yeni keşifler."
-        description="Fuarlar, geziler ve kültürel buluşmalar; öğrencilerimizin dünyaya farklı açılardan bakmasına ve yeni ilgi alanları geliştirmesine katkı sağlar."
+        eyebrow={content.culturalEyebrow}
+        title={content.culturalTitle}
+        description={content.culturalDescription}
         galleryLabel="Kültürel faaliyetler"
         thumbnailLabel="Kültürel faaliyet fotoğrafları"
-        photos={culturalActivityPhotos}
+        photos={managedCulturalPhotos}
         className="activity-gallery-section activity-gallery-section--cultural"
       />
     </InnerPageShell>

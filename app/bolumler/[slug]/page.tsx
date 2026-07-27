@@ -9,7 +9,9 @@ import { BiomedicalWorkshopGallery } from "../../components/BiomedicalWorkshopGa
 import { ChemistryProductCatalog } from "../../components/ChemistryProductCatalog";
 import { ChemistryWorkshopGallery } from "../../components/ChemistryWorkshopGallery";
 import { ElectricalWorkshopGallery } from "../../components/ElectricalWorkshopGallery";
+import { AnimatedPhotoGallery } from "../../components/AnimatedPhotoGallery";
 import { getDepartment, getDepartments } from "../../data/departments";
+import { getDepartmentActivityPhotos } from "@/lib/cms/activity-albums";
 import { parseProgramShowcaseContent, type DepartmentContentBlock } from "@/lib/department-blocks";
 import { linesToList, linesToPairs, linesToTitledPairs } from "@/lib/textformat";
 
@@ -322,6 +324,7 @@ export default async function DepartmentPage({ params }: DepartmentPageProps) {
   const { slug } = await params;
   const department = await getDepartment(slug);
   if (!department) notFound();
+  const departmentActivityPhotos = await getDepartmentActivityPhotos(slug);
   const hasDetailedProgramContent = department.contentBlocks.some((block) => block.type === "branch-list");
   const heroIntroBlock = department.contentBlocks[0]?.id === "field-purpose" && department.contentBlocks[0].type === "text"
     ? department.contentBlocks[0]
@@ -379,6 +382,18 @@ export default async function DepartmentPage({ params }: DepartmentPageProps) {
           </section>
         </>
       )}
+      {departmentActivityPhotos.length > 0 ? (
+        <AnimatedPhotoGallery
+          sectionId={`${department.slug}-faaliyetleri`}
+          eyebrow="Bölüm Faaliyetleri"
+          title={`${department.shortTitle} öğrencilerinin çalışmaları`}
+          description="Atölye, laboratuvar, proje ve teknik gezi çalışmalarından güncel kareleri keşfedin."
+          galleryLabel={`${department.shortTitle} bölüm faaliyetleri`}
+          thumbnailLabel={`${department.shortTitle} faaliyet fotoğrafları`}
+          photos={departmentActivityPhotos}
+          className="activity-gallery-section department-activity-gallery-section"
+        />
+      ) : null}
     </InnerPageShell>
   );
 }

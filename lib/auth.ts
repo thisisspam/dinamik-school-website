@@ -11,6 +11,15 @@ const DEV_USERNAME = "admin";
 const DEV_PASSWORD_HASH = "19de6c1f870c9c30830c06fcb2472b7a0db70eb64122487676f983cd7123ed64";
 const DEV_SESSION_SECRET = "dinamik-local-dev-secret-do-not-use-in-production";
 
+function runtimeSecret(name: "ADMIN_USERNAME" | "ADMIN_PASSWORD_HASH" | "SESSION_SECRET", developmentFallback: string): string {
+  const configured = process.env[name];
+  if (configured) return configured;
+  if (process.env.NODE_ENV === "production") {
+    throw new Error(`${name} üretim ortamında zorunludur. Bilinen geliştirme kimlik bilgileri üretimde kullanılamaz.`);
+  }
+  return developmentFallback;
+}
+
 async function sha256Hex(input: string): Promise<string> {
   const data = new TextEncoder().encode(input);
   const digest = await crypto.subtle.digest("SHA-256", data);
@@ -39,8 +48,8 @@ async function hmac(secret: string, message: string): Promise<string> {
 }
 
 export async function verifyCredentials(username: string, password: string): Promise<boolean> {
-  const expectedUsername = process.env.ADMIN_USERNAME ?? DEV_USERNAME;
-  const expectedHash = process.env.ADMIN_PASSWORD_HASH ?? DEV_PASSWORD_HASH;
+  const expectedUsername = runtimeSecret("ADMIN_USERNAME", DEV_USERNAME);
+  const expectedHash = runtimeSecret("ADMIN_PASSWORD_HASH", DEV_PASSWORD_HASH);
   if (!timingSafeEqual(username, expectedUsername)) return false;
   const candidateHash = await sha256Hex(password);
   return timingSafeEqual(candidateHash, expectedHash);
@@ -51,7 +60,7 @@ export async function verifySessionValue(value: string | undefined): Promise<boo
   if (!value) return false;
   const [payload, signature] = value.split(".");
   if (!payload || !signature) return false;
-  const secret = process.env.SESSION_SECRET ?? DEV_SESSION_SECRET;
+  const secret = runtimeSecret("SESSION_SECRET", DEV_SESSION_SECRET);
   const expectedSignature = await hmac(secret, payload);
   if (!timingSafeEqual(signature, expectedSignature)) return false;
   try {
@@ -64,7 +73,7 @@ export async function verifySessionValue(value: string | undefined): Promise<boo
 
 /** Call from a Server Action after successful login. */
 export async function createSession(): Promise<void> {
-  const secret = process.env.SESSION_SECRET ?? DEV_SESSION_SECRET;
+  const secret = runtimeSecret("SESSION_SECRET", DEV_SESSION_SECRET);
   const expiresAt = Date.now() + SESSION_TTL_SECONDS * 1000;
   const payload = btoa(JSON.stringify({ exp: expiresAt }));
   const signature = await hmac(secret, payload);

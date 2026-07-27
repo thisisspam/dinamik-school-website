@@ -6,6 +6,7 @@ import { InnerPageShell } from "../components/SiteChrome";
 import { PageHero } from "../components/PageHero";
 import { getSiteSettings } from "../../lib/content";
 import { createWhatsappHref } from "../../lib/whatsapp";
+import { getContentPage } from "@/lib/cms/content";
 
 export const metadata: Metadata = {
   title: "İletişim",
@@ -14,14 +15,15 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactPage() {
-  const settings = await getSiteSettings();
+  const [settings, page] = await Promise.all([getSiteSettings(), getContentPage("contact")]);
+  const content = page.content;
   const generalPhoneTel = `tel:+9${settings.generalPhone.replace(/\D/g, "")}`;
   const landlinePhoneTel = `tel:+9${settings.landlinePhone.replace(/\D/g, "")}`;
   const whatsappHref = createWhatsappHref(settings.whatsapp);
 
   return (
-    <InnerPageShell>
-      <PageHero eyebrow="Bize ulaşın" title="Sorularınızı dinleyelim, geleceğiniz için doğru adımı birlikte atalım." description="Bölümler, kayıt süreci ve kampüs ziyareti hakkında bilgi almak için okulumuza ulaşabilirsiniz." image="/images/about-school-campus.png" current="İletişim" />
+    <InnerPageShell theme={page.theme}>
+      <PageHero eyebrow={content.heroEyebrow} title={content.heroTitle} description={content.heroDescription} image={content.heroImage} imageAlt={content.heroImageAlt} current="İletişim" />
       <section className="inner-section inner-section--soft">
         <div className="container contact-detail-grid">
           <div className="contact-detail-list">
@@ -32,12 +34,12 @@ export default async function ContactPage() {
             <div className="contact-detail-card"><span><Clock3 size={22} /></span><div><small>Çalışma saatleri</small><strong>{settings.hours}</strong></div></div>
           </div>
           <a className="map-panel" href={settings.mapUrl} target="_blank" rel="noreferrer">
-            <Image src="/images/about-school-campus.png" alt="Dinamik Okulları Samsun kampüsü" fill sizes="(max-width: 900px) calc(100vw - 48px), 55vw" />
-            <span className="map-panel-content"><h2>Kampüsü yerinde keşfedin.</h2><p>{settings.addressLine}</p><span className="button button--primary">Haritada aç <ExternalLink size={15} /></span></span>
+            <Image src={content.mapImage} alt="Dinamik Okulları Samsun kampüsü" fill sizes="(max-width: 900px) calc(100vw - 48px), 55vw" />
+            <span className="map-panel-content"><h2>{content.mapTitle}</h2><p>{settings.addressLine}</p><span className="button button--primary">Haritada aç <ExternalLink size={15} /></span></span>
           </a>
         </div>
       </section>
-      <section className="inner-section"><div className="container cta-panel"><div><h2>Kampüs ziyareti planlayın.</h2><p>Atölyeleri, laboratuvarları ve eğitim ortamını yakından görmek için ön kayıt talebinizi iletin.</p></div><div className="cta-panel-actions"><Link className="button button--primary" href="/on-kayit">Ön kayıt talebi <ArrowRight size={16} /></Link></div></div></section>
+      <section className="inner-section"><div className="container cta-panel"><div><h2>{content.ctaTitle}</h2><p>{content.ctaDescription}</p></div><div className="cta-panel-actions"><Link className="button button--primary" href="/on-kayit">{content.ctaLabel} <ArrowRight size={16} /></Link></div></div></section>
     </InnerPageShell>
   );
 }

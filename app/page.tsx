@@ -3,10 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { InstagramIcon, SiteFooter, SiteHeader } from "./components/SiteChrome";
 import { RegistrationForm } from "./components/RegistrationForm";
-import { homepageAchievementPhotos } from "./data/achievements";
 import { getDepartments } from "./data/departments";
 import { getHomepageSections, getSiteSettings, type HomepageSection } from "../lib/content";
 import { createWhatsappHref } from "../lib/whatsapp";
+import { parseContentList, parseContentRows, safeContentHref } from "@/lib/cms/helpers";
+import { getContentPage } from "@/lib/cms/content";
 import {
   ArrowRight,
   Building2,
@@ -75,27 +76,8 @@ const departmentTeasers: Record<string, Omit<Department, "title" | "branch" | "i
   },
 };
 
-const benefits = [
-  {
-    icon: GraduationCap,
-    title: "4 Yıl",
-    text: "Ücretsiz Eğitim",
-  },
-  {
-    icon: Wrench,
-    title: "3 Alan",
-    text: "Mesleki Program",
-  },
-];
-
-const quickLinks: LinkItem[] = [
-  { label: "e-Okul Girişi", href: "https://e-okul.meb.gov.tr/", icon: School },
-  { label: "Bölümler", href: "/bolumler", icon: GraduationCap },
-  { label: "Rehberlik", href: "/rehberlik", icon: Users },
-  { label: "Etkinlikler", href: "/faaliyetlerimiz", icon: CalendarDays },
-  { label: "Kampüs", href: "/hakkimizda", icon: Building2 },
-  { label: "Bize Ulaşın", href: "/iletisim", icon: MessageCircle },
-];
+const benefitIcons = [GraduationCap, Wrench, School, Trophy] as const;
+const quickLinkIcons = [School, GraduationCap, Users, CalendarDays, Building2, MessageCircle] as const;
 
 function SectionHeading({
   id,
@@ -117,7 +99,7 @@ function SectionHeading({
   );
 }
 
-function DepartmentCard({ department, index }: { department: Department; index: number }) {
+function DepartmentCard({ department, index, ctaLabel }: { department: Department; index: number; ctaLabel: string }) {
   const Icon = department.icon;
 
   return (
@@ -143,7 +125,7 @@ function DepartmentCard({ department, index }: { department: Department; index: 
         <strong>{department.title}</strong>
         <span className="department-description">{department.description}</span>
         <span className="department-link">
-          Programı incele <ArrowRight size={15} aria-hidden="true" />
+          {ctaLabel} <ArrowRight size={15} aria-hidden="true" />
         </span>
       </span>
     </Link>
@@ -191,10 +173,11 @@ function CustomHomepageSection({ section }: { section: HomepageSection }) {
 }
 
 export default async function Home() {
-  const [canonicalDepartments, settings, homepageSections] = await Promise.all([
+  const [canonicalDepartments, settings, homepageSections, registrationPage] = await Promise.all([
     getDepartments(),
     getSiteSettings(),
     getHomepageSections(),
+    getContentPage("registration"),
   ]);
   const departmentAccentMap = {
     red: { accent: "teal", icon: FlaskConical },
@@ -209,12 +192,11 @@ export default async function Home() {
       title: department.title,
       branch: department.branch,
       image: department.image,
-      description: teaser?.description ?? department.lead,
+      description: department.lead,
       icon: teaser?.icon ?? theme.icon,
       accent: teaser?.accent ?? theme.accent,
     };
   });
-  const gallery = homepageAchievementPhotos;
   const generalPhoneTel = `tel:+9${settings.generalPhone.replace(/\D/g, "")}`;
   const landlineTel = `tel:+9${settings.landlinePhone.replace(/\D/g, "")}`;
   const whatsappHref = createWhatsappHref(settings.whatsapp);
@@ -228,6 +210,23 @@ export default async function Home() {
   const guidanceSection = sectionByKey.get("guidance");
   const registrationSection = sectionByKey.get("registration");
   const contactSection = sectionByKey.get("contact");
+  const quickLinksSection = sectionByKey.get("quick-links");
+  const benefits = parseContentRows(benefitsSection?.content.items, 2).map(([title, text], index) => ({
+    title,
+    text,
+    icon: benefitIcons[index % benefitIcons.length],
+  }));
+  const gallery = parseContentRows(gallerySection?.content.images, 2).map(([src, alt]) => ({ src, alt }));
+  const heroTiles = parseContentRows(heroSection?.content.tiles, 4);
+  const campusFeatures = parseContentRows(campusSection?.content.features, 2);
+  const programCards = parseContentRows(programsSection?.content.cards, 4);
+  const guidanceLinks = parseContentRows(guidanceSection?.content.links, 3);
+  const registrationBenefits = parseContentList(registrationSection?.content.benefits);
+  const quickLinks: LinkItem[] = parseContentRows(quickLinksSection?.content.links, 2).map(([label, href], index) => ({
+    label,
+    href: safeContentHref(href, "/"),
+    icon: quickLinkIcons[index % quickLinkIcons.length],
+  }));
   const customSections = homepageSections.filter((section) => section.isDeletable && section.isVisible);
   const defaultDepartmentsTitle = "Teknolojiyi mesleğe dönüştüren üç alan";
   const managedDepartmentsTitle = departmentsSection?.title === defaultDepartmentsTitle && departments.length !== 3
@@ -246,7 +245,13 @@ export default async function Home() {
         {heroSection?.isVisible !== false ? (
         <section className={`hero${managedThemeClass(heroSection)}`} id="anasayfa" aria-labelledby="hero-title">
           <div className="hero-media" aria-hidden="true">
-            <Image src="/images/homepage-campus-hero.png" alt="" fill priority sizes="100vw" />
+            <Image
+              src={heroSection?.content.image || "/images/homepage-campus-hero.png"}
+              alt={heroSection?.content.imageAlt ?? ""}
+              fill
+              priority
+              sizes="100vw"
+            />
           </div>
           <div className="hero-wash" aria-hidden="true" />
 
@@ -269,54 +274,28 @@ export default async function Home() {
                     {heroSection?.ctaLabel ?? "Bölümleri İncele"}
                     <ArrowRight size={17} aria-hidden="true" />
                   </a>
-                  <a className="button button--secondary" href="/okulumuz#okulumuzu-taniyin">
+                  <a className="button button--secondary" href={safeContentHref(heroSection?.content.secondaryHref, "/okulumuz#okulumuzu-taniyin")}>
                     <Play size={16} fill="currentColor" aria-hidden="true" />
-                    Okulumuzu Tanıyın
+                    {heroSection?.content.secondaryLabel ?? "Okulumuzu Tanıyın"}
                   </a>
                 </div>
               </div>
 
               <aside className="hero-rail" aria-label="Okuldan öne çıkanlar">
-                <a
-                  className="hero-tile hero-tile--large"
-                  href="/okulumuz#okulumuzu-taniyin"
-                >
-                  <Image
-                    src="/images/okulumuzu-taniyin-thumb.webp"
-                    alt="Dinamik Okulları tanıtım videosu"
-                    fill
-                    sizes="184px"
-                  />
-                  <span className="play-button" aria-hidden="true">
-                    <Play size={17} fill="currentColor" />
-                  </span>
-                  <strong>Okulumuzu Tanıyın</strong>
-                </a>
-                <a className="hero-tile" href="#bolumler">
-                  <Image
-                    src="/images/uygulamali-egitim-kimya.webp"
-                    alt="Kimya laboratuvarında uygulamalı analiz çalışması"
-                    fill
-                    sizes="184px"
-                  />
-                  <strong>Uygulamalı Eğitim</strong>
-                </a>
-                <a className="hero-tile" href="#galeri">
-                  <Image
-                    src="/images/activities/social/meb-robot-yarismasi/meb-robot-yarismasi-01.webp"
-                    alt="Dinamik Okulları öğrencileri MEB Robot Yarışması'nda"
-                    fill
-                    sizes="184px"
-                  />
-                  <strong>Dinamik&apos;te Yaşam</strong>
-                </a>
+                {heroTiles.map(([label, href, image, alt], index) => (
+                  <a className={`hero-tile${index === 0 ? " hero-tile--large" : ""}`} href={safeContentHref(href, "#anasayfa")} key={`${label}-${href}`}>
+                    <Image src={image} alt={alt} fill sizes="184px" />
+                    {index === 0 ? <span className="play-button" aria-hidden="true"><Play size={17} fill="currentColor" /></span> : null}
+                    <strong>{label}</strong>
+                  </a>
+                ))}
               </aside>
             </div>
 
             <div className="proof-grid" aria-label="Okulun öne çıkan bilgileri">
               {benefits.map((benefit, index) => {
                 const Icon = benefit.icon;
-                const accent = ["teal", "blue"][index];
+                const accent = ["teal", "blue", "green"][index % 3];
 
                 return (
                   <div className="proof-card" key={benefit.title}>
@@ -370,7 +349,12 @@ export default async function Home() {
               />
               <div className="department-grid">
                 {departments.map((department, index) => (
-                  <DepartmentCard key={department.slug} department={department} index={index} />
+                  <DepartmentCard
+                    key={department.slug}
+                    department={department}
+                    index={index}
+                    ctaLabel={departmentsSection?.content.cardButtonLabel ?? "Programı incele"}
+                  />
                 ))}
               </div>
               <Link className="departments-footer-link" href={departmentsSection?.ctaHref ?? "/bolumler"}>
@@ -386,9 +370,9 @@ export default async function Home() {
         <section className={`gallery-section${managedThemeClass(gallerySection)}`} id="galeri" aria-labelledby="gallery-title">
           <div className="container gallery-layout">
             <div className="gallery-intro">
-              <p className="eyebrow">Başarılar</p>
-              <h2 id="gallery-title">Emekle büyüyen gurur tablomuz</h2>
-              <p className="gallery-description">Bilimden spora, öğrencilerimizin azimle ulaştığı dereceleri ve unutulmaz başarı anlarını birlikte kutluyoruz.</p>
+              <p className="eyebrow">{gallerySection?.eyebrow ?? "Başarılar"}</p>
+              <h2 id="gallery-title">{gallerySection?.title ?? "Emekle büyüyen gurur tablomuz"}</h2>
+              <p className="gallery-description">{gallerySection?.description ?? "Bilimden spora, öğrencilerimizin azimle ulaştığı dereceleri ve unutulmaz başarı anlarını birlikte kutluyoruz."}</p>
               <a
                 className="button button--secondary button--small"
                 href={settings.instagramUrl}
@@ -420,8 +404,8 @@ export default async function Home() {
           <div className="container campus-grid">
             <div className="campus-media">
               <Image
-                src="/images/campus-meb-robot-yarismasi.webp"
-                alt="Dinamik öğrencileri 18. Uluslararası MEB Robot Yarışması'nda"
+                src={campusSection?.content.image || "/images/campus-meb-robot-yarismasi.webp"}
+                alt={campusSection?.content.imageAlt ?? "Dinamik öğrencileri 18. Uluslararası MEB Robot Yarışması'nda"}
                 fill
                 sizes="(max-width: 800px) calc(100vw - 32px), 50vw"
               />
@@ -433,41 +417,15 @@ export default async function Home() {
                 {campusSection?.description ?? "Modern teknik altyapıyı, uygulamalı eğitimi ve iş dünyasıyla kurulan güçlü bağları öğrencilerimizin geleceğine dönüştürüyoruz."}
               </p>
               <div className="campus-features" id="kampus">
-                <div>
-                  <FlaskConical size={21} aria-hidden="true" />
-                  <span>
-                    <strong>Modern ve Yüksek Teknolojili Atölyeler</strong>
-                    <small>Her alan için güncel teknik altyapı ve uygulama ortamları</small>
-                  </span>
-                </div>
-                <div>
-                  <Building2 size={21} aria-hidden="true" />
-                  <span>
-                    <strong>Sanayi ile Güçlü İş Birlikleri</strong>
-                    <small>Gerçek projeler, staj olanakları ve istihdam fırsatları</small>
-                  </span>
-                </div>
-                <div>
-                  <Wrench size={21} aria-hidden="true" />
-                  <span>
-                    <strong>Uygulamalı Eğitim Ağırlıklı Müfredat</strong>
-                    <small>Teori ve pratiği birleştiren çağdaş eğitim modeli</small>
-                  </span>
-                </div>
-                <div>
-                  <GraduationCap size={21} aria-hidden="true" />
-                  <span>
-                    <strong>Üniversite ve Doğrudan İşe Geçiş</strong>
-                    <small>İstediğin yolda güçlü bir gelecek için rehberlik</small>
-                  </span>
-                </div>
-                <div>
-                  <ShieldCheck size={21} aria-hidden="true" />
-                  <span>
-                    <strong>Güvenli ve Sosyal Kampüs</strong>
-                    <small>Spor, kültür, sanat ve birlikte üretme kültürü</small>
-                  </span>
-                </div>
+                {campusFeatures.map(([title, text], index) => {
+                  const Icon = [FlaskConical, Building2, Wrench, GraduationCap, ShieldCheck][index % 5];
+                  return (
+                    <div key={title}>
+                      <Icon size={21} aria-hidden="true" />
+                      <span><strong>{title}</strong><small>{text}</small></span>
+                    </div>
+                  );
+                })}
               </div>
               <a className="button button--light" href={campusSection?.ctaHref ?? "#iletisim"}>
                 {campusSection?.ctaLabel ?? "Okulumuzu Keşfedin"}
@@ -489,75 +447,25 @@ export default async function Home() {
             />
 
             <div className="program-grid">
-              <article className="program-card" id="program-kimya">
-                <div className="program-card-heading">
-                  <span className="program-number">01</span>
-                  <span className="program-icon program-icon--teal" aria-hidden="true">
-                    <FlaskConical size={24} />
-                  </span>
-                  <div>
-                    <small>Kimya Laboratuvarı Dalı</small>
-                    <h3>Kimya Teknolojileri</h3>
-                  </div>
-                </div>
-                <p>
-                  Temel kimyasal işlemlerden numune analizlerine, klasik analiz
-                  yöntemlerinden laboratuvar cihazları ve kromatografik yöntemlere uzanan
-                  uygulamalı eğitim.
-                </p>
-                <ul>
-                  <li><CheckCircle2 size={17} /> Nitel ve nicel analiz uygulamaları</li>
-                  <li><CheckCircle2 size={17} /> Numune alma ve atık yönetimi</li>
-                  <li><CheckCircle2 size={17} /> GLP ve iş güvenliği yaklaşımı</li>
-                  <li><CheckCircle2 size={17} /> Cihazlı analiz yöntemleri</li>
-                </ul>
-              </article>
-
-              <article className="program-card" id="program-elektrik">
-                <div className="program-card-heading">
-                  <span className="program-number">02</span>
-                  <span className="program-icon program-icon--blue" aria-hidden="true">
-                    <Zap size={24} />
-                  </span>
-                  <div>
-                    <small>Elektrik Tesisatları ve Dağıtımı Dalı</small>
-                    <h3>Elektrik-Elektronik Teknolojileri</h3>
-                  </div>
-                </div>
-                <p>
-                  Temel elektrik-elektronik bilgisini ölçme, devre, proje, pano ve test
-                  uygulamalarıyla birleştiren kapsamlı mesleki eğitim.
-                </p>
-                <ul>
-                  <li><CheckCircle2 size={17} /> Devre hesaplama ve ölçme</li>
-                  <li><CheckCircle2 size={17} /> Simülasyon ve baskı devre</li>
-                  <li><CheckCircle2 size={17} /> Kuvvet ve kumanda panoları</li>
-                  <li><CheckCircle2 size={17} /> Tesisat projesi ve test</li>
-                </ul>
-              </article>
-
-              <article className="program-card" id="program-biyomedikal">
-                <div className="program-card-heading">
-                  <span className="program-number">03</span>
-                  <span className="program-icon program-icon--green" aria-hidden="true">
-                    <HeartPulse size={24} />
-                  </span>
-                  <div>
-                    <small>Tıbbi Görüntüleme Sistemleri</small>
-                    <h3>Biyomedikal Cihaz Teknolojileri</h3>
-                  </div>
-                </div>
-                <p>
-                  Sağlık teknolojileri alanında kullanılan cihazların teknik altyapısını,
-                  güvenli kullanımını ve bakım süreçlerini tanıtan uygulama odaklı eğitim.
-                </p>
-                <ul>
-                  <li><CheckCircle2 size={17} /> Tıbbi cihaz sistemleri</li>
-                  <li><CheckCircle2 size={17} /> Kurulum ve güvenli kullanım</li>
-                  <li><CheckCircle2 size={17} /> Ölçme, kontrol ve bakım</li>
-                  <li><CheckCircle2 size={17} /> Teknik dokümantasyon</li>
-                </ul>
-              </article>
+              {programCards.map(([branch, title, description, itemText], index) => {
+                const Icon = [FlaskConical, Zap, HeartPulse][index % 3];
+                const accent = ["teal", "blue", "green"][index % 3];
+                return (
+                  <article className="program-card" key={`${branch}-${title}`}>
+                    <div className="program-card-heading">
+                      <span className="program-number">{String(index + 1).padStart(2, "0")}</span>
+                      <span className={`program-icon program-icon--${accent}`} aria-hidden="true"><Icon size={24} /></span>
+                      <div><small>{branch}</small><h3>{title}</h3></div>
+                    </div>
+                    <p>{description}</p>
+                    <ul>
+                      {itemText.split(";").map((item) => item.trim()).filter(Boolean).map((item) => (
+                        <li key={item}><CheckCircle2 size={17} /> {item}</li>
+                      ))}
+                    </ul>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -574,21 +482,16 @@ export default async function Home() {
               </p>
             </div>
             <div className="guidance-cards">
-              <Link href="/rehberlik">
-                <ShieldCheck size={24} aria-hidden="true" />
-                <span><strong>Rehberlik</strong><small>Öğrencinin yanında, aileyle birlikte</small></span>
-                <ChevronRight size={17} aria-hidden="true" />
-              </Link>
-              <Link href="/bolumler">
-                <Trophy size={24} aria-hidden="true" />
-                <span><strong>Kariyer Planlama</strong><small>İlgi ve yeteneğe uygun alan seçimi</small></span>
-                <ChevronRight size={17} aria-hidden="true" />
-              </Link>
-              <Link href="/faaliyetlerimiz">
-                <Users size={24} aria-hidden="true" />
-                <span><strong>Sosyal Yaşam</strong><small>Kültür, sanat, spor ve ekip ruhu</small></span>
-                <ChevronRight size={17} aria-hidden="true" />
-              </Link>
+              {guidanceLinks.map(([title, text, href], index) => {
+                const Icon = [ShieldCheck, Trophy, Users][index % 3];
+                return (
+                  <Link href={safeContentHref(href, "/")} key={`${title}-${href}`}>
+                    <Icon size={24} aria-hidden="true" />
+                    <span><strong>{title}</strong><small>{text}</small></span>
+                    <ChevronRight size={17} aria-hidden="true" />
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -606,12 +509,10 @@ export default async function Home() {
                 {registrationSection?.description ?? "Kısa formu doldurun; talebiniz okulun resmî WhatsApp hattına hazır mesaj olarak aktarılsın. Kayıt ekibimiz uygun olduğunda sizinle iletişime geçsin."}
               </p>
               <ul>
-                <li><CheckCircle2 size={18} aria-hidden="true" /> Üç mesleki alan hakkında bilgi</li>
-                <li><CheckCircle2 size={18} aria-hidden="true" /> Kampüs ziyareti planlama</li>
-                <li><CheckCircle2 size={18} aria-hidden="true" /> Kayıt süreci ve koşulları</li>
+                {registrationBenefits.map((item) => <li key={item}><CheckCircle2 size={18} aria-hidden="true" /> {item}</li>)}
               </ul>
             </div>
-            <RegistrationForm whatsappNumber={settings.whatsapp} />
+            <RegistrationForm whatsappNumber={settings.whatsapp} content={registrationPage.content} />
           </div>
         </section>
         ) : null}
@@ -628,7 +529,7 @@ export default async function Home() {
               <div className="contact-actions">
                 <a className="button button--light" href={generalPhoneTel}>
                   <Phone size={17} aria-hidden="true" />
-                  {settings.generalPhone}
+                  {contactSection?.content.phoneButtonLabel ? `${contactSection.content.phoneButtonLabel}: ${settings.generalPhone}` : settings.generalPhone}
                 </a>
                 <a
                   className="button button--whatsapp"
@@ -637,7 +538,7 @@ export default async function Home() {
                   rel="noreferrer"
                 >
                   <MessageCircle size={17} aria-hidden="true" />
-                  WhatsApp
+                  {contactSection?.content.whatsappButtonLabel ?? "WhatsApp"}
                 </a>
               </div>
             </div>
@@ -649,17 +550,17 @@ export default async function Home() {
                 rel="noreferrer"
               >
                 <span className="contact-card-icon"><MapPin size={21} aria-hidden="true" /></span>
-                <span><small>Adres</small><strong>{settings.addressLine}</strong></span>
+                <span><small>{contactSection?.content.addressLabel ?? "Adres"}</small><strong>{settings.addressLine}</strong></span>
                 <ExternalLink size={15} aria-hidden="true" />
               </a>
               <a href={landlineTel}>
                 <span className="contact-card-icon"><Phone size={21} aria-hidden="true" /></span>
-                <span><small>Sabit Hat</small><strong>{settings.landlinePhone}</strong></span>
+                <span><small>{contactSection?.content.landlineLabel ?? "Sabit Hat"}</small><strong>{settings.landlinePhone}</strong></span>
                 <ChevronRight size={15} aria-hidden="true" />
               </a>
               <div>
                 <span className="contact-card-icon"><Clock3 size={21} aria-hidden="true" /></span>
-                <span><small>Çalışma Saatleri</small><strong>{settings.hours}</strong></span>
+                <span><small>{contactSection?.content.hoursLabel ?? "Çalışma Saatleri"}</small><strong>{settings.hours}</strong></span>
               </div>
             </address>
           </div>
@@ -667,7 +568,7 @@ export default async function Home() {
         ) : null}
       </main>
 
-      <nav className="quick-links" aria-label="Hızlı erişim">
+      {quickLinksSection?.isVisible !== false ? <nav className={`quick-links${managedThemeClass(quickLinksSection)}`} aria-label="Hızlı erişim">
         <div className="container quick-links-grid">
           {quickLinks.map((item) => {
             const Icon = item.icon ?? ChevronRight;
@@ -684,7 +585,7 @@ export default async function Home() {
             );
           })}
         </div>
-      </nav>
+      </nav> : null}
 
       <SiteFooter />
     </div>

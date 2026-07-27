@@ -1,5 +1,6 @@
 import { asc } from "drizzle-orm";
 import { getDb, schema } from "./db/client";
+import { getManagedMediaCollection } from "./cms/media-collections";
 
 export type GalleryImage = { src: string; alt: string; caption?: string };
 
@@ -12,6 +13,7 @@ export type SiteSettings = {
   mapUrl: string;
   hours: string;
   instagramUrl: string;
+  youtubeUrl: string;
 };
 
 export const HOMEPAGE_SECTION_THEMES = ["original", "light", "navy", "red"] as const;
@@ -30,15 +32,15 @@ export type HomepageSection = {
   ctaLabel?: string;
   ctaHref?: string;
   theme: HomepageSectionTheme;
+  content: Record<string, string>;
   isVisible: boolean;
   isDeletable: boolean;
   sortOrder: number;
 };
 
 export async function getGalleryImages(): Promise<GalleryImage[]> {
-  const db = await getDb();
-  const rows = await db.select().from(schema.galleryImages).orderBy(asc(schema.galleryImages.sortOrder));
-  return rows.map((row) => ({ src: row.src, alt: row.alt, caption: row.caption ?? undefined }));
+  const rows = await getManagedMediaCollection("site-gallery", []);
+  return rows.map((row) => ({ src: row.src, alt: row.alt, caption: row.title }));
 }
 
 export async function getSiteSettings(): Promise<SiteSettings> {
@@ -55,6 +57,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     mapUrl: row.mapUrl,
     hours: row.hours,
     instagramUrl: row.instagramUrl,
+    youtubeUrl: row.youtubeUrl,
   };
 }
 
@@ -74,6 +77,7 @@ export async function getHomepageSections(): Promise<HomepageSection[]> {
     theme: HOMEPAGE_SECTION_THEMES.includes(row.theme as HomepageSectionTheme)
       ? (row.theme as HomepageSectionTheme)
       : "original",
+    content: row.content ?? {},
     isVisible: row.isVisible,
     isDeletable: row.isDeletable,
     sortOrder: row.sortOrder,

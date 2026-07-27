@@ -4,8 +4,14 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { getDb, schema } from "@/lib/db/client";
+import { hasValidSession } from "@/lib/auth";
+
+async function requireAdminSession(): Promise<void> {
+  if (!(await hasValidSession())) redirect("/admin/login");
+}
 
 export async function updateSettingsAction(formData: FormData): Promise<void> {
+  await requireAdminSession();
   const db = await getDb();
   const existing = (await db.select().from(schema.siteSettings))[0];
 
@@ -18,7 +24,7 @@ export async function updateSettingsAction(formData: FormData): Promise<void> {
     mapUrl: String(formData.get("mapUrl") ?? "").trim(),
     hours: String(formData.get("hours") ?? "").trim(),
     instagramUrl: String(formData.get("instagramUrl") ?? "").trim(),
-    youtubeUrl: "",
+    youtubeUrl: String(formData.get("youtubeUrl") ?? "").trim(),
   };
 
   if (existing) {

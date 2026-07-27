@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ClipboardList, ContactRound, Images, LayoutTemplate, Settings2, Shapes } from "lucide-react";
+import { ArrowRight, ClipboardList, ContactRound, FileText, Images, Layers3, LayoutTemplate, Palette, Settings2, Shapes } from "lucide-react";
 import { getDb, schema } from "@/lib/db/client";
 import { AdminPageHeader } from "../AdminPageHeader";
 
@@ -10,6 +10,20 @@ const QUICK_LINKS = [
     description: "Ana sayfa alanlarını ekleyin, gizleyin, düzenleyin ve temalarını değiştirin.",
     icon: LayoutTemplate,
     tone: "indigo",
+  },
+  {
+    href: "/admin/sayfalar",
+    title: "Site Sayfaları",
+    description: "Header, footer ve tüm kurumsal sayfaların metinlerini, görsellerini ve sayfa temalarını düzenleyin.",
+    icon: FileText,
+    tone: "cyan",
+  },
+  {
+    href: "/admin/tema",
+    title: "Genel Tema",
+    description: "Site genelindeki kurumsal renkleri, köşeleri, genişliği ve gölge yoğunluğunu yönetin.",
+    icon: Palette,
+    tone: "amber",
   },
   {
     href: "/admin/bolumler",
@@ -33,9 +47,16 @@ const QUICK_LINKS = [
     tone: "red",
   },
   {
+    href: "/admin/faaliyetler",
+    title: "Faaliyet Albümleri",
+    description: "Yeni faaliyet oluşturun; genel veya bölüme özel fotoğrafları toplu yükleyip yayınlayın.",
+    icon: Layers3,
+    tone: "indigo",
+  },
+  {
     href: "/admin/galeri",
-    title: "Galeri",
-    description: "Kampüs ve etkinlik fotoğraflarını tek noktadan yönetin.",
+    title: "Galeri ve Albümler",
+    description: "Site galerisi ve başarı koleksiyonlarındaki tekil fotoğrafları yönetin.",
     icon: Images,
     tone: "cyan",
   },
@@ -50,19 +71,23 @@ const QUICK_LINKS = [
 
 export default async function AdminHomePage() {
   const db = await getDb();
-  const [departments, staff, gallery, homepageSections, applications] = await Promise.all([
+  const [departments, staff, gallery, albums, homepageSections, contentPages, applications] = await Promise.all([
     db.select({ id: schema.departments.id }).from(schema.departments),
     db.select({ id: schema.staff.id }).from(schema.staff),
     db.select({ id: schema.galleryImages.id }).from(schema.galleryImages),
+    db.select({ id: schema.mediaAlbums.id }).from(schema.mediaAlbums),
     db.select({ id: schema.homepageSections.id }).from(schema.homepageSections),
+    db.select({ id: schema.contentPages.id }).from(schema.contentPages),
     db.select({ id: schema.registrationApplications.id, status: schema.registrationApplications.status }).from(schema.registrationApplications),
   ]);
 
   const stats = [
     { label: "Aktif bölüm", value: departments.length, icon: Shapes, tone: "indigo" },
     { label: "Kadro kaydı", value: staff.length, icon: ContactRound, tone: "red" },
-    { label: "Galeri görseli", value: gallery.length, icon: Images, tone: "cyan" },
+    { label: "Medya kaydı", value: gallery.length, icon: Images, tone: "cyan" },
+    { label: "Faaliyet albümü", value: albums.length, icon: Layers3, tone: "indigo" },
     { label: "Sayfa bileşeni", value: homepageSections.length, icon: LayoutTemplate, tone: "amber" },
+    { label: "Yönetilen sayfa", value: contentPages.length, icon: FileText, tone: "cyan" },
     { label: "Yeni başvuru", value: applications.filter((item) => item.status === "new").length, icon: ClipboardList, tone: "red" },
   ] as const;
 

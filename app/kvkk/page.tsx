@@ -15,6 +15,7 @@ import { InnerPageShell } from "../components/SiteChrome";
 import { PageHero } from "../components/PageHero";
 import { getSiteSettings } from "@/lib/content";
 import { DATA_CONTROLLER_NAME, PRIVACY_NOTICE_VERSION } from "@/lib/privacy";
+import { getContentPage } from "@/lib/cms/content";
 
 export const metadata: Metadata = {
   title: "KVKK Aydınlatma ve Veri Güvenliği",
@@ -33,15 +34,17 @@ const rights = [
 ];
 
 export default async function KvkkPage() {
-  const settings = await getSiteSettings();
+  const [settings, page] = await Promise.all([getSiteSettings(), getContentPage("kvkk")]);
+  const content = page.content;
 
   return (
-    <InnerPageShell>
+    <InnerPageShell theme={page.theme}>
       <PageHero
-        eyebrow="KVKK ve veri güvenliği"
-        title="Verileriniz üzerinde söz sizde."
-        description="Ön kayıt talebiniz sırasında hangi bilgileri, neden ve ne kadar süreyle işlediğimizi açık ve anlaşılır biçimde öğrenin."
-        image="/images/about-school-campus.png"
+        eyebrow={content.heroEyebrow}
+        title={content.heroTitle}
+        description={content.heroDescription}
+        image={content.heroImage}
+        imageAlt={content.heroImageAlt}
         current="KVKK"
         size="slim"
       />
@@ -50,8 +53,8 @@ export default async function KvkkPage() {
         <div className="container">
           <div className="privacy-heading">
             <div>
-              <p className="inner-eyebrow">Ön kayıt aydınlatma metni</p>
-              <h2>Bilgilerinizin yolculuğu şeffaf olsun.</h2>
+              <p className="inner-eyebrow">{content.noticeEyebrow}</p>
+              <h2>{content.noticeTitle}</h2>
             </div>
             <div className="privacy-version" aria-label={`Aydınlatma metni sürümü ${PRIVACY_NOTICE_VERSION}`}>
               <FileCheck2 aria-hidden="true" size={20} />
@@ -135,9 +138,9 @@ export default async function KvkkPage() {
       <section className="inner-section privacy-rights-section" id="haklariniz">
         <div className="container privacy-rights-grid">
           <div className="privacy-rights-copy">
-            <p className="inner-eyebrow">KVKK Madde 11</p>
-            <h2>Haklarınızı kullanmak çok kolay.</h2>
-            <p>Kimliğinizi doğrulamaya elverişli bilgiler ve talebinizin açık açıklamasıyla okulumuza başvurabilirsiniz. Başvurular, niteliğine göre mümkün olan en kısa sürede ve kanuni süre içinde yanıtlanır.</p>
+            <p className="inner-eyebrow">{content.rightsEyebrow}</p>
+            <h2>{content.rightsTitle}</h2>
+            <p>{content.rightsDescription}</p>
             <div className="privacy-application-box">
               <a href={`mailto:${settings.email}`}><Mail aria-hidden="true" size={17} /><span><small>E-posta ile başvuru</small><strong>{settings.email}</strong></span></a>
               <div><MapPin aria-hidden="true" size={17} /><span><small>Yazılı başvuru adresi</small><strong>{settings.addressLine}</strong></span></div>
@@ -155,8 +158,8 @@ export default async function KvkkPage() {
       <section className="inner-section inner-section--navy privacy-security-section" id="veri-guvenligi">
         <div className="container">
           <div className="inner-section-header">
-            <div><p className="inner-eyebrow">Veri güvenliği</p><h2>Koruma, tasarımın ilk adımıdır.</h2></div>
-            <p>KVKK&apos;nın hukuka aykırı işleme ve erişimi önleme, verilerin muhafazasını sağlama yükümlülükleri doğrultusunda teknik ve idari kontroller birlikte ele alınır.</p>
+            <div><p className="inner-eyebrow">{content.securityEyebrow}</p><h2>{content.securityTitle}</h2></div>
+            <p>{content.securityDescription}</p>
           </div>
           <div className="privacy-security-grid">
             <article><LockKeyhole aria-hidden="true" size={23} /><h3>Yetkili erişim</h3><p>Başvurular yalnızca oturum doğrulaması yapılan yönetim panelinde, görevli kullanıcılar tarafından görüntülenir.</p></article>

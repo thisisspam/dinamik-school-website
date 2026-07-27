@@ -2,15 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ClipboardList, ContactRound, Images, LayoutDashboard, LayoutTemplate, Settings2, Shapes } from "lucide-react";
+import { ClipboardList, ContactRound, FileText, Images, Layers3, LayoutDashboard, LayoutTemplate, Palette, Settings2, Shapes } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Genel Bakış", icon: LayoutDashboard },
   { href: "/admin/bilesenler", label: "Bileşenler", icon: LayoutTemplate },
+  { href: "/admin/sayfalar", label: "Site Sayfaları", icon: FileText },
+  { href: "/admin/tema", label: "Genel Tema", icon: Palette },
   { href: "/admin/bolumler", label: "Bölümler", icon: Shapes },
   { href: "/admin/basvurular", label: "Ön Kayıtlar", icon: ClipboardList },
   { href: "/admin/kadromuz", label: "Kadromuz", icon: ContactRound },
-  { href: "/admin/galeri", label: "Galeri", icon: Images },
+  { href: "/admin/galeri", label: "Galeri ve Albümler", icon: Images },
+  { href: "/admin/faaliyetler", label: "Faaliyet Albümleri", icon: Layers3 },
   { href: "/admin/ayarlar", label: "Site Ayarları", icon: Settings2 },
 ];
 

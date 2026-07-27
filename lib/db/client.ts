@@ -3,9 +3,12 @@ import { drizzle } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
 import {
   CREATE_TABLE_STATEMENTS,
+  ensureContentPages,
   ensureHomepageSections,
+  ensureSiteTheme,
   seedInitialContent,
 } from "./setup";
+import { ensureActivityAlbums } from "@/lib/cms/activity-album-core";
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
@@ -27,8 +30,13 @@ async function ensureReady(): Promise<void> {
   if ((rows[0] as { count: number }).count === 0) {
     await seedInitialContent(db);
   } else {
-    await ensureHomepageSections(db);
+    await Promise.all([
+      ensureHomepageSections(db),
+      ensureContentPages(db),
+      ensureSiteTheme(db),
+    ]);
   }
+  await ensureActivityAlbums(db);
 }
 
 export async function getDb() {

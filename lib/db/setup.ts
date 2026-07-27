@@ -1,6 +1,13 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { eq } from "drizzle-orm";
 import type { NeonHttpDatabase } from "drizzle-orm/neon-http";
+import {
+  CONTENT_PAGE_DEFINITIONS,
+  defaultContentForDefinition,
+} from "@/lib/cms/page-definitions";
+import { DEFAULT_SITE_THEME } from "@/lib/cms/theme";
+import { homepageDefaultContent } from "@/lib/cms/homepage-fields";
 import * as schema from "./schema";
 
 export const CREATE_TABLE_STATEMENTS = [
@@ -36,10 +43,41 @@ export const CREATE_TABLE_STATEMENTS = [
   `ALTER TABLE staff ADD COLUMN IF NOT EXISTS image TEXT`,
   `CREATE TABLE IF NOT EXISTS gallery_images (
     id SERIAL PRIMARY KEY,
+    collection_key TEXT NOT NULL DEFAULT 'site-gallery',
     src TEXT NOT NULL,
     alt TEXT NOT NULL,
     caption TEXT,
+    description TEXT,
+    album_id TEXT,
+    album_title TEXT,
+    fit TEXT NOT NULL DEFAULT 'cover',
+    object_position TEXT,
     sort_order INTEGER NOT NULL DEFAULT 0
+  )`,
+  `ALTER TABLE gallery_images ADD COLUMN IF NOT EXISTS collection_key TEXT NOT NULL DEFAULT 'site-gallery'`,
+  `ALTER TABLE gallery_images ADD COLUMN IF NOT EXISTS description TEXT`,
+  `ALTER TABLE gallery_images ADD COLUMN IF NOT EXISTS album_id TEXT`,
+  `ALTER TABLE gallery_images ADD COLUMN IF NOT EXISTS album_title TEXT`,
+  `ALTER TABLE gallery_images ADD COLUMN IF NOT EXISTS fit TEXT NOT NULL DEFAULT 'cover'`,
+  `ALTER TABLE gallery_images ADD COLUMN IF NOT EXISTS object_position TEXT`,
+  `CREATE TABLE IF NOT EXISTS media_collections (
+    id SERIAL PRIMARY KEY,
+    collection_key TEXT NOT NULL UNIQUE,
+    display_name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    sort_order INTEGER NOT NULL DEFAULT 0
+  )`,
+  `CREATE TABLE IF NOT EXISTS media_albums (
+    id SERIAL PRIMARY KEY,
+    album_key TEXT NOT NULL UNIQUE,
+    collection_key TEXT NOT NULL,
+    department_slug TEXT,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    is_visible BOOLEAN NOT NULL DEFAULT TRUE,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
   )`,
   `CREATE TABLE IF NOT EXISTS site_settings (
     id SERIAL PRIMARY KEY,
@@ -64,9 +102,39 @@ export const CREATE_TABLE_STATEMENTS = [
     cta_label TEXT,
     cta_href TEXT,
     theme TEXT NOT NULL DEFAULT 'original',
+    content JSONB,
     is_visible BOOLEAN NOT NULL DEFAULT TRUE,
     is_deletable BOOLEAN NOT NULL DEFAULT FALSE,
     sort_order INTEGER NOT NULL DEFAULT 0
+  )`,
+  `ALTER TABLE homepage_sections ADD COLUMN IF NOT EXISTS content JSONB`,
+  `CREATE TABLE IF NOT EXISTS content_pages (
+    id SERIAL PRIMARY KEY,
+    page_key TEXT NOT NULL UNIQUE,
+    display_name TEXT NOT NULL,
+    route TEXT NOT NULL,
+    category TEXT NOT NULL,
+    theme TEXT NOT NULL DEFAULT 'original',
+    content JSONB NOT NULL,
+    updated_at TEXT NOT NULL
+  )`,
+  `CREATE TABLE IF NOT EXISTS site_theme (
+    id SERIAL PRIMARY KEY,
+    brand_navy TEXT NOT NULL,
+    brand_navy_deep TEXT NOT NULL,
+    brand_red TEXT NOT NULL,
+    brand_red_dark TEXT NOT NULL,
+    surface TEXT NOT NULL,
+    surface_soft TEXT NOT NULL,
+    ink TEXT NOT NULL,
+    muted TEXT NOT NULL,
+    border TEXT NOT NULL,
+    header_background TEXT NOT NULL,
+    footer_background TEXT NOT NULL,
+    container_width INTEGER NOT NULL DEFAULT 1280,
+    button_radius INTEGER NOT NULL DEFAULT 999,
+    card_radius INTEGER NOT NULL DEFAULT 18,
+    shadow_intensity INTEGER NOT NULL DEFAULT 100
   )`,
   `CREATE TABLE IF NOT EXISTS registration_applications (
     id SERIAL PRIMARY KEY,
@@ -145,6 +213,7 @@ type HomepageSectionSeed = {
   ctaLabel?: string;
   ctaHref?: string;
   theme: string;
+  content?: Record<string, string>;
   isVisible: boolean;
   isDeletable: boolean;
   sortOrder: number;
@@ -159,11 +228,59 @@ function normalizeStaffName(name: string): string {
 }
 
 export async function ensureHomepageSections(db: NeonHttpDatabase<typeof schema>): Promise<void> {
-  const existing = await db.select({ id: schema.homepageSections.id }).from(schema.homepageSections).limit(1);
-  if (existing.length > 0) return;
-
   const sections = readJson<HomepageSectionSeed[]>("homepage-sections.json");
-  await db.insert(schema.homepageSections).values(sections);
+  const existing = await db
+    .select({
+      id: schema.homepageSections.id,
+      sectionKey: schema.homepageSections.sectionKey,
+      content: schema.homepageSections.content,
+    })
+    .from(schema.homepageSections);
+  const existingKeys = new Set(existing.map((row) => row.sectionKey));
+  const missingSections = sections.filter((section) => !existingKeys.has(section.sectionKey));
+
+  if (missingSections.length > 0) {
+    await db.insert(schema.homepageSections).values(
+      missingSections.map((section) => ({
+        ...section,
+        content: section.content ?? homepageDefaultContent(section.sectionKey),
+      })),
+    );
+  }
+
+  for (const row of existing) {
+    if (row.content !== null) continue;
+    await db
+      .update(schema.homepageSections)
+      .set({ content: homepageDefaultContent(row.sectionKey) })
+      .where(eq(schema.homepageSections.id, row.id));
+  }
+}
+
+export async function ensureContentPages(db: NeonHttpDatabase<typeof schema>): Promise<void> {
+  const existing = await db.select({ pageKey: schema.contentPages.pageKey }).from(schema.contentPages);
+  const existingKeys = new Set(existing.map((row) => row.pageKey));
+  const now = new Date().toISOString();
+  const missingPages = CONTENT_PAGE_DEFINITIONS.filter((definition) => !existingKeys.has(definition.key));
+  if (missingPages.length === 0) return;
+
+  await db.insert(schema.contentPages).values(
+    missingPages.map((definition) => ({
+      pageKey: definition.key,
+      displayName: definition.displayName,
+      route: definition.route,
+      category: definition.category,
+      theme: "original",
+      content: defaultContentForDefinition(definition),
+      updatedAt: now,
+    })),
+  );
+}
+
+export async function ensureSiteTheme(db: NeonHttpDatabase<typeof schema>): Promise<void> {
+  const existing = await db.select({ id: schema.siteTheme.id }).from(schema.siteTheme).limit(1);
+  if (existing.length > 0) return;
+  await db.insert(schema.siteTheme).values(DEFAULT_SITE_THEME);
 }
 
 export async function seedInitialContent(db: NeonHttpDatabase<typeof schema>): Promise<void> {
@@ -263,21 +380,41 @@ export async function seedInitialContent(db: NeonHttpDatabase<typeof schema>): P
   await db.insert(schema.staff).values(staffRows);
 
   const gallery = readJson<GalleryImageSeed[]>("gallery.json");
+  await db.insert(schema.mediaCollections).values({
+    collectionKey: "site-gallery",
+    displayName: "Fotoğraf Galerisi",
+    description: "Galeri sayfasında yayınlanan kampüs ve etkinlik görselleri.",
+    sortOrder: 0,
+  });
   await db.insert(schema.galleryImages).values(
-    gallery.map((image, index) => ({ src: image.src, alt: image.alt, caption: image.caption ?? null, sortOrder: index })),
+    gallery.map((image, index) => ({
+      collectionKey: "site-gallery",
+      src: image.src,
+      alt: image.alt,
+      caption: image.caption ?? null,
+      description: image.caption ?? null,
+      fit: "cover",
+      sortOrder: index,
+    })),
   );
 
   const settings = readJson<SiteSettingsSeed>("site-settings.json");
   await db.insert(schema.siteSettings).values(settings);
 
   await ensureHomepageSections(db);
+  await ensureContentPages(db);
+  await ensureSiteTheme(db);
 }
 
 export async function reseedInitialContent(db: NeonHttpDatabase<typeof schema>): Promise<void> {
   await db.delete(schema.departments);
   await db.delete(schema.staff);
   await db.delete(schema.galleryImages);
+  await db.delete(schema.mediaAlbums);
+  await db.delete(schema.mediaCollections);
   await db.delete(schema.siteSettings);
   await db.delete(schema.homepageSections);
+  await db.delete(schema.contentPages);
+  await db.delete(schema.siteTheme);
   await seedInitialContent(db);
 }

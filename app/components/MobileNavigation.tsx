@@ -8,9 +8,10 @@ import type { NavigationItem } from "./navigation";
 type MobileNavigationProps = {
   navigation: NavigationItem[];
   ctaHref?: string;
+  ctaLabel?: string;
 };
 
-export function MobileNavigation({ navigation, ctaHref = "#on-kayit" }: MobileNavigationProps) {
+export function MobileNavigation({ navigation, ctaHref = "#on-kayit", ctaLabel = "Ön Kayıt Talebi" }: MobileNavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const menuId = useId();
@@ -86,7 +87,7 @@ export function MobileNavigation({ navigation, ctaHref = "#on-kayit" }: MobileNa
           );
         })}
         <Link className="mobile-menu-cta" href={ctaHref} onClick={closeMenu}>
-          Ön Kayıt Talebi
+          {ctaLabel}
         </Link>
       </nav>
     </div>

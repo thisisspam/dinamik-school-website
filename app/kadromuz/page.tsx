@@ -4,6 +4,8 @@ import { InnerPageShell } from "../components/SiteChrome";
 import { PageHero } from "../components/PageHero";
 import { StaffDirectory } from "../components/StaffDirectory";
 import { getStaffGroups, getStaffMembers } from "../data/staff";
+import { getContentPage } from "@/lib/cms/content";
+import { parseContentRows } from "@/lib/cms/helpers";
 
 export const dynamic = "force-dynamic";
 
@@ -14,23 +16,26 @@ export const metadata: Metadata = {
 };
 
 export default async function StaffPage() {
-  const [staffGroups, staffMembers] = await Promise.all([getStaffGroups(), getStaffMembers()]);
+  const [staffGroups, staffMembers, page] = await Promise.all([getStaffGroups(), getStaffMembers(), getContentPage("staff")]);
+  const content = page.content;
+  const featureIcons = [GraduationCap, HeartHandshake, Sparkles];
+  const features = parseContentRows(content.features, 2).map(([title, text], index) => ({ title, text, icon: featureIcons[index % featureIcons.length] }));
   const teachingGroups = staffGroups.filter((group) => group.category !== "İdari Kadro");
   return (
-    <InnerPageShell>
+    <InnerPageShell theme={page.theme}>
       <PageHero
-        eyebrow="Uzmanlık, deneyim, iş birliği"
-        title="Her öğrencinin potansiyeline inanan güçlü bir eğitim ekibi."
-        description="Mesleki alan öğretmenlerinden akademik branşlara, rehberlikten sanat ve spora uzanan çok yönlü bir kadro."
-        image="/images/kadromuz-banner.png"
-        imageAlt="Dinamik Okulları eğitim kadrosu okul binası önünde"
+        eyebrow={content.heroEyebrow}
+        title={content.heroTitle}
+        description={content.heroDescription}
+        image={content.heroImage}
+        imageAlt={content.heroImageAlt}
         imagePosition="center 70%"
         current="Kadromuz"
         size="slim"
       />
       <section className="inner-section inner-section--soft" aria-labelledby="staff-title">
         <div className="container">
-          <div className="inner-section-header"><div><p className="inner-eyebrow">Okul kadromuz</p><h2 id="staff-title">Farklı uzmanlıklar, ortak bir eğitim vizyonu.</h2></div><p>Kadro listesi, okulun güncel kurumsal yayınları temel alınarak görev ve branşlara göre düzenlenmiştir.</p></div>
+          <div className="inner-section-header"><div><p className="inner-eyebrow">{content.introEyebrow}</p><h2 id="staff-title">{content.introTitle}</h2></div><p>{content.introDescription}</p></div>
           <div className="staff-intro-strip">
             <div><strong>{staffMembers.length}</strong><small>kadro üyesi</small></div>
             <div><strong>{teachingGroups.length}</strong><small>branş grubu</small></div>
@@ -42,11 +47,7 @@ export default async function StaffPage() {
       </section>
       <section className="inner-section">
         <div className="container feature-card-grid">
-          {[
-            { icon: GraduationCap, title: "Alanında uzmanlık", text: "Mesleki ve akademik branşlarda öğrenciyi uygulamayla, araştırmayla ve güncel içerikle buluşturan ekip." },
-            { icon: HeartHandshake, title: "Öğrenciyi tanıyan yaklaşım", text: "Akademik, sosyal ve duygusal gelişimi birlikte izleyen rehberlik ve sınıf kültürü." },
-            { icon: Sparkles, title: "Birlikte gelişim", text: "Öğretmen iş birliği, disiplinler arası üretim ve güçlü okul-aile iletişimi." },
-          ].map(({ icon: Icon, title, text }) => <article className="feature-card" key={title}><span><Icon size={23} /></span><h3>{title}</h3><p>{text}</p></article>)}
+          {features.map(({ icon: Icon, title, text }) => <article className="feature-card" key={title}><span><Icon size={23} /></span><h3>{title}</h3><p>{text}</p></article>)}
         </div>
       </section>
     </InnerPageShell>

@@ -7,6 +7,8 @@ Dinamik Mesleki ve Teknik Anadolu Lisesi için hazırlanan modern, erişilebilir
 - Referans tasarıma sadık, ortak tasarım sistemine sahip çok sayfalı kurumsal bilgi mimarisi
 - Kimya, Elektrik-Elektronik ve Biyomedikal programları için ayrı, kaynak doğrulamalı detay sayfaları
 - Hakkımızda, kadro, kıyafet, rehberlik, faaliyet, galeri, başarı, yayın, iletişim ve ön kayıt sayfaları
+- Ana sayfa bileşenleri, tüm kurumsal sayfa metinleri, görseller, header/footer, galeri ve site temasını kapsayan yönetim paneli
+- Panel verisini yeniden başlatmalarda koruyan, yalnızca eksik kayıtları ilk kez oluşturan PostgreSQL içerik altyapısı
 - Klavye erişimi, belirgin odak durumları ve hareket azaltma desteği
 - Cloudflare Pages için statik Next.js çıktısı; Workers ve OpenAI Sites için isteğe bağlı vinext çıktısı
 - Sunucu tarafında render edilen Türkçe SEO meta verileri
@@ -21,6 +23,20 @@ Dinamik Mesleki ve Teknik Anadolu Lisesi için hazırlanan modern, erişilebilir
 npm install
 npm run dev
 ```
+
+## Üretim ortamı ayarları
+
+Yönetim paneli ve görsel yüklemeleriyle birlikte üretime alınırken aşağıdaki ortam
+değişkenleri zorunludur:
+
+- `DATABASE_URL`: PostgreSQL/Neon bağlantı adresi
+- `BLOB_READ_WRITE_TOKEN`: panelden yüklenen görseller için Vercel Blob erişim anahtarı
+- `ADMIN_USERNAME`: üretim yönetici kullanıcı adı
+- `ADMIN_PASSWORD_HASH`: yönetici şifresinin SHA-256 hex özeti
+- `SESSION_SECRET`: uzun ve rastgele oturum imzalama anahtarı
+
+Geliştirme kolaylığı için bulunan yerel yönetici bilgileri üretim modunda kabul edilmez.
+Canlıya çıkmadan önce bu değişkenler barındırma projesinde tanımlanmalıdır.
 
 ## Doğrulama
 

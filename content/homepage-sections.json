@@ -113,5 +113,17 @@
     "isVisible": true,
     "isDeletable": false,
     "sortOrder": 80
+  },
+  {
+    "sectionKey": "quick-links",
+    "sectionType": "quick-links",
+    "displayName": "Hızlı bağlantılar",
+    "eyebrow": "",
+    "title": "Hızlı erişim",
+    "description": "Ana sayfanın altındaki sık kullanılan bağlantılar.",
+    "theme": "original",
+    "isVisible": true,
+    "isDeletable": false,
+    "sortOrder": 90
   }
 ]

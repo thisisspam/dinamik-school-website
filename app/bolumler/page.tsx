@@ -5,6 +5,8 @@ import { ArrowRight, BookOpenCheck, BriefcaseBusiness, GraduationCap } from "luc
 import { InnerPageShell } from "../components/SiteChrome";
 import { PageHero } from "../components/PageHero";
 import { getDepartments } from "../data/departments";
+import { getContentPage } from "@/lib/cms/content";
+import { parseContentRows } from "@/lib/cms/helpers";
 
 export const metadata: Metadata = {
   title: "Bölümlerimiz",
@@ -12,28 +14,23 @@ export const metadata: Metadata = {
   alternates: { canonical: "/bolumler" },
 };
 
-const departmentCardSummaries: Record<string, string> = {
-  "kimya-teknolojileri":
-    "Kimya Laboratuvarı Dalında analiz, cihaz kullanımı ve güvenli laboratuvar uygulamalarına odaklanan eğitim.",
-  "elektrik-elektronik-teknolojileri":
-    "Elektrik Tesisatları ve Dağıtımı Dalında devre, tesisat, pano ve kontrol uygulamalarına odaklanan eğitim.",
-  "biyomedikal-cihaz-teknolojileri":
-    "Tıbbi Görüntüleme Sistemleri Dalında cihaz kurulumu, bakım, ölçüm ve kalibrasyon becerileri kazandıran eğitim.",
-};
-
 function getDepartmentCardTitle(title: string) {
   return title.replace(/\s+BÖLÜMÜ$/i, "");
 }
 
 export default async function DepartmentsPage() {
-  const departments = await getDepartments();
+  const [departments, page] = await Promise.all([getDepartments(), getContentPage("departments")]);
+  const content = page.content;
+  const modelIcons = [BookOpenCheck, GraduationCap, BriefcaseBusiness];
+  const modelCards = parseContentRows(content.modelCards, 2).map(([title, text], index) => ({ title, text, icon: modelIcons[index % modelIcons.length] }));
   return (
-    <InnerPageShell>
+    <InnerPageShell theme={page.theme}>
       <PageHero
-        eyebrow="Teknolojiden mesleğe"
-        title="İlgi alanını, geleceğinin güçlü bir parçasına dönüştür."
-        description="Aktif mesleki alanlar, farklı teknoloji dünyaları ve uygulamayla güçlenen tek bir eğitim yaklaşımı."
-        image="/images/hero-banner.png"
+        eyebrow={content.heroEyebrow}
+        title={content.heroTitle}
+        description={content.heroDescription}
+        image={content.heroImage}
+        imageAlt={content.heroImageAlt}
         current="Bölümlerimiz"
       />
 
@@ -41,12 +38,11 @@ export default async function DepartmentsPage() {
         <div className="container">
           <div className="inner-section-header">
             <div>
-              <p className="inner-eyebrow">Aktif programlarımız</p>
-              <h2 id="departments-index-title">Üreten, ölçen ve çözüm geliştiren mesleki alanlar.</h2>
+              <p className="inner-eyebrow">{content.introEyebrow}</p>
+              <h2 id="departments-index-title">{content.introTitle}</h2>
             </div>
             <p>
-              Her alan, okulda fiilen eğitim verilen dal üzerinden anlatılır. Program içerikleri,
-              güvenli çalışma kültürünü gerçek atölye ve laboratuvar uygulamalarıyla birleştirir.
+              {content.introDescription}
             </p>
           </div>
 
@@ -58,7 +54,7 @@ export default async function DepartmentsPage() {
                 <span className="department-index-card-content">
                   <small>{department.branch}</small>
                   <h2>{getDepartmentCardTitle(department.title)}</h2>
-                  <p>{departmentCardSummaries[department.slug] ?? department.lead}</p>
+                  <p>{department.lead}</p>
                   <span className="card-link">Programı keşfet <span><ArrowRight size={15} /></span></span>
                 </span>
               </Link>
@@ -70,15 +66,11 @@ export default async function DepartmentsPage() {
       <section className="inner-section inner-section--soft" aria-labelledby="education-model-title">
         <div className="container">
           <div className="inner-section-header">
-            <div><p className="inner-eyebrow">Dinamik eğitim modeli</p><h2 id="education-model-title">Bilgiyi beceriye dönüştüren üç güçlü katman.</h2></div>
-            <p>Akademik temel, gerçek ekipmanlarla uygulama ve kariyer farkındalığı aynı öğrenme yolculuğunda buluşur.</p>
+            <div><p className="inner-eyebrow">{content.modelEyebrow}</p><h2 id="education-model-title">{content.modelTitle}</h2></div>
+            <p>{content.modelDescription}</p>
           </div>
           <div className="feature-card-grid">
-            {[
-              { icon: BookOpenCheck, title: "Güçlü akademik temel", text: "Mesleki eğitimi temel bilimler, matematik, iletişim ve yabancı dil becerileriyle destekler." },
-              { icon: GraduationCap, title: "Uygulamayla öğrenme", text: "Atölye ve laboratuvarlarda ölçme, analiz, tasarım, bakım ve problem çözme deneyimi kazandırır." },
-              { icon: BriefcaseBusiness, title: "Kariyere hazırlık", text: "Sektörü tanıma, yükseköğretim seçenekleri ve çalışma kültürüyle geleceğe hazırlık sağlar." },
-            ].map(({ icon: Icon, title, text }) => (
+            {modelCards.map(({ icon: Icon, title, text }) => (
               <article className="feature-card" key={title}><span><Icon size={23} /></span><h3>{title}</h3><p>{text}</p></article>
             ))}
           </div>
@@ -87,7 +79,7 @@ export default async function DepartmentsPage() {
 
       <section className="inner-section inner-section--navy">
         <div className="container cta-panel">
-          <div><h2>Hangi bölümün sana uygun olduğunu birlikte keşfedelim.</h2><p>Programları yakından tanımak, kampüsü görmek ve kayıt sürecini konuşmak için okulumuza ulaş.</p></div>
+          <div><h2>{content.ctaTitle}</h2><p>{content.ctaDescription}</p></div>
           <div className="cta-panel-actions"><Link className="button button--primary" href="/on-kayit">Ön kayıt talebi <ArrowRight size={16} /></Link><Link className="button button--outline-light" href="/iletisim">Bize ulaşın</Link></div>
         </div>
       </section>

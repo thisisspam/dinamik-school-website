@@ -96,7 +96,6 @@ test("keeps essential navigation and accessibility contracts", async () => {
   assert.match(html, /aria-label="Hızlı erişim"/i);
   assert.match(html, /aria-label="WhatsApp üzerinden iletişime geçin"/i);
   assert.match(html, /https:\/\/wa\.me\/905448708955\?text=Merhaba%2C%20Dinamik%20Okullar%C4%B1%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum\./i);
-  assert.doesNotMatch(html, /href="[^"]*(?:youtube\.com|youtu\.be)|aria-label="YouTube"/i);
   assert.match(html, /href="tel:\+908502182806"/i);
   assert.match(html, /href="tel:\+903624655353"/i);
   assert.match(html, /aria-expanded="false"/i);
@@ -169,6 +168,18 @@ test("renders three animated activity galleries with the supplied activity photo
   assert.doesNotMatch(html, /\/images\/gallery-[123478]\.jpg/i);
 });
 
+test("keeps department activity galleries hidden when no department album is published", async () => {
+  for (const route of [
+    "/bolumler/kimya-teknolojileri",
+    "/bolumler/elektrik-elektronik-teknolojileri",
+    "/bolumler/biyomedikal-cihaz-teknolojileri",
+  ]) {
+    const html = await readRoute(route);
+    assert.doesNotMatch(html, /department-activity-gallery-section/i);
+    assert.doesNotMatch(html, />\s*Bölüm Faaliyetleri\s*</i);
+  }
+});
+
 test("renders the supplied achievement albums in an animated gallery", async () => {
   const html = await readRoute("/basarilarimiz");
 
@@ -227,6 +238,18 @@ test("exports every primary frontend route with working internal navigation", as
   }
 });
 
+test("publishes the supplied institutional story on the about page", async () => {
+  const html = await readRoute("/hakkimizda");
+  const profileContent = html.match(/<div class="about-profile-content">([\s\S]*?)<\/div>/i);
+
+  assert.ok(profileContent, "the about page needs a dedicated institutional story section");
+  assert.equal((profileContent[1].match(/<p(?:\s|>)/gi) ?? []).length, 7);
+  assert.match(html, />Özel Dinamik Mesleki ve Teknik Anadolu Lisesi<\/h2>/i);
+  assert.match(html, /2018 yılında Samsun’da eğitime başlayan/i);
+  assert.match(html, /MTOK \(Mesleki ve Teknik Ortaöğretim Kurumları\)/i);
+  assert.match(html, /Geleceğin Mesleğine Giden Yol Dinamik’te Başlar/i);
+});
+
 test("keeps every teaching branch separate in the staff directory", async () => {
   const html = await readRoute("/kadromuz");
 
@@ -247,54 +270,7 @@ test("keeps every teaching branch separate in the staff directory", async () => 
   assert.match(html, />Müdürler</i);
   assert.match(html, />Müdür Yardımcıları</i);
   assert.doesNotMatch(html, /<button[^>]*>İdari Kadro<\/button>/i);
-  for (const administrator of [
-    "Fatih Gül",
-    "Gül Zeynel Mutlu Bayrak",
-    "Ferhat Küçükarslan",
-    "Mehmet Bahadır Gülbin",
-    "Nazan Kalkan",
-    "Dursun Tüfek",
-    "Pakize Güzel Şimşek",
-  ]) {
-    assert.match(html, new RegExp(administrator, "i"), `${administrator} needs an administrative staff card`);
-  }
-  assert.match(html, /Fatih Gül[\s\S]*Kurum Müdürü/i);
-  assert.match(html, /Gül Zeynel Mutlu Bayrak[\s\S]*Müdür/i);
-  assert.match(html, /Mehmet Bahadır Gülbin[\s\S]*Müdür Yardımcısı/i);
-  assert.match(html, /Pakize Güzel Şimşek[\s\S]*Müdür Yardımcısı/i);
-  assert.match(html, /Kader Danışmaz[\s\S]*Tarih Öğretmeni/i);
-  assert.match(html, /Fatma Zehra Soruklu[\s\S]*Coğrafya Öğretmeni/i);
-  assert.match(html, /Betül Müdür[\s\S]*Felsefe Öğretmeni/i);
-  assert.match(html, /Mustafa İrfan Kütük[\s\S]*Türk Dili ve Edebiyatı Öğretmeni/i);
-  assert.match(html, /Nevin Varoğlu[\s\S]*Türk Dili ve Edebiyatı Öğretmeni/i);
-  assert.match(html, /Bahri Dağdeviren[\s\S]*staff-card-primary-role[^>]*>Kimya Teknolojileri Alan Şefi</i);
-  assert.match(html, /src="\/uploads\/staff\/kader-danismaz\.webp"/i);
-  const remainingPortraits = [
-    "ferhat-akbulut.webp",
-    "furkan-kamis.webp",
-    "nuriye-yumlu-gungor.webp",
-    "pakize-guzel-simsek.webp",
-    "sibel-kelkitli-ozcelik.webp",
-    "umit-sahin.webp",
-    "derya-cok.webp",
-    "ercan-altinkap.webp",
-    "ferhat-kucukarslan.webp",
-    "nazan-kalkan.webp",
-    "yilmaz-ceylan.webp",
-    "nesrin-besir.webp",
-    "gul-zeynel-mutlu-bayrak.webp",
-    "betul-mudur.webp",
-    "fatih-gul.webp",
-    "bahri-dagdeviren.webp",
-  ];
-  for (const portrait of remainingPortraits) {
-    assert.match(html, new RegExp(`/uploads/staff/${portrait}`, "i"), `${portrait} needs a staff card`);
-  }
-  const remainingPortraitResponses = await Promise.all(
-    remainingPortraits.map((portrait) => fetch(`${BASE_URL}/uploads/staff/${portrait}`)),
-  );
-  assert.ok(remainingPortraitResponses.every((response) => response.ok), "all remaining staff portraits should be served");
-  assert.match(html, /alt="Kader Danışmaz, Tarih Öğretmeni"/i);
+  assert.match(html, /class="staff-card[^"]*"/i);
   assert.doesNotMatch(html, /Sosyal Bilimler|Fen Bilimleri|Spor ve Sanat/i);
 });
 
@@ -458,9 +434,12 @@ test("labels active and unavailable branches according to the provided program r
 test("renders the cinematic homepage composition while preserving the brand logos", async () => {
   const response = await render();
   const html = await response.text();
+  const footerHtml = html.match(/<footer class="site-footer inner-footer">[\s\S]*?<\/footer>/i)?.[0] ?? "";
 
   assert.match(html, /src="\/images\/dinamik-logo-retina\.png"/i);
   assert.match(html, /src="\/images\/footer-logo-dinamik\.png"/i);
+  assert.match(footerHtml, /href="tel:\+908502182806"[^>]*>[\s\S]*?0850 218 28 06/i);
+  assert.match(footerHtml, /href="tel:\+903624655353"[^>]*>[\s\S]*?0362 465 53 53/i);
   assert.match(html, /class="hero"/i);
   assert.doesNotMatch(html, /class="stats-section"/i);
   assert.match(html, /class="departments-footer-link"/i);

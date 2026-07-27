@@ -5,6 +5,11 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { getDb, schema } from "@/lib/db/client";
 import { saveUploadedFile } from "@/lib/media";
+import { hasValidSession } from "@/lib/auth";
+
+async function requireAdminSession(): Promise<void> {
+  if (!(await hasValidSession())) redirect("/admin/login");
+}
 
 async function resolveStaffImage(formData: FormData): Promise<string | null> {
   const existingImage = String(formData.get("existingImage") ?? "").trim() || null;
@@ -19,6 +24,7 @@ async function resolveStaffImage(formData: FormData): Promise<string | null> {
 }
 
 export async function createStaffAction(formData: FormData): Promise<void> {
+  await requireAdminSession();
   const db = await getDb();
   const existing = await db.select().from(schema.staff);
   const nextOrder = existing.reduce((max, row) => Math.max(max, row.sortOrder), -1) + 1;
@@ -37,6 +43,7 @@ export async function createStaffAction(formData: FormData): Promise<void> {
 }
 
 export async function updateStaffAction(formData: FormData): Promise<void> {
+  await requireAdminSession();
   const id = Number(formData.get("id"));
   const db = await getDb();
 
@@ -56,6 +63,7 @@ export async function updateStaffAction(formData: FormData): Promise<void> {
 }
 
 export async function deleteStaffAction(formData: FormData): Promise<void> {
+  await requireAdminSession();
   const id = Number(formData.get("id"));
   if (!Number.isSafeInteger(id) || id <= 0) {
     throw new Error("Geçersiz kadro kaydı.");

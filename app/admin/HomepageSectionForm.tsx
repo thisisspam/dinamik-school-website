@@ -1,5 +1,6 @@
-import { Eye, Save } from "lucide-react";
+import { Eye, ImageIcon, Save } from "lucide-react";
 import type { HomepageSection } from "@/lib/content";
+import { HOMEPAGE_CONTENT_FIELDS } from "@/lib/cms/homepage-fields";
 
 const THEME_OPTIONS = [
   { value: "original", label: "Özgün tasarım", description: "Bileşenin mevcut tasarımını korur" },
@@ -24,9 +25,11 @@ export function HomepageSectionForm({
   submitLabel: string;
 }) {
   const isCustom = !section || section.isDeletable;
+  const contentFields = section ? (HOMEPAGE_CONTENT_FIELDS[section.sectionKey] ?? []) : [];
+  const contentGroups = [...new Set(contentFields.map((item) => item.group))];
 
   return (
-    <form className="admin-form admin-component-form" action={action}>
+    <form className="admin-form admin-component-form" action={action} encType="multipart/form-data">
       {section ? <input type="hidden" name="id" value={section.id} /> : null}
 
       {isCustom ? (
@@ -56,6 +59,48 @@ export function HomepageSectionForm({
           <input type="text" name="eyebrow" defaultValue={section?.eyebrow} placeholder="Örn. Kampüs & Yaşam" />
         </label>
       </div>
+
+      {contentGroups.map((group) => (
+        <section className="admin-editor-section" key={group}>
+          <div className="admin-editor-section-heading"><span><Eye aria-hidden="true" size={16} /></span><h2>{group}</h2></div>
+          <div className="admin-editor-fields">
+            {contentFields.filter((item) => item.group === group).map((item) => {
+              const value = section?.content[item.key] ?? item.defaultValue;
+              if (item.type === "image") {
+                return (
+                  <div className="admin-media-field admin-content-media-field" key={item.key}>
+                    <div className="admin-current-media">
+                      {value ? (
+                        // eslint-disable-next-line @next/next/no-img-element -- CMS image can be a Vercel Blob URL.
+                        <img src={value} alt="" />
+                      ) : <ImageIcon aria-hidden="true" size={28} />}
+                    </div>
+                    <div className="admin-media-inputs">
+                      <label>{item.label}<input type="text" name={`content_${item.key}`} defaultValue={value} /></label>
+                      <label>
+                        Yeni görsel yükle
+                        <input type="file" name={`content_${item.key}_file`} accept="image/jpeg,image/png,image/webp" />
+                      </label>
+                    </div>
+                  </div>
+                );
+              }
+              const multiline = item.type === "textarea" || item.type === "lines";
+              return (
+                <label key={item.key}>
+                  {item.label}
+                  {multiline ? (
+                    <textarea name={`content_${item.key}`} defaultValue={value} rows={item.type === "lines" ? Math.min(12, Math.max(4, value.split(/\r?\n/).length + 1)) : 5} />
+                  ) : (
+                    <input type="text" name={`content_${item.key}`} defaultValue={value} />
+                  )}
+                  {item.help ? <span className="admin-hint">{item.help}</span> : null}
+                </label>
+              );
+            })}
+          </div>
+        </section>
+      ))}
 
       <label>
         Başlık

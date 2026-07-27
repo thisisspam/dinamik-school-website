@@ -58,6 +58,10 @@ export default async function AdminSettingsPage({
             Instagram bağlantısı
             <input type="url" name="instagramUrl" defaultValue={row?.instagramUrl} required />
           </label>
+          <label>
+            YouTube bağlantısı
+            <input type="url" name="youtubeUrl" defaultValue={row?.youtubeUrl} placeholder="https://www.youtube.com/..." />
+          </label>
           <div className="admin-actions">
             <button className="admin-btn" type="submit"><Save aria-hidden="true" size={16} /> Değişiklikleri kaydet</button>
           </div>

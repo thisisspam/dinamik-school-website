@@ -11,6 +11,8 @@ import {
   type CustomHomepageSectionType,
   type HomepageSectionTheme,
 } from "@/lib/content";
+import { HOMEPAGE_CONTENT_FIELDS } from "@/lib/cms/homepage-fields";
+import { saveUploadedFile } from "@/lib/media";
 
 function requiredText(formData: FormData, name: string): string {
   const value = String(formData.get(name) ?? "").trim();
@@ -53,6 +55,20 @@ function refreshHomepageSections(): void {
   revalidatePath("/");
   revalidatePath("/admin");
   revalidatePath("/admin/bilesenler");
+}
+
+async function contentValues(formData: FormData, sectionKey: string): Promise<Record<string, string>> {
+  const fields = HOMEPAGE_CONTENT_FIELDS[sectionKey] ?? [];
+  const values: Record<string, string> = {};
+  for (const field of fields) {
+    let value = String(formData.get(`content_${field.key}`) ?? "").trim();
+    if (field.type === "image") {
+      const file = formData.get(`content_${field.key}_file`);
+      if (file instanceof File && file.size > 0) value = await saveUploadedFile(file);
+    }
+    values[field.key] = value;
+  }
+  return values;
 }
 
 export async function createHomepageSectionAction(formData: FormData): Promise<void> {
@@ -98,6 +114,7 @@ export async function updateHomepageSectionAction(formData: FormData): Promise<v
     ctaLabel: optionalText(formData, "ctaLabel"),
     ctaHref: safeHref(formData),
     theme: validTheme(formData),
+    content: await contentValues(formData, row.sectionKey),
     isVisible: formData.get("isVisible") === "on",
   }).where(eq(schema.homepageSections.id, id));
 

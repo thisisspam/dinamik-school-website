@@ -21,6 +21,7 @@ export default async function AdminEditHomepageSectionPage({ params }: { params:
     ctaLabel: row.ctaLabel ?? undefined,
     ctaHref: row.ctaHref ?? undefined,
     theme: row.theme as HomepageSectionTheme,
+    content: row.content ?? {},
   };
 
   return (

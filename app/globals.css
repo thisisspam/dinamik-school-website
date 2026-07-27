@@ -38,6 +38,10 @@
   --shadow-sm: 0 8px 24px rgba(45, 41, 88, 0.08);
   --shadow-md: 0 22px 60px rgba(45, 41, 88, 0.14);
   --container: 1280px;
+  --header-background: #ffffff;
+  --footer-background: var(--brand-navy-deep);
+  --button-radius: 999px;
+  --card-radius: 18px;
   --font-sans: "Inter Variable", Inter, Aptos, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -132,7 +136,7 @@ a {
   height: 72px;
   border-top: 3px solid var(--brand-red);
   border-bottom: 1px solid rgba(45, 41, 88, 0.12);
-  background: #fff;
+  background: var(--header-background);
   box-shadow: 0 8px 24px rgba(45, 41, 88, 0.07);
   color: var(--brand-navy);
 }
@@ -201,7 +205,7 @@ a {
   bottom: 4px;
   left: 0;
   height: 2px;
-  border-radius: 999px;
+  border-radius: var(--button-radius);
   background: var(--teal);
   content: "";
   transform: scaleX(0);
@@ -331,7 +335,7 @@ a {
   padding: 0 21px;
   gap: 8px;
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: var(--button-radius);
   font-size: 0.8rem;
   font-style: normal;
   font-weight: 800;
@@ -1997,8 +2001,42 @@ a {
 }
 
 .site-footer {
-  background: var(--navy-950);
+  background: var(--footer-background);
   color: #fff;
+}
+
+.cms-page-theme-light {
+  --surface-soft: #fbfbfd;
+  --surface-blue: #f6f5f9;
+}
+
+.cms-page-theme-navy {
+  --surface-soft: color-mix(in srgb, var(--brand-navy) 7%, white);
+  --surface-blue: color-mix(in srgb, var(--brand-navy) 11%, white);
+}
+
+.cms-page-theme-red {
+  --surface-soft: color-mix(in srgb, var(--brand-red) 5%, white);
+  --surface-blue: color-mix(in srgb, var(--brand-red) 8%, white);
+}
+
+.cms-page-theme-navy .inner-hero-overlay {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--brand-navy-deep) 94%, transparent), color-mix(in srgb, var(--brand-navy) 62%, transparent) 55%, rgba(12, 10, 34, 0.28));
+}
+
+.cms-page-theme-red .inner-hero-overlay {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--brand-navy-deep) 91%, transparent), color-mix(in srgb, var(--brand-red-dark) 58%, transparent) 58%, rgba(24, 8, 13, 0.28));
+}
+
+.school-hub-card,
+.support-card,
+.feature-card,
+.achievement-card,
+.gallery-card,
+.contact-detail-card,
+.map-panel,
+.cta-panel {
+  border-radius: var(--card-radius);
 }
 
 .footer-main {

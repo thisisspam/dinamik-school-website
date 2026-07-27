@@ -19,6 +19,7 @@ const TYPE_LABELS: Record<string, string> = {
   guidance: "Rehberlik",
   registration: "Form",
   contact: "İletişim",
+  "quick-links": "Hızlı bağlantılar",
   "custom-content": "İçerik alanı",
   "custom-announcement": "Duyuru bandı",
   "custom-cta": "Çağrı alanı",
