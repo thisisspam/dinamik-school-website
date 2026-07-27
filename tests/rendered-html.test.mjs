@@ -62,6 +62,7 @@ test("renders the completed Turkish school homepage", async () => {
   assert.match(html, /Biyomedikal Cihaz Teknolojileri/);
   assert.match(html, /Ön Kayıt Talebi/);
   assert.match(html, /Toybelen Mahallesi Anadolu Bulvarı No:225/);
+  assert.match(html, /href="https:\/\/maps\.app\.goo\.gl\/4XoMtVt8tCsUKzz8A\?g_st=iw"/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 
   const homepageGallery = html.match(/<section class="gallery-section[\s\S]*?<\/section>/i)?.[0] ?? "";
@@ -108,6 +109,16 @@ test("keeps essential navigation and accessibility contracts", async () => {
   assert.doesNotMatch(mobileNavigationHtml, /lucide-chevron-right/i);
   assert.doesNotMatch(html, /class="mobile-navigation-parent"/i);
   assert.doesNotMatch(html, /href="\/haberler"|>\s*Yayınlar\s*</i, "Yayınlar/Haberler was intentionally removed");
+});
+
+test("opens the verified school location from the contact page", async () => {
+  const html = await readRoute("/iletisim");
+
+  assert.match(
+    html,
+    /class="map-panel" href="https:\/\/maps\.app\.goo\.gl\/4XoMtVt8tCsUKzz8A\?g_st=iw"/i,
+  );
+  assert.doesNotMatch(html, /google\.com\/maps\/search\/\?api=1&amp;query=/i);
 });
 
 test("renders three animated activity galleries with the supplied activity photo sets", async () => {

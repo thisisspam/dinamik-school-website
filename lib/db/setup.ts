@@ -155,6 +155,12 @@ export const CREATE_TABLE_STATEMENTS = [
   )`,
 ];
 
+export const DATA_MIGRATION_STATEMENTS = [
+  `UPDATE site_settings
+   SET map_url = 'https://maps.app.goo.gl/4XoMtVt8tCsUKzz8A?g_st=iw'
+   WHERE map_url = 'https://www.google.com/maps/search/?api=1&query=Toybelen+Mahallesi+Anadolu+Bulvar%C4%B1+No%3A225+%C4%B0lkad%C4%B1m+Samsun'`,
+];
+
 const CONTENT_DIR = resolve(process.cwd(), "content");
 
 type DepartmentSeed = {
