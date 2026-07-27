@@ -750,10 +750,14 @@
 }
 
 .department-index-card-content p {
+  display: -webkit-box;
+  overflow: hidden;
   margin: 0 0 23px;
   color: rgba(255, 255, 255, 0.69);
   font-size: 0.9rem;
   line-height: 1.65;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
 }
 
 .card-link {
