@@ -1,15 +1,9 @@
 import type { Metadata } from "next";
 import {
-  CheckCircle2,
-  Database,
   ExternalLink,
   FileCheck2,
-  LockKeyhole,
   Mail,
   MapPin,
-  Scale,
-  ShieldCheck,
-  UserRoundCheck,
 } from "lucide-react";
 import { InnerPageShell } from "../components/SiteChrome";
 import { PageHero } from "../components/PageHero";
@@ -50,126 +44,119 @@ export default async function KvkkPage() {
       />
 
       <section className="inner-section inner-section--soft privacy-section" id="aydinlatma">
-        <div className="container">
-          <div className="privacy-heading">
-            <div>
+        <div className="container privacy-document-wrap">
+          <article className="privacy-document" aria-labelledby="privacy-document-title">
+            <header className="privacy-document-header">
               <p className="inner-eyebrow">{content.noticeEyebrow}</p>
-              <h2>{content.noticeTitle}</h2>
-            </div>
-            <div className="privacy-version" aria-label={`Aydınlatma metni sürümü ${PRIVACY_NOTICE_VERSION}`}>
-              <FileCheck2 aria-hidden="true" size={20} />
-              <span><small>Yürürlük tarihi</small><strong>17 Temmuz 2026 · Sürüm {PRIVACY_NOTICE_VERSION}</strong></span>
-            </div>
-          </div>
-
-          <nav className="privacy-jump-links" aria-label="KVKK sayfa içi bağlantıları">
-            <a href="#veri-sorumlusu">Veri sorumlusu</a>
-            <a href="#islenen-veriler">İşlenen veriler</a>
-            <a href="#aktarim">Aktarım</a>
-            <a href="#haklariniz">Haklarınız</a>
-            <a href="#veri-guvenligi">Veri güvenliği</a>
-          </nav>
-
-          <div className="privacy-grid">
-            <article className="privacy-card privacy-card--featured" id="veri-sorumlusu">
-              <span className="privacy-card-icon"><ShieldCheck aria-hidden="true" size={22} /></span>
-              <div>
-                <p className="privacy-card-kicker">01 · Veri sorumlusu</p>
-                <h3>{DATA_CONTROLLER_NAME}</h3>
-                <p>Ön kayıt formu aracılığıyla elde edilen kişisel veriler bakımından veri sorumlusu sıfatıyla hareket eder.</p>
-                <div className="privacy-contact-strip">
-                  <a href={`mailto:${settings.email}`}><Mail aria-hidden="true" size={16} />{settings.email}</a>
-                  <span><MapPin aria-hidden="true" size={16} />{settings.addressLine}</span>
-                </div>
+              <h2 id="privacy-document-title">{content.noticeTitle}</h2>
+              <div className="privacy-document-version" role="note" aria-label={`Aydınlatma metni sürümü ${PRIVACY_NOTICE_VERSION}`}>
+                <FileCheck2 aria-hidden="true" size={18} />
+                <span>Yürürlük tarihi: 17 Temmuz 2026 · Sürüm {PRIVACY_NOTICE_VERSION}</span>
               </div>
-            </article>
+            </header>
 
-            <article className="privacy-card" id="islenen-veriler">
-              <span className="privacy-card-icon"><Database aria-hidden="true" size={22} /></span>
-              <p className="privacy-card-kicker">02 · Hangi veriler?</p>
-              <h3>Yalnızca başvuru için gerekli bilgiler</h3>
-              <ul>
-                <li>Öğrenci ve veli adı soyadı</li>
-                <li>Telefon numarası ve mevcut sınıf</li>
-                <li>İlgilenilen eğitim alanı</li>
-                <li>Başvuru kaynağı, tarihi ve iletişim süreci notları</li>
-                <li>Aydınlatma metni sürümü ve tercih kayıtları</li>
-              </ul>
-            </article>
+            <div className="privacy-document-body">
+              <section className="privacy-document-section" id="veri-sorumlusu">
+                <h3>1. Veri sorumlusu</h3>
+                <p><strong>{DATA_CONTROLLER_NAME}</strong>, ön kayıt formu aracılığıyla elde edilen kişisel veriler bakımından veri sorumlusu sıfatıyla hareket eder.</p>
+                <dl className="privacy-document-contact">
+                  <div>
+                    <dt><Mail aria-hidden="true" size={16} /> E-posta</dt>
+                    <dd><a href={`mailto:${settings.email}`}>{settings.email}</a></dd>
+                  </div>
+                  <div>
+                    <dt><MapPin aria-hidden="true" size={16} /> Adres</dt>
+                    <dd>{settings.addressLine}</dd>
+                  </div>
+                </dl>
+              </section>
 
-            <article className="privacy-card">
-              <span className="privacy-card-icon"><UserRoundCheck aria-hidden="true" size={22} /></span>
-              <p className="privacy-card-kicker">03 · İşleme amaçları</p>
-              <h3>Talebinizi yanıtlamak ve süreci yönetmek</h3>
-              <ul>
-                <li>Ön kayıt ve bilgi talebinizi değerlendirmek</li>
-                <li>Veli veya öğrenciyle iletişime geçmek</li>
-                <li>Bölüm, kampüs ziyareti ve kayıt süreci hakkında bilgi vermek</li>
-                <li>Başvurunun sonucunu ve iletişim geçmişini takip etmek</li>
-                <li>Hukuki yükümlülükleri yerine getirmek ve hakları korumak</li>
-              </ul>
-            </article>
+              <section className="privacy-document-section" id="islenen-veriler">
+                <h3>2. İşlenen kişisel veriler</h3>
+                <p>Ön kayıt başvurusunun alınması ve değerlendirilmesi için aşağıdaki bilgiler işlenebilir:</p>
+                <ul>
+                  <li>Öğrenci ve veli adı soyadı</li>
+                  <li>Telefon numarası ve mevcut sınıf</li>
+                  <li>İlgilenilen eğitim alanı</li>
+                  <li>Başvuru kaynağı, tarihi ve iletişim süreci notları</li>
+                  <li>Aydınlatma metni sürümü ve tercih kayıtları</li>
+                </ul>
+              </section>
 
-            <article className="privacy-card">
-              <span className="privacy-card-icon"><Scale aria-hidden="true" size={22} /></span>
-              <p className="privacy-card-kicker">04 · Yöntem ve hukuki sebep</p>
-              <h3>Elektronik form üzerinden, sınırlı ve ölçülü</h3>
-              <p>Veriler doğrudan sizden, ön kayıt formu aracılığıyla elektronik ortamda elde edilir. Başvurunun değerlendirilmesi; KVKK m.5/2 kapsamında bir sözleşmenin kurulmasıyla doğrudan ilgili olma, hukuki yükümlülüklerin yerine getirilmesi ve temel haklarınıza zarar vermemek kaydıyla meşru menfaat hukuki sebeplerine dayanır. Ayrı bir tercihe bağlı işlemler gerektiğinde açık rızanız esas alınır.</p>
-            </article>
+              <section className="privacy-document-section">
+                <h3>3. Kişisel verilerin işlenme amaçları</h3>
+                <p>Kişisel veriler aşağıdaki amaçlarla, amaçla bağlantılı, sınırlı ve ölçülü şekilde işlenir:</p>
+                <ul>
+                  <li>Ön kayıt ve bilgi talebinizi değerlendirmek</li>
+                  <li>Veli veya öğrenciyle iletişime geçmek</li>
+                  <li>Bölüm, kampüs ziyareti ve kayıt süreci hakkında bilgi vermek</li>
+                  <li>Başvurunun sonucunu ve iletişim geçmişini takip etmek</li>
+                  <li>Hukuki yükümlülükleri yerine getirmek ve hakları korumak</li>
+                </ul>
+              </section>
 
-            <article className="privacy-card" id="aktarim">
-              <span className="privacy-card-icon"><ExternalLink aria-hidden="true" size={22} /></span>
-              <p className="privacy-card-kicker">05 · Kimlere aktarılabilir?</p>
-              <h3>Yetkili kişiler ve zorunlu hizmet sağlayıcılar</h3>
-              <p>Veriler; görevleriyle sınırlı okul yöneticileri ve kayıt birimi, güvenli barındırma hizmeti sağlayıcıları ile kanunen yetkili kamu kurumlarıyla, yalnızca gerekli olduğu ölçüde paylaşılabilir.</p>
-              <p className="privacy-card-note"><strong>WhatsApp tercihi:</strong> Formdaki ayrı ve isteğe bağlı seçeneği işaretlerseniz, bilgileriniz hazır mesajın açılması için WhatsApp/Meta hizmetine aktarılabilir ve bu hizmet kapsamında yurt dışı aktarım gündeme gelebilir. Mesajı gönderdiğinizde bilgiler ayrıca okulun WhatsApp hattına iletilir. Bu tercihi vermeden de başvurunuzu tamamlayabilirsiniz.</p>
-            </article>
+              <section className="privacy-document-section">
+                <h3>4. Veri toplama yöntemi ve hukuki sebep</h3>
+                <p>Veriler doğrudan sizden, ön kayıt formu aracılığıyla elektronik ortamda elde edilir. Başvurunun değerlendirilmesi; KVKK m.5/2 kapsamında bir sözleşmenin kurulmasıyla doğrudan ilgili olma, hukuki yükümlülüklerin yerine getirilmesi ve temel haklarınıza zarar vermemek kaydıyla meşru menfaat hukuki sebeplerine dayanır. Ayrı bir tercihe bağlı işlemler gerektiğinde açık rızanız esas alınır.</p>
+              </section>
 
-            <article className="privacy-card">
-              <span className="privacy-card-icon"><LockKeyhole aria-hidden="true" size={22} /></span>
-              <p className="privacy-card-kicker">06 · Saklama ve imha</p>
-              <h3>Amacın gerektirdiğinden uzun değil</h3>
-              <p>Başvuru kayıtları, talebin ve kayıt iletişiminin sonuçlandırılması için gereken süre boyunca saklanır; işleme amacı ve varsa kanuni saklama zorunluluğu sona erdiğinde periyodik kontrollerle silinir, yok edilir veya anonim hâle getirilir. Haklı silme talepleri ayrıca değerlendirilir.</p>
-            </article>
-          </div>
-        </div>
-      </section>
+              <section className="privacy-document-section" id="aktarim">
+                <h3>5. Kişisel verilerin aktarılması</h3>
+                <p>Veriler; görevleriyle sınırlı okul yöneticileri ve kayıt birimi, güvenli barındırma hizmeti sağlayıcıları ile kanunen yetkili kamu kurumlarıyla, yalnızca gerekli olduğu ölçüde paylaşılabilir.</p>
+                <p className="privacy-document-note"><strong>WhatsApp tercihi:</strong> Formdaki ayrı ve isteğe bağlı seçeneği işaretlerseniz, bilgileriniz hazır mesajın açılması için WhatsApp/Meta hizmetine aktarılabilir ve bu hizmet kapsamında yurt dışı aktarım gündeme gelebilir. Mesajı gönderdiğinizde bilgiler ayrıca okulun WhatsApp hattına iletilir. Bu tercihi vermeden de başvurunuzu tamamlayabilirsiniz.</p>
+              </section>
 
-      <section className="inner-section privacy-rights-section" id="haklariniz">
-        <div className="container privacy-rights-grid">
-          <div className="privacy-rights-copy">
-            <p className="inner-eyebrow">{content.rightsEyebrow}</p>
-            <h2>{content.rightsTitle}</h2>
-            <p>{content.rightsDescription}</p>
-            <div className="privacy-application-box">
-              <a href={`mailto:${settings.email}`}><Mail aria-hidden="true" size={17} /><span><small>E-posta ile başvuru</small><strong>{settings.email}</strong></span></a>
-              <div><MapPin aria-hidden="true" size={17} /><span><small>Yazılı başvuru adresi</small><strong>{settings.addressLine}</strong></span></div>
+              <section className="privacy-document-section">
+                <h3>6. Saklama süresi ve imha</h3>
+                <p>Başvuru kayıtları, talebin ve kayıt iletişiminin sonuçlandırılması için gereken süre boyunca saklanır; işleme amacı ve varsa kanuni saklama zorunluluğu sona erdiğinde periyodik kontrollerle silinir, yok edilir veya anonim hâle getirilir. Haklı silme talepleri ayrıca değerlendirilir.</p>
+              </section>
+
+              <section className="privacy-document-section" id="haklariniz">
+                <p className="privacy-document-label">{content.rightsEyebrow}</p>
+                <h3>7. {content.rightsTitle}</h3>
+                <p>{content.rightsDescription}</p>
+                <ul className="privacy-document-rights">
+                  {rights.map((right) => <li key={right}>{right}</li>)}
+                </ul>
+                <div className="privacy-document-application">
+                  <h4>Başvuru kanalları</h4>
+                  <p>Haklarınıza ilişkin taleplerinizi aşağıdaki kanallardan veri sorumlusuna iletebilirsiniz:</p>
+                  <dl className="privacy-document-contact">
+                    <div>
+                      <dt><Mail aria-hidden="true" size={16} /> E-posta ile başvuru</dt>
+                      <dd><a href={`mailto:${settings.email}`}>{settings.email}</a></dd>
+                    </div>
+                    <div>
+                      <dt><MapPin aria-hidden="true" size={16} /> Yazılı başvuru adresi</dt>
+                      <dd>{settings.addressLine}</dd>
+                    </div>
+                  </dl>
+                </div>
+              </section>
+
+              <section className="privacy-document-section" id="veri-guvenligi">
+                <p className="privacy-document-label">{content.securityEyebrow}</p>
+                <h3>8. {content.securityTitle}</h3>
+                <p>{content.securityDescription}</p>
+                <ul className="privacy-document-security">
+                  <li><strong>Yetkili erişim:</strong> Başvurular yalnızca oturum doğrulaması yapılan yönetim panelinde, görevli kullanıcılar tarafından görüntülenir.</li>
+                  <li><strong>Veri minimizasyonu:</strong> Ön kayıt için zorunlu olmayan özel nitelikli kişisel veriler istenmez; tercihler ayrıca kaydedilir.</li>
+                  <li><strong>Saklama kontrolü:</strong> Yönetim paneli, amacı sona eren veya ilgili kişi talebine konu olan başvuruların kalıcı olarak silinmesine imkân verir.</li>
+                  <li><strong>Güvenli işletim:</strong> Canlı ortamda HTTPS, güçlü yönetici bilgileri, güvenli oturum anahtarı, düzenli yedekleme ve erişim denetimleri uygulanmalıdır.</li>
+                </ul>
+              </section>
+
+              <footer className="privacy-document-sources">
+                <h3>Resmî kaynaklar</h3>
+                <a href="https://www.kvkk.gov.tr/Icerik/2033/Aydinlatma-Yukumlulugu-" target="_blank" rel="noreferrer">
+                  KVKK Kurumu aydınlatma rehberi <ExternalLink aria-hidden="true" size={15} />
+                </a>
+                <a href="https://www.kvkk.gov.tr/Icerik/2040/Veri-Guvenligine-Iliskin-Yukumlulukler" target="_blank" rel="noreferrer">
+                  KVKK Kurumu veri güvenliği yükümlülükleri <ExternalLink aria-hidden="true" size={15} />
+                </a>
+              </footer>
             </div>
-            <a className="privacy-official-link" href="https://www.kvkk.gov.tr/Icerik/2033/Aydinlatma-Yukumlulugu-" target="_blank" rel="noreferrer">
-              KVKK Kurumu aydınlatma rehberini inceleyin <ExternalLink aria-hidden="true" size={15} />
-            </a>
-          </div>
-          <ul className="privacy-rights-list">
-            {rights.map((right) => <li key={right}><CheckCircle2 aria-hidden="true" size={18} /><span>{right}</span></li>)}
-          </ul>
-        </div>
-      </section>
-
-      <section className="inner-section inner-section--navy privacy-security-section" id="veri-guvenligi">
-        <div className="container">
-          <div className="inner-section-header">
-            <div><p className="inner-eyebrow">{content.securityEyebrow}</p><h2>{content.securityTitle}</h2></div>
-            <p>{content.securityDescription}</p>
-          </div>
-          <div className="privacy-security-grid">
-            <article><LockKeyhole aria-hidden="true" size={23} /><h3>Yetkili erişim</h3><p>Başvurular yalnızca oturum doğrulaması yapılan yönetim panelinde, görevli kullanıcılar tarafından görüntülenir.</p></article>
-            <article><Database aria-hidden="true" size={23} /><h3>Veri minimizasyonu</h3><p>Ön kayıt için zorunlu olmayan özel nitelikli kişisel veriler istenmez; tercihler ayrıca kaydedilir.</p></article>
-            <article><FileCheck2 aria-hidden="true" size={23} /><h3>Saklama kontrolü</h3><p>Yönetim paneli, amacı sona eren veya ilgili kişi talebine konu olan başvuruların kalıcı olarak silinmesine imkân verir.</p></article>
-            <article><ShieldCheck aria-hidden="true" size={23} /><h3>Güvenli işletim</h3><p>Canlı ortamda HTTPS, güçlü yönetici bilgileri, güvenli oturum anahtarı, düzenli yedekleme ve erişim denetimleri uygulanmalıdır.</p></article>
-          </div>
-          <a className="privacy-security-source" href="https://www.kvkk.gov.tr/Icerik/2040/Veri-Guvenligine-Iliskin-Yukumlulukler" target="_blank" rel="noreferrer">
-            KVKK Kurumu veri güvenliği yükümlülükleri <ExternalLink aria-hidden="true" size={15} />
-          </a>
+          </article>
         </div>
       </section>
     </InnerPageShell>

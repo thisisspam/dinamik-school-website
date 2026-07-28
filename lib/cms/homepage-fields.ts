@@ -1,4 +1,6 @@
 import type { ContentFieldDefinition } from "./types";
+import { DEFAULT_HOMEPAGE_FEATURE_CARDS } from "./homepage-feature-cards";
+import { DEFAULT_HOMEPAGE_HERO_TILES } from "./homepage-hero-tiles";
 
 function field(
   key: string,
@@ -21,13 +23,9 @@ export const HOMEPAGE_CONTENT_FIELDS: Record<string, ContentFieldDefinition[]> =
       "tiles",
       "Sağdaki tanıtım kartları",
       "Tanıtım kartları",
-      "lines",
-      [
-        "Okulumuzu Tanıyın | /okulumuz#okulumuzu-taniyin | /images/okulumuzu-taniyin-thumb.webp | Dinamik Okulları tanıtım videosu",
-        "Uygulamalı Eğitim | #bolumler | /images/uygulamali-egitim-kimya.webp | Kimya laboratuvarında uygulamalı analiz çalışması",
-        "Dinamik'te Yaşam | #galeri | /images/activities/social/meb-robot-yarismasi/meb-robot-yarismasi-01.webp | Dinamik Okulları öğrencileri MEB Robot Yarışması'nda",
-      ].join("\n"),
-      "Her satıra “Başlık | bağlantı | görsel yolu | görsel açıklaması” yazın.",
+      "hero-tiles",
+      JSON.stringify(DEFAULT_HOMEPAGE_HERO_TILES),
+      "Her kartın başlığını, bağlantısını, görselini ve boyutunu ayrı ayrı yönetin.",
     ),
   ],
   benefits: [
@@ -35,7 +33,7 @@ export const HOMEPAGE_CONTENT_FIELDS: Record<string, ContentFieldDefinition[]> =
       "items",
       "Avantaj kartları",
       "Kartlar",
-      "lines",
+      "structured-list",
       "4 Yıl | Ücretsiz Eğitim\n3 Alan | Mesleki Program",
       "Her satıra “Büyük ifade | kısa açıklama” yazın.",
     ),
@@ -48,7 +46,7 @@ export const HOMEPAGE_CONTENT_FIELDS: Record<string, ContentFieldDefinition[]> =
       "images",
       "Ana sayfa galeri görselleri",
       "Görseller",
-      "lines",
+      "structured-list",
       [
         "/images/achievements/urfodu-bilim-yarismasi/urfodu-bilim-yarismasi-02.webp | URFODU bilim yarışması",
         "/images/achievements/codeweek-haftasi/codeweek-haftasi-01.webp | CodeWeek etkinliği",
@@ -69,15 +67,9 @@ export const HOMEPAGE_CONTENT_FIELDS: Record<string, ContentFieldDefinition[]> =
       "features",
       "Öne çıkan özellikler",
       "Özellikler",
-      "lines",
-      [
-        "Modern ve Yüksek Teknolojili Atölyeler | Her alan için güncel teknik altyapı ve uygulama ortamları",
-        "Sanayi ile Güçlü İş Birlikleri | Gerçek projeler, staj olanakları ve istihdam fırsatları",
-        "Uygulamalı Eğitim Ağırlıklı Müfredat | Teori ve pratiği birleştiren çağdaş eğitim modeli",
-        "Üniversite ve Doğrudan İşe Geçiş | İstediğin yolda güçlü bir gelecek için rehberlik",
-        "Güvenli ve Sosyal Kampüs | Spor, kültür, sanat ve birlikte üretme kültürü",
-      ].join("\n"),
-      "Her satıra “Başlık | açıklama” yazın.",
+      "feature-cards",
+      JSON.stringify(DEFAULT_HOMEPAGE_FEATURE_CARDS),
+      "Her kartın ikonunu, başlığını, açıklamasını ve genişliğini ayrı ayrı seçin.",
     ),
   ],
   programs: [
@@ -85,7 +77,7 @@ export const HOMEPAGE_CONTENT_FIELDS: Record<string, ContentFieldDefinition[]> =
       "cards",
       "Program kartları",
       "Kartlar",
-      "lines",
+      "structured-list",
       [
         "Kimya Laboratuvarı Dalı | Kimya Teknolojileri | Temel kimyasal işlemlerden numune analizlerine, klasik analiz yöntemlerinden laboratuvar cihazları ve kromatografik yöntemlere uzanan uygulamalı eğitim. | Nitel ve nicel analiz uygulamaları; Numune alma ve atık yönetimi; GLP ve iş güvenliği yaklaşımı; Cihazlı analiz yöntemleri",
         "Elektrik Tesisatları ve Dağıtımı Dalı | Elektrik-Elektronik Teknolojileri | Temel elektrik-elektronik bilgisini ölçme, devre, proje, pano ve test uygulamalarıyla birleştiren kapsamlı mesleki eğitim. | Devre hesaplama ve ölçme; Simülasyon ve baskı devre; Kuvvet ve kumanda panoları; Tesisat projesi ve test",
@@ -99,13 +91,13 @@ export const HOMEPAGE_CONTENT_FIELDS: Record<string, ContentFieldDefinition[]> =
       "links",
       "Yönlendirme kartları",
       "Kartlar",
-      "lines",
+      "structured-list",
       "Rehberlik | Öğrencinin yanında, aileyle birlikte | /rehberlik\nKariyer Planlama | İlgi ve yeteneğe uygun alan seçimi | /bolumler\nSosyal Yaşam | Kültür, sanat, spor ve ekip ruhu | /faaliyetlerimiz",
       "Her satıra “Başlık | açıklama | bağlantı” yazın.",
     ),
   ],
   registration: [
-    field("benefits", "Bilgilendirme maddeleri", "Form tanıtımı", "lines", "Üç mesleki alan hakkında bilgi\nKampüs ziyareti planlama\nKayıt süreci ve koşulları"),
+    field("benefits", "Bilgilendirme maddeleri", "Form tanıtımı", "structured-list", "Üç mesleki alan hakkında bilgi\nKampüs ziyareti planlama\nKayıt süreci ve koşulları"),
   ],
   contact: [
     field("phoneButtonLabel", "Telefon butonu etiketi", "Butonlar", "text", "Telefon"),
@@ -119,7 +111,7 @@ export const HOMEPAGE_CONTENT_FIELDS: Record<string, ContentFieldDefinition[]> =
       "links",
       "Hızlı bağlantılar",
       "Bağlantılar",
-      "lines",
+      "structured-list",
       "e-Okul Girişi | https://e-okul.meb.gov.tr/\nBölümler | /bolumler\nRehberlik | /rehberlik\nEtkinlikler | /faaliyetlerimiz\nKampüs | /hakkimizda\nBize Ulaşın | /iletisim",
       "Her satıra “Başlık | bağlantı” yazın.",
     ),

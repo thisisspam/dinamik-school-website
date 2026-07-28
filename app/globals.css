@@ -21,6 +21,7 @@
   --brand-navy-deep: #211e44;
   --brand-red: #ff0000;
   --brand-red-dark: #cc0000;
+  --brand-red-accessible: #e00000;
   --navy-950: var(--brand-navy-deep);
   --navy-900: var(--brand-navy);
   --navy-800: #3b3670;
@@ -242,9 +243,9 @@ a {
 
 .desktop-nav-toggle {
   display: grid;
-  width: 24px;
-  height: 36px;
-  margin-left: -3px;
+  width: 28px;
+  height: 40px;
+  margin-left: 0;
   padding: 0;
   place-items: center;
   border: 0;
@@ -412,7 +413,7 @@ a {
 }
 
 .button--whatsapp {
-  background: #21c76b;
+  background: #007a36;
   color: #fff;
 }
 
@@ -1761,6 +1762,17 @@ a {
   border-color: #ce3f53;
 }
 
+.registration-form [aria-invalid="true"] {
+  border-color: #b3233a;
+}
+
+.form-field-error {
+  color: #a11d33;
+  font-size: 0.72rem;
+  font-weight: 750;
+  line-height: 1.45;
+}
+
 .honeypot {
   position: absolute;
   left: -10000px;
@@ -1788,6 +1800,10 @@ a {
   color: var(--muted);
   font-size: 0.69rem;
   line-height: 1.55;
+}
+
+.consent-field .form-field-error {
+  grid-column: 2;
 }
 
 .consent-field a {
@@ -1841,7 +1857,7 @@ a {
 .form-footer p {
   max-width: 250px;
   margin: 0;
-  color: #7b8497;
+  color: #6f6b7d;
   font-size: 0.61rem;
   line-height: 1.45;
 }

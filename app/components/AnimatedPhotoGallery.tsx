@@ -289,7 +289,12 @@ export function AnimatedPhotoGallery({
             ) : null}
           </div>
 
-          <div className="biomedical-workshop-thumbnails" aria-label={`${activeAlbum.title}: ${thumbnailLabel}`} ref={thumbnailStripRef}>
+          <div
+            className="biomedical-workshop-thumbnails"
+            role="group"
+            aria-label={`${activeAlbum.title}: ${thumbnailLabel}`}
+            ref={thumbnailStripRef}
+          >
             {activePhotos.map((photo, index) => (
               <button
                 className={index === activeIndex ? "is-active" : ""}

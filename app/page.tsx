@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import { Children, isValidElement, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { InstagramIcon, SiteFooter, SiteHeader } from "./components/SiteChrome";
@@ -8,6 +9,11 @@ import { getHomepageSections, getSiteSettings, type HomepageSection } from "../l
 import { createWhatsappHref } from "../lib/whatsapp";
 import { parseContentList, parseContentRows, safeContentHref } from "@/lib/cms/helpers";
 import { getContentPage } from "@/lib/cms/content";
+import {
+  parseHomepageFeatureCards,
+  type HomepageFeatureIcon,
+} from "@/lib/cms/homepage-feature-cards";
+import { parseHomepageHeroTiles } from "@/lib/cms/homepage-hero-tiles";
 import {
   ArrowRight,
   Building2,
@@ -31,6 +37,11 @@ import {
   Wrench,
   Zap,
 } from "lucide-react";
+
+// Homepage sections are ordered and edited from the database. Rendering this
+// route dynamically prevents a production build snapshot from masking admin
+// changes until the next deployment.
+export const dynamic = "force-dynamic";
 
 type LinkItem = {
   label: string;
@@ -78,6 +89,43 @@ const departmentTeasers: Record<string, Omit<Department, "title" | "branch" | "i
 
 const benefitIcons = [GraduationCap, Wrench, School, Trophy] as const;
 const quickLinkIcons = [School, GraduationCap, Users, CalendarDays, Building2, MessageCircle] as const;
+const homepageFeatureIcons: Record<HomepageFeatureIcon, LucideIcon> = {
+  flask: FlaskConical,
+  building: Building2,
+  wrench: Wrench,
+  graduation: GraduationCap,
+  shield: ShieldCheck,
+  users: Users,
+  trophy: Trophy,
+  school: School,
+  zap: Zap,
+  heart: HeartPulse,
+  circuit: CircuitBoard,
+};
+
+type HomepageSectionSlotProps = {
+  sectionKey: string;
+  children: ReactNode;
+};
+
+function HomepageSectionSlot({ children }: HomepageSectionSlotProps) {
+  return children;
+}
+
+function OrderedHomepageSections({
+  sections,
+  children,
+}: {
+  sections: HomepageSection[];
+  children: ReactNode;
+}) {
+  const sectionOrder = new Map(sections.map((section, index) => [section.sectionKey, index]));
+  return Children.toArray(children).sort((left, right) => {
+    const leftKey = isValidElement<HomepageSectionSlotProps>(left) ? left.props.sectionKey : "";
+    const rightKey = isValidElement<HomepageSectionSlotProps>(right) ? right.props.sectionKey : "";
+    return (sectionOrder.get(leftKey) ?? Number.MAX_SAFE_INTEGER) - (sectionOrder.get(rightKey) ?? Number.MAX_SAFE_INTEGER);
+  });
+}
 
 function SectionHeading({
   id,
@@ -217,8 +265,8 @@ export default async function Home() {
     icon: benefitIcons[index % benefitIcons.length],
   }));
   const gallery = parseContentRows(gallerySection?.content.images, 2).map(([src, alt]) => ({ src, alt }));
-  const heroTiles = parseContentRows(heroSection?.content.tiles, 4);
-  const campusFeatures = parseContentRows(campusSection?.content.features, 2);
+  const heroTiles = parseHomepageHeroTiles(heroSection?.content.tiles);
+  const campusFeatures = parseHomepageFeatureCards(campusSection?.content.features);
   const programCards = parseContentRows(programsSection?.content.cards, 4);
   const guidanceLinks = parseContentRows(guidanceSection?.content.links, 3);
   const registrationBenefits = parseContentList(registrationSection?.content.benefits);
@@ -242,6 +290,8 @@ export default async function Home() {
       <SiteHeader />
 
       <main id="main-content">
+        <OrderedHomepageSections sections={homepageSections}>
+        <HomepageSectionSlot sectionKey="hero">
         {heroSection?.isVisible !== false ? (
         <section className={`hero${managedThemeClass(heroSection)}`} id="anasayfa" aria-labelledby="hero-title">
           <div className="hero-media" aria-hidden="true">
@@ -282,23 +332,23 @@ export default async function Home() {
               </div>
 
               <aside className="hero-rail" aria-label="Okuldan öne çıkanlar">
-                {heroTiles.map(([label, href, image, alt], index) => (
-                  <a className={`hero-tile${index === 0 ? " hero-tile--large" : ""}`} href={safeContentHref(href, "#anasayfa")} key={`${label}-${href}`}>
-                    <Image src={image} alt={alt} fill sizes="184px" />
-                    {index === 0 ? <span className="play-button" aria-hidden="true"><Play size={17} fill="currentColor" /></span> : null}
-                    <strong>{label}</strong>
+                {heroTiles.map((tile) => (
+                  <a className={`hero-tile${tile.size === "featured" ? " hero-tile--large" : ""}`} href={safeContentHref(tile.href, "#anasayfa")} key={tile.id}>
+                    <Image src={tile.image} alt={tile.imageAlt} fill sizes="184px" />
+                    {tile.size === "featured" ? <span className="play-button" aria-hidden="true"><Play size={17} fill="currentColor" /></span> : null}
+                    <strong>{tile.title}</strong>
                   </a>
                 ))}
               </aside>
             </div>
 
-            <div className="proof-grid" aria-label="Okulun öne çıkan bilgileri">
+            <div className="proof-grid" role="list" aria-label="Okulun öne çıkan bilgileri">
               {benefits.map((benefit, index) => {
                 const Icon = benefit.icon;
                 const accent = ["teal", "blue", "green"][index % 3];
 
                 return (
-                  <div className="proof-card" key={benefit.title}>
+                  <div className="proof-card" key={benefit.title} role="listitem">
                     <span className={`proof-icon proof-icon--${accent}`} aria-hidden="true">
                       <Icon size={20} />
                     </span>
@@ -313,7 +363,9 @@ export default async function Home() {
           </div>
         </section>
         ) : null}
+        </HomepageSectionSlot>
 
+        <HomepageSectionSlot sectionKey="benefits">
         {benefitsSection?.isVisible !== false ? (
         <section className={`benefit-strip${managedThemeClass(benefitsSection)}`} aria-labelledby="benefit-title">
           <div className="container benefit-grid">
@@ -336,7 +388,9 @@ export default async function Home() {
           </div>
         </section>
         ) : null}
+        </HomepageSectionSlot>
 
+        <HomepageSectionSlot sectionKey="departments">
         {departmentsSection?.isVisible !== false ? (
         <section className={`department-news-section${managedThemeClass(departmentsSection)}`} id="bolumler" aria-labelledby="departments-title">
           <div className="container department-news-grid">
@@ -365,7 +419,9 @@ export default async function Home() {
           </div>
         </section>
         ) : null}
+        </HomepageSectionSlot>
 
+        <HomepageSectionSlot sectionKey="gallery">
         {gallerySection?.isVisible !== false ? (
         <section className={`gallery-section${managedThemeClass(gallerySection)}`} id="galeri" aria-labelledby="gallery-title">
           <div className="container gallery-layout">
@@ -398,7 +454,9 @@ export default async function Home() {
           </div>
         </section>
         ) : null}
+        </HomepageSectionSlot>
 
+        <HomepageSectionSlot sectionKey="campus">
         {campusSection?.isVisible !== false ? (
         <section className={`campus-section${managedThemeClass(campusSection)}`} id="okulumuz" aria-labelledby="campus-title">
           <div className="container campus-grid">
@@ -417,12 +475,12 @@ export default async function Home() {
                 {campusSection?.description ?? "Modern teknik altyapıyı, uygulamalı eğitimi ve iş dünyasıyla kurulan güçlü bağları öğrencilerimizin geleceğine dönüştürüyoruz."}
               </p>
               <div className="campus-features" id="kampus">
-                {campusFeatures.map(([title, text], index) => {
-                  const Icon = [FlaskConical, Building2, Wrench, GraduationCap, ShieldCheck][index % 5];
+                {campusFeatures.map((feature) => {
+                  const Icon = homepageFeatureIcons[feature.icon];
                   return (
-                    <div key={title}>
+                    <div className={`campus-feature-card campus-feature-card--${feature.size}`} key={feature.id}>
                       <Icon size={21} aria-hidden="true" />
-                      <span><strong>{title}</strong><small>{text}</small></span>
+                      <span><strong>{feature.title}</strong><small>{feature.description}</small></span>
                     </div>
                   );
                 })}
@@ -435,7 +493,9 @@ export default async function Home() {
           </div>
         </section>
         ) : null}
+        </HomepageSectionSlot>
 
+        <HomepageSectionSlot sectionKey="programs">
         {programsSection?.isVisible !== false ? (
         <section className={`program-section${managedThemeClass(programsSection)}`} id="ogrenci" aria-labelledby="programs-title">
           <div className="container">
@@ -470,7 +530,9 @@ export default async function Home() {
           </div>
         </section>
         ) : null}
+        </HomepageSectionSlot>
 
+        <HomepageSectionSlot sectionKey="guidance">
         {guidanceSection?.isVisible !== false ? (
         <section className={`guidance-section${managedThemeClass(guidanceSection)}`} aria-labelledby="guidance-title">
           <div className="container guidance-grid">
@@ -496,9 +558,15 @@ export default async function Home() {
           </div>
         </section>
         ) : null}
+        </HomepageSectionSlot>
 
-        {customSections.map((section) => <CustomHomepageSection key={section.id} section={section} />)}
+        {customSections.map((section) => (
+          <HomepageSectionSlot key={section.id} sectionKey={section.sectionKey}>
+            <CustomHomepageSection section={section} />
+          </HomepageSectionSlot>
+        ))}
 
+        <HomepageSectionSlot sectionKey="registration">
         {registrationSection?.isVisible !== false ? (
         <section className={`registration-section${managedThemeClass(registrationSection)}`} id="on-kayit" aria-labelledby="registration-title">
           <div className="container registration-grid">
@@ -516,7 +584,9 @@ export default async function Home() {
           </div>
         </section>
         ) : null}
+        </HomepageSectionSlot>
 
+        <HomepageSectionSlot sectionKey="contact">
         {contactSection?.isVisible !== false ? (
         <section className={`contact-section${managedThemeClass(contactSection)}`} id="iletisim" aria-labelledby="contact-title">
           <div className="container contact-grid">
@@ -566,26 +636,30 @@ export default async function Home() {
           </div>
         </section>
         ) : null}
-      </main>
+        </HomepageSectionSlot>
 
-      {quickLinksSection?.isVisible !== false ? <nav className={`quick-links${managedThemeClass(quickLinksSection)}`} aria-label="Hızlı erişim">
-        <div className="container quick-links-grid">
-          {quickLinks.map((item) => {
-            const Icon = item.icon ?? ChevronRight;
-            const external = item.href.startsWith("http");
-            return (
-              <a
-                href={item.href}
-                key={item.label}
-                {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
-              >
-                <Icon size={19} strokeWidth={1.7} aria-hidden="true" />
-                <span>{item.label}</span>
-              </a>
-            );
-          })}
-        </div>
-      </nav> : null}
+        <HomepageSectionSlot sectionKey="quick-links">
+          {quickLinksSection?.isVisible !== false ? <nav className={`quick-links${managedThemeClass(quickLinksSection)}`} aria-label="Hızlı erişim">
+            <div className="container quick-links-grid">
+              {quickLinks.map((item) => {
+                const Icon = item.icon ?? ChevronRight;
+                const external = item.href.startsWith("http");
+                return (
+                  <a
+                    href={item.href}
+                    key={item.label}
+                    {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+                  >
+                    <Icon size={19} strokeWidth={1.7} aria-hidden="true" />
+                    <span>{item.label}</span>
+                  </a>
+                );
+              })}
+            </div>
+          </nav> : null}
+        </HomepageSectionSlot>
+        </OrderedHomepageSections>
+      </main>
 
       <SiteFooter />
     </div>

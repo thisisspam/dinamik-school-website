@@ -24,16 +24,6 @@ main > section[id] {
   scroll-margin-top: 76px;
 }
 
-.hero { order: 1; }
-.benefit-strip { order: 2; }
-.campus-section { order: 3; }
-.department-news-section { order: 4; }
-.gallery-section { order: 5; }
-.program-section { order: 7; }
-.guidance-section { order: 8; }
-.registration-section { order: 9; }
-.contact-section { order: 10; }
-
 .site-header {
   position: sticky;
   top: 0;
@@ -454,7 +444,7 @@ main > section[id] {
   box-shadow: 0 12px 30px rgba(10, 16, 32, 0.065);
 }
 
-.campus-features > div:last-child {
+.campus-feature-card--wide {
   min-height: 88px;
   grid-column: 1 / -1;
 }
@@ -776,7 +766,7 @@ main > section[id] {
 
 .gallery-intro .eyebrow {
   margin-bottom: 5px;
-  color: var(--home-red);
+  color: var(--brand-red-accessible);
 }
 
 .gallery-intro h2 {
@@ -788,7 +778,7 @@ main > section[id] {
 
 .gallery-description {
   margin: 4px 0 0;
-  color: #697486;
+  color: #5f697a;
   font-size: 0.83rem;
 }
 
@@ -877,7 +867,7 @@ main > section[id] {
   max-width: 720px;
   margin-top: 14px;
   grid-row: 3;
-  color: #697486;
+  color: #5f697a;
   font-size: 0.84rem;
   line-height: 1.7;
 }
@@ -1400,7 +1390,7 @@ main > section[id] {
   }
 
   .campus-features > div,
-  .campus-features > div:last-child {
+  .campus-feature-card--wide {
     min-height: 0;
     grid-column: auto;
   }
@@ -1510,7 +1500,6 @@ main > section[id] {
 }
 
 .custom-home-section {
-  order: 6;
   padding-block: clamp(64px, 8vw, 96px);
   border-top: 1px solid rgba(45, 41, 88, 0.08);
   border-bottom: 1px solid rgba(45, 41, 88, 0.08);

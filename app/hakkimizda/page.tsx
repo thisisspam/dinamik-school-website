@@ -98,7 +98,7 @@ export default async function AboutPage() {
             <div className="about-profile-heading">
               <p className="about-eyebrow">{content.storyEyebrow}</p>
               <h2 id="school-profile-title">{content.storyTitle}</h2>
-              <div className="about-profile-meta" aria-label="Kuruluş bilgisi">
+              <div className="about-profile-meta" role="note" aria-label="Kuruluş bilgisi">
                 <span>{content.storyYear}</span>
                 <p>{content.storyYearText}</p>
               </div>
@@ -144,7 +144,7 @@ export default async function AboutPage() {
               <p className="about-story-intro">{content.approachLead}</p>
               <p>{content.approachText}</p>
 
-              <div className="about-field-list" aria-label="Eğitim verilen alan ve dallar">
+              <div className="about-field-list" role="group" aria-label="Eğitim verilen alan ve dallar">
                 {activeFields.map(({ title, branch, icon: Icon, href }) => (
                   <Link href={href} className="about-field" key={title}>
                     <span><Icon size={19} aria-hidden="true" /></span>
@@ -230,9 +230,9 @@ export default async function AboutPage() {
                 </div>
               </article>
             </div>
-            <div className="about-purpose-values" aria-label="Eğitim kültürümüzün temel değerleri">
+            <div className="about-purpose-values" role="list" aria-label="Eğitim kültürümüzün temel değerleri">
               {values.map((value) => (
-                <span key={value}><Check size={14} aria-hidden="true" /> {value}</span>
+                <span key={value} role="listitem"><Check size={14} aria-hidden="true" /> {value}</span>
               ))}
             </div>
           </div>

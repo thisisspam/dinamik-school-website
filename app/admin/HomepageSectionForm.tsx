@@ -1,6 +1,9 @@
 import { Eye, ImageIcon, Save } from "lucide-react";
 import type { HomepageSection } from "@/lib/content";
 import { HOMEPAGE_CONTENT_FIELDS } from "@/lib/cms/homepage-fields";
+import { FeatureCardsEditor } from "./FeatureCardsEditor";
+import { HeroTilesEditor } from "./HeroTilesEditor";
+import { StructuredListEditor } from "./StructuredListEditor";
 
 const THEME_OPTIONS = [
   { value: "original", label: "Özgün tasarım", description: "Bileşenin mevcut tasarımını korur" },
@@ -66,6 +69,23 @@ export function HomepageSectionForm({
           <div className="admin-editor-fields">
             {contentFields.filter((item) => item.group === group).map((item) => {
               const value = section?.content[item.key] ?? item.defaultValue;
+              if (item.type === "feature-cards") {
+                return <FeatureCardsEditor key={item.key} name={`content_${item.key}`} value={value} />;
+              }
+              if (item.type === "hero-tiles") {
+                return <HeroTilesEditor key={item.key} name={`content_${item.key}`} value={value} />;
+              }
+              if (item.type === "structured-list") {
+                return (
+                  <StructuredListEditor
+                    key={item.key}
+                    sectionKey={section?.sectionKey ?? ""}
+                    fieldKey={item.key}
+                    name={`content_${item.key}`}
+                    value={value}
+                  />
+                );
+              }
               if (item.type === "image") {
                 return (
                   <div className="admin-media-field admin-content-media-field" key={item.key}>

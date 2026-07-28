@@ -115,7 +115,7 @@
 .about-eyebrow,
 .about-value-label {
   margin: 0 0 16px;
-  color: var(--about-red);
+  color: var(--brand-red-accessible);
   font-size: 0.7rem;
   font-weight: 850;
   letter-spacing: 0.16em;
@@ -931,7 +931,7 @@
 
 .about-quality-signature small {
   margin-top: 2px;
-  color: #827e90;
+  color: #6f6b7d;
   font-size: 0.68rem;
 }
 
@@ -963,7 +963,7 @@
 }
 
 .about-quality-number {
-  color: #b8b4c1;
+  color: #6f6b7d;
   font-size: 0.7rem;
   font-weight: 850;
   letter-spacing: 0.12em;

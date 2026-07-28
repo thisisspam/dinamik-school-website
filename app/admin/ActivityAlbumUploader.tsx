@@ -20,6 +20,7 @@ type DepartmentOption = { slug: string; title: string; branch: string };
 type SelectedImage = {
   id: string;
   file: File;
+  alt: string;
 };
 
 function safeFileName(name: string): string {
@@ -48,6 +49,7 @@ function validateAndCreateSelection(files: File[], currentCount: number): { imag
     images: files.map((file) => ({
       id: `${file.name}-${file.size}-${file.lastModified}-${crypto.randomUUID()}`,
       file,
+      alt: "",
     })),
   };
 }
@@ -79,7 +81,7 @@ async function uploadSelectedImages(
         multipart: image.file.size > 4 * 1024 * 1024,
         onUploadProgress: ({ percentage }) => updateCombinedProgress(image.id, percentage),
       });
-      results[index] = { url: blob.url, originalName: image.file.name };
+      results[index] = { url: blob.url, originalName: image.file.name, alt: image.alt.trim() };
       updateCombinedProgress(image.id, 100);
     }
   };
@@ -92,10 +94,12 @@ function SelectedImageGrid({
   images,
   onRemove,
   onMove,
+  onAltChange,
 }: {
   images: SelectedImage[];
   onRemove: (id: string) => void;
   onMove: (id: string, direction: -1 | 1) => void;
+  onAltChange: (id: string, alt: string) => void;
 }) {
   const previews = useMemo(
     () => images.map((image) => ({ ...image, previewUrl: URL.createObjectURL(image.file) })),
@@ -120,6 +124,16 @@ function SelectedImageGrid({
             <button type="button" onClick={() => onMove(image.id, 1)} disabled={index === previews.length - 1} aria-label={`${image.file.name} dosyasını sağa taşı`}><ArrowRight size={14} /></button>
             <button type="button" onClick={() => onRemove(image.id)} aria-label={`${image.file.name} dosyasını seçimden kaldır`}><Trash2 size={14} /></button>
           </span>
+          <label className="album-upload-preview-alt">
+            <span>{index + 1}. fotoğrafın alternatif metni</span>
+            <input
+              value={image.alt}
+              onChange={(event) => onAltChange(image.id, event.target.value)}
+              maxLength={240}
+              required
+              placeholder="Görseldeki kişi, ortam ve eylemi kısa ve anlaşılır biçimde yazın."
+            />
+          </label>
         </article>
       ))}
     </div>
@@ -189,6 +203,9 @@ function ImageBatchPicker({
           [next[index], next[nextIndex]] = [next[nextIndex], next[index]];
           return next;
         })}
+        onAltChange={(id, alt) => setImages((current) => current.map((image) => (
+          image.id === id ? { ...image, alt } : image
+        )))}
       />
     </div>
   );
@@ -207,6 +224,7 @@ export function ActivityAlbumUploader({
   const [description, setDescription] = useState("");
   const [collectionKey, setCollectionKey] = useState<ActivityCollectionKey>("activities-social");
   const [departmentSlug, setDepartmentSlug] = useState(departments[0]?.slug ?? "");
+  const [publicationPermissionConfirmed, setPublicationPermissionConfirmed] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState<{ type: "error" | "success"; text: string }>();
@@ -216,8 +234,16 @@ export function ActivityAlbumUploader({
       setMessage({ type: "error", text: "Başlık, açıklama ve en az bir fotoğraf ekleyin." });
       return;
     }
+    if (images.some((image) => image.alt.trim().length < 10)) {
+      setMessage({ type: "error", text: "Her fotoğraf için en az 10 karakterlik açıklayıcı alternatif metin yazın." });
+      return;
+    }
     if (mode === "department" && !departmentSlug) {
       setMessage({ type: "error", text: "Albümün yayınlanacağı bölümü seçin." });
+      return;
+    }
+    if (!publicationPermissionConfirmed) {
+      setMessage({ type: "error", text: "Fotoğraf yayın izinlerinin kontrol edildiğini onaylayın." });
       return;
     }
     setIsUploading(true);
@@ -231,6 +257,7 @@ export function ActivityAlbumUploader({
         departmentSlug: mode === "department" ? departmentSlug : undefined,
         title,
         description,
+        publicationPermissionConfirmed,
         photos: uploadedPhotos,
       });
       if (!result.ok) throw new Error(result.message);
@@ -238,6 +265,7 @@ export function ActivityAlbumUploader({
       setImages([]);
       setTitle("");
       setDescription("");
+      setPublicationPermissionConfirmed(false);
       router.push(`/admin/faaliyetler/${result.albumId}?created=1`);
       router.refresh();
     } catch (error) {
@@ -277,6 +305,19 @@ export function ActivityAlbumUploader({
         </label>
       </div>
       <ImageBatchPicker images={images} setImages={setImages} disabled={isUploading} />
+      <label className="activity-publication-confirmation">
+        <input
+          type="checkbox"
+          checked={publicationPermissionConfirmed}
+          onChange={(event) => setPublicationPermissionConfirmed(event.target.checked)}
+          disabled={isUploading}
+        />
+        <span>
+          <strong>Yayın izni kontrolü:</strong> Görsellerde yer alan kişiler için internet sitesinde
+          yayımlamayı kapsayan gerekli açık rızaların bulunduğunu ve geri çekilen izinlerin
+          uygulanmış olduğunu doğruluyorum.
+        </span>
+      </label>
       {message ? <p className={message.type === "error" ? "album-upload-error" : "album-upload-success"}>{message.text}</p> : null}
       {isUploading ? (
         <div className="album-upload-progress" aria-live="polite">
@@ -284,7 +325,7 @@ export function ActivityAlbumUploader({
           <strong><LoaderCircle className="is-spinning" size={16} /> Fotoğraflar yükleniyor · %{progress}</strong>
         </div>
       ) : null}
-      <button className="admin-btn album-create-button" type="button" onClick={submit} disabled={isUploading || images.length === 0}>
+      <button className="admin-btn album-create-button" type="button" onClick={submit} disabled={isUploading || images.length === 0 || images.some((image) => image.alt.trim().length < 10) || !publicationPermissionConfirmed}>
         {isUploading ? <LoaderCircle className="is-spinning" aria-hidden="true" size={17} /> : <ImagePlus aria-hidden="true" size={17} />}
         {mode === "department" ? "Bölüm faaliyet albümünü yayınla" : "Yeni faaliyeti ve albümü yayınla"}
       </button>
@@ -295,21 +336,35 @@ export function ActivityAlbumUploader({
 export function ActivityAlbumPhotoAppender({ albumId }: { albumId: number }) {
   const router = useRouter();
   const [images, setImages] = useState<SelectedImage[]>([]);
+  const [publicationPermissionConfirmed, setPublicationPermissionConfirmed] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState<{ type: "error" | "success"; text: string }>();
 
   const submit = async () => {
     if (images.length === 0) return;
+    if (images.some((image) => image.alt.trim().length < 10)) {
+      setMessage({ type: "error", text: "Her fotoğraf için en az 10 karakterlik açıklayıcı alternatif metin yazın." });
+      return;
+    }
+    if (!publicationPermissionConfirmed) {
+      setMessage({ type: "error", text: "Fotoğraf yayın izinlerinin kontrol edildiğini onaylayın." });
+      return;
+    }
     setIsUploading(true);
     setProgress(0);
     setMessage(undefined);
     try {
       const photos = await uploadSelectedImages(images, setProgress);
-      const result = await addPhotosToActivityAlbumAction({ albumId, photos });
+      const result = await addPhotosToActivityAlbumAction({
+        albumId,
+        photos,
+        publicationPermissionConfirmed,
+      });
       if (!result.ok) throw new Error(result.message);
       setMessage({ type: "success", text: result.message });
       setImages([]);
+      setPublicationPermissionConfirmed(false);
       router.refresh();
     } catch (error) {
       setMessage({ type: "error", text: error instanceof Error ? error.message : "Fotoğraflar eklenemedi." });
@@ -321,13 +376,26 @@ export function ActivityAlbumPhotoAppender({ albumId }: { albumId: number }) {
   return (
     <div className="activity-album-uploader activity-album-uploader--append">
       <ImageBatchPicker images={images} setImages={setImages} disabled={isUploading} />
+      <label className="activity-publication-confirmation">
+        <input
+          type="checkbox"
+          checked={publicationPermissionConfirmed}
+          onChange={(event) => setPublicationPermissionConfirmed(event.target.checked)}
+          disabled={isUploading}
+        />
+        <span>
+          <strong>Yayın izni kontrolü:</strong> Eklenecek görseller için internet sitesinde
+          yayımlamayı kapsayan gerekli açık rızaların bulunduğunu ve geri çekilen izinlerin
+          uygulanmış olduğunu doğruluyorum.
+        </span>
+      </label>
       {message ? (
         <p className={message.type === "error" ? "album-upload-error" : "album-upload-success"}>
           {message.type === "success" ? <CheckCircle2 aria-hidden="true" size={15} /> : null}{message.text}
         </p>
       ) : null}
       {isUploading ? <div className="album-upload-progress"><span><i style={{ width: `${progress}%` }} /></span><strong>%{progress}</strong></div> : null}
-      <button className="admin-btn" type="button" onClick={submit} disabled={isUploading || images.length === 0}>
+      <button className="admin-btn" type="button" onClick={submit} disabled={isUploading || images.length === 0 || images.some((image) => image.alt.trim().length < 10) || !publicationPermissionConfirmed}>
         <UploadCloud aria-hidden="true" size={16} /> Seçilen fotoğrafları albüme ekle
       </button>
     </div>

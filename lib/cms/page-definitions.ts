@@ -10,7 +10,8 @@ function field(
   defaultValue: string,
   options: FieldOptions = {},
 ): ContentFieldDefinition {
-  return { key, label, group, type, defaultValue, ...options };
+  const resolvedType = type === "lines" && defaultValue.includes("|") ? "structured-list" : type;
+  return { key, label, group, type: resolvedType, defaultValue, ...options };
 }
 
 function heroFields(values: {

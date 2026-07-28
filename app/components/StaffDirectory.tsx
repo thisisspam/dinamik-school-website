@@ -165,7 +165,7 @@ export function StaffDirectory({ staffGroups, staffMembers }: { staffGroups: Sta
               placeholder="İsim veya branş ara"
             />
           </label>
-          <div className="staff-filter-list" aria-label="Branşa göre filtrele">
+          <div className="staff-filter-list" role="group" aria-label="Branşa göre filtrele">
             {[ALL, ...staffGroups.map((group) => group.category)].map((category) => (
               <button
                 className={activeCategory === category ? "is-active" : ""}

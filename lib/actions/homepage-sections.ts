@@ -12,6 +12,12 @@ import {
   type HomepageSectionTheme,
 } from "@/lib/content";
 import { HOMEPAGE_CONTENT_FIELDS } from "@/lib/cms/homepage-fields";
+import { parseHomepageHeroTiles } from "@/lib/cms/homepage-hero-tiles";
+import {
+  getHomepageStructuredField,
+  parseHomepageStructuredRows,
+  serializeHomepageStructuredRows,
+} from "@/lib/cms/homepage-structured-fields";
 import { saveUploadedFile } from "@/lib/media";
 
 function requiredText(formData: FormData, name: string): string {
@@ -62,6 +68,32 @@ async function contentValues(formData: FormData, sectionKey: string): Promise<Re
   const values: Record<string, string> = {};
   for (const field of fields) {
     let value = String(formData.get(`content_${field.key}`) ?? "").trim();
+    if (field.type === "hero-tiles") {
+      const tiles = parseHomepageHeroTiles(value);
+      const tilesWithUploads = await Promise.all(tiles.map(async (tile) => {
+        const file = formData.get(`content_${field.key}_file_${tile.id}`);
+        return file instanceof File && file.size > 0
+          ? { ...tile, image: await saveUploadedFile(file) }
+          : tile;
+      }));
+      values[field.key] = JSON.stringify(tilesWithUploads);
+      continue;
+    }
+    if (field.type === "structured-list") {
+      const definition = getHomepageStructuredField(sectionKey, field.key);
+      if (!definition) throw new Error(`${sectionKey}.${field.key} alan tanımı bulunamadı.`);
+      const rows = parseHomepageStructuredRows(value, definition);
+      const rowsWithUploads = await Promise.all(rows.map(async (row) => {
+        const nextValues = { ...row.values };
+        for (const column of definition.columns.filter((item) => item.type === "image")) {
+          const file = formData.get(`content_${field.key}_file_${row.id}_${column.key}`);
+          if (file instanceof File && file.size > 0) nextValues[column.key] = await saveUploadedFile(file);
+        }
+        return { ...row, values: nextValues };
+      }));
+      values[field.key] = serializeHomepageStructuredRows(rowsWithUploads, definition);
+      continue;
+    }
     if (field.type === "image") {
       const file = formData.get(`content_${field.key}_file`);
       if (file instanceof File && file.size > 0) value = await saveUploadedFile(file);
@@ -152,16 +184,17 @@ export async function moveHomepageSectionAction(formData: FormData): Promise<voi
   if (!Number.isInteger(id) || !["up", "down"].includes(direction)) throw new Error("Geçersiz sıralama isteği.");
 
   const db = await getDb();
-  const customRows = await db.select().from(schema.homepageSections)
-    .where(eq(schema.homepageSections.isDeletable, true))
-    .orderBy(asc(schema.homepageSections.sortOrder));
-  const index = customRows.findIndex((row) => row.id === id);
+  const rows = await db.select().from(schema.homepageSections)
+    .orderBy(asc(schema.homepageSections.sortOrder), asc(schema.homepageSections.id));
+  const index = rows.findIndex((row) => row.id === id);
   const swapIndex = direction === "up" ? index - 1 : index + 1;
-  if (index < 0 || swapIndex < 0 || swapIndex >= customRows.length) return;
+  if (index < 0 || swapIndex < 0 || swapIndex >= rows.length) return;
 
-  const current = customRows[index];
-  const adjacent = customRows[swapIndex];
-  await db.update(schema.homepageSections).set({ sortOrder: adjacent.sortOrder }).where(eq(schema.homepageSections.id, current.id));
-  await db.update(schema.homepageSections).set({ sortOrder: current.sortOrder }).where(eq(schema.homepageSections.id, adjacent.id));
+  [rows[index], rows[swapIndex]] = [rows[swapIndex], rows[index]];
+  await Promise.all(rows.map((row, orderIndex) => (
+    db.update(schema.homepageSections)
+      .set({ sortOrder: orderIndex * 10 })
+      .where(eq(schema.homepageSections.id, row.id))
+  )));
   refreshHomepageSections();
 }

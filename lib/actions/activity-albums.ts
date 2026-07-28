@@ -14,6 +14,7 @@ const MAX_PHOTOS_PER_BATCH = 40;
 export type UploadedActivityPhoto = {
   url: string;
   originalName: string;
+  alt: string;
 };
 
 export type ActivityAlbumDraft = {
@@ -22,6 +23,7 @@ export type ActivityAlbumDraft = {
   departmentSlug?: string;
   title: string;
   description: string;
+  publicationPermissionConfirmed: boolean;
   photos: UploadedActivityPhoto[];
 };
 
@@ -73,9 +75,13 @@ function validatePhotos(photos: UploadedActivityPhoto[]): UploadedActivityPhoto[
   const normalized = photos.map((photo) => ({
     url: String(photo.url ?? "").trim(),
     originalName: String(photo.originalName ?? "").trim().slice(0, 180),
+    alt: String(photo.alt ?? "").trim().slice(0, 240),
   }));
   if (normalized.some((photo) => !isTrustedBlobUrl(photo.url))) {
     throw new Error("Yüklenen fotoğraf adreslerinden biri doğrulanamadı.");
+  }
+  if (normalized.some((photo) => photo.alt.length < 10)) {
+    throw new Error("Her fotoğraf için en az 10 karakterlik açıklayıcı alternatif metin yazın.");
   }
   return normalized;
 }
@@ -122,6 +128,9 @@ export async function createActivityAlbumAction(
 ): Promise<ActivityAlbumMutationResult> {
   await requireAdminSession();
   try {
+    if (draft.publicationPermissionConfirmed !== true) {
+      throw new Error("Fotoğraf yayın izinlerinin kontrol edildiğini onaylayın.");
+    }
     const title = String(draft.title ?? "").trim();
     const description = String(draft.description ?? "").trim();
     if (title.length < 3) throw new Error("Faaliyet başlığı en az 3 karakter olmalıdır.");
@@ -161,7 +170,7 @@ export async function createActivityAlbumAction(
         photos.map((photo, index) => ({
           collectionKey: destination.collectionKey,
           src: photo.url,
-          alt: `${title} albümünden ${index + 1}. fotoğraf`,
+          alt: photo.alt,
           caption: title,
           description,
           albumId: albumKey,
@@ -185,10 +194,14 @@ export async function createActivityAlbumAction(
 
 export async function addPhotosToActivityAlbumAction(input: {
   albumId: number;
+  publicationPermissionConfirmed: boolean;
   photos: UploadedActivityPhoto[];
 }): Promise<ActivityAlbumMutationResult> {
   await requireAdminSession();
   try {
+    if (input.publicationPermissionConfirmed !== true) {
+      throw new Error("Fotoğraf yayın izinlerinin kontrol edildiğini onaylayın.");
+    }
     const albumId = Number(input.albumId);
     if (!Number.isInteger(albumId) || albumId <= 0) throw new Error("Geçersiz albüm.");
     const photos = validatePhotos(input.photos);
@@ -209,7 +222,7 @@ export async function addPhotosToActivityAlbumAction(input: {
       photos.map((photo, index) => ({
         collectionKey: album.collectionKey,
         src: photo.url,
-        alt: `${album.title} albümünden ${currentImages.length + index + 1}. fotoğraf`,
+        alt: photo.alt,
         caption: album.title,
         description: album.description,
         albumId: album.albumKey,

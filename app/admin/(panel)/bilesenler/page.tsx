@@ -47,7 +47,7 @@ export default async function AdminHomepageSectionsPage({
       <AdminPageHeader
         eyebrow="Sayfa oluşturucu"
         title="Ana Sayfa Bileşenleri"
-        description="Ana sayfadaki alanları düzenleyin, temalarını değiştirin, geçici olarak gizleyin veya yeni içerik bileşenleri ekleyin."
+        description="Alanları oklarla sıralayın; ana sayfa aynı sırayı kullanır. İçerikleri düzenleyebilir, gizleyebilir veya yeni bileşen ekleyebilirsiniz."
         actions={<Link className="admin-btn" href="/admin/bilesenler/yeni"><Plus aria-hidden="true" size={16} /> Yeni bileşen</Link>}
       />
 
@@ -61,7 +61,6 @@ export default async function AdminHomepageSectionsPage({
 
       <div className="admin-component-list">
         {sections.map((section, index) => {
-          const customIndex = customSections.findIndex((item) => item.id === section.id);
           return (
             <article className={`admin-component-card${section.isVisible ? "" : " is-hidden"}`} key={section.id}>
               <div className={`admin-component-preview admin-component-preview--${section.theme}`}>
@@ -84,20 +83,18 @@ export default async function AdminHomepageSectionsPage({
                 </div>
               </div>
               <div className="admin-component-actions">
-                {section.isDeletable ? (
-                  <div className="admin-order-actions" aria-label="Özel bileşen sıralaması">
-                    <form action={moveHomepageSectionAction}>
-                      <input type="hidden" name="id" value={section.id} />
-                      <input type="hidden" name="direction" value="up" />
-                      <button type="submit" disabled={customIndex <= 0} aria-label="Yukarı taşı"><ArrowUp size={15} /></button>
-                    </form>
-                    <form action={moveHomepageSectionAction}>
-                      <input type="hidden" name="id" value={section.id} />
-                      <input type="hidden" name="direction" value="down" />
-                      <button type="submit" disabled={customIndex === customSections.length - 1} aria-label="Aşağı taşı"><ArrowDown size={15} /></button>
-                    </form>
-                  </div>
-                ) : null}
+                <div className="admin-order-actions" aria-label={`${section.displayName} sıralaması`}>
+                  <form action={moveHomepageSectionAction}>
+                    <input type="hidden" name="id" value={section.id} />
+                    <input type="hidden" name="direction" value="up" />
+                    <button type="submit" disabled={index === 0} aria-label={`${section.displayName} bileşenini yukarı taşı`}><ArrowUp size={15} /></button>
+                  </form>
+                  <form action={moveHomepageSectionAction}>
+                    <input type="hidden" name="id" value={section.id} />
+                    <input type="hidden" name="direction" value="down" />
+                    <button type="submit" disabled={index === sections.length - 1} aria-label={`${section.displayName} bileşenini aşağı taşı`}><ArrowDown size={15} /></button>
+                  </form>
+                </div>
                 <form action={toggleHomepageSectionAction}>
                   <input type="hidden" name="id" value={section.id} />
                   <input type="hidden" name="nextVisible" value={String(!section.isVisible)} />

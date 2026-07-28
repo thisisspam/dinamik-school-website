@@ -5,6 +5,11 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { hasValidSession } from "@/lib/auth";
 import { CONTENT_PAGE_DEFINITION_BY_KEY } from "@/lib/cms/page-definitions";
+import {
+  getContentPageStructuredField,
+  parseContentPageStructuredRows,
+  serializeContentPageStructuredRows,
+} from "@/lib/cms/content-page-structured-fields";
 import { CONTENT_PAGE_THEMES, type ContentPageTheme } from "@/lib/cms/types";
 import { getDb, schema } from "@/lib/db/client";
 import { saveUploadedFile } from "@/lib/media";
@@ -38,6 +43,23 @@ export async function updateContentPageAction(formData: FormData): Promise<void>
 
   for (const item of definition.fields) {
     let value = String(formData.get(item.key) ?? "").trim();
+    if (item.type === "structured-list") {
+      const structuredDefinition = getContentPageStructuredField(pageKey, item.key);
+      if (!structuredDefinition) throw new Error(`${pageKey}.${item.key} alan tanımı bulunamadı.`);
+      const rows = parseContentPageStructuredRows(value, structuredDefinition).map((row) => ({
+        ...row,
+        values: Object.fromEntries(structuredDefinition.columns.map((column) => [
+          column.key,
+          column.type === "url"
+            ? safeUrl(row.values[column.key] ?? "", `${item.label} / ${column.label}`)
+            : row.values[column.key] ?? "",
+        ])),
+      }));
+      value = serializeContentPageStructuredRows(
+        rows,
+        structuredDefinition,
+      );
+    }
     if (item.type === "image") {
       const uploadedFile = formData.get(`${item.key}File`);
       if (uploadedFile instanceof File && uploadedFile.size > 0) {

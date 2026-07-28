@@ -59,7 +59,7 @@ export function SchoolVideoGallery({ content }: { content: Record<string, string
           <p>Diğer videoları oynatmak için görüntünün üzerine dokunun.</p>
         </div>
 
-        <div className="school-video-grid" aria-label="Diğer okul videoları">
+        <div className="school-video-grid" role="group" aria-label="Diğer okul videoları">
           {supportingVideos.map((video) => (
             <article className="school-video-card" key={video.src}>
               <video

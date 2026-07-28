@@ -66,9 +66,16 @@ test("renders the completed Turkish school homepage", async () => {
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 
   const homepageGallery = html.match(/<section class="gallery-section[\s\S]*?<\/section>/i)?.[0] ?? "";
-  assert.equal((homepageGallery.match(/class="gallery-item gallery-item--/g) ?? []).length, 8);
-  assert.match(homepageGallery, /\/images\/achievements\/urfodu-bilim-yarismasi\/urfodu-bilim-yarismasi-02\.webp/i);
-  assert.match(homepageGallery, /\/images\/achievements\/tahir-oztunc-turkiye-judo-dorduncusu\/tahir-oztunc-turkiye-judo-dorduncusu-03\.webp/i);
+  const homepageGalleryItemCount = (homepageGallery.match(/class="gallery-item gallery-item--/g) ?? []).length;
+  assert.ok(
+    homepageGalleryItemCount >= 1 && homepageGalleryItemCount <= 8,
+    "the CMS-managed homepage gallery should render between 1 and 8 published items",
+  );
+  assert.equal(
+    (homepageGallery.match(/src="\/images\/achievements\//gi) ?? []).length,
+    homepageGalleryItemCount,
+    "every published homepage gallery item should use an achievement image",
+  );
   assert.doesNotMatch(homepageGallery, /\/images\/gallery-[123478]\.jpg/i);
   assert.match(homepageGallery, /Başarılar/i);
   assert.match(homepageGallery, /Emekle büyüyen gurur tablomuz/i);
@@ -176,6 +183,11 @@ test("renders three animated activity galleries with the supplied activity photo
     assert.match(html, new RegExp(imagePath, "i"));
   }
 
+  assert.doesNotMatch(html, /içeriğinden \d+\. fotoğraf/i);
+  assert.match(
+    html,
+    /alt="Ahşap atölyesine katılan öğrenciler ve öğretmenleri çalışma masası çevresinde"/i,
+  );
   assert.doesNotMatch(html, /\/images\/gallery-[123478]\.jpg/i);
 });
 
@@ -219,6 +231,11 @@ test("renders the supplied achievement albums in an animated gallery", async () 
     assert.match(html, new RegExp(imagePath, "i"));
   }
 
+  assert.doesNotMatch(html, /içeriğinden \d+\. fotoğraf/i);
+  assert.match(
+    html,
+    /alt="CodeWeek çalışmalarına katılan öğrencilerin öğretmenleriyle birlikte sertifikalarını gösterdiği sınıf ortamı"/i,
+  );
   assert.doesNotMatch(html, /\/images\/gallery-[78]\.jpg/i);
 });
 
@@ -239,6 +256,7 @@ test("exports every primary frontend route with working internal navigation", as
     "/iletisim",
     "/on-kayit",
     "/kvkk",
+    "/erisilebilirlik",
   ];
 
   for (const route of routes) {
@@ -295,11 +313,27 @@ test("publishes a clear KVKK notice and separates optional WhatsApp preference",
   assert.match(kvkkHtml, /Veri sorumlusu/i);
   assert.match(kvkkHtml, /KVKK Madde 11/i);
   assert.match(kvkkHtml, /Veri güvenliği/i);
+  assert.match(kvkkHtml, /class="privacy-document"/i);
+  assert.equal(
+    (kvkkHtml.match(/class="privacy-document-section"/gi) ?? []).length,
+    8,
+  );
+  assert.doesNotMatch(kvkkHtml, /class="privacy-(?:grid|card)/i);
   assert.match(registrationHtml, /name="privacyNoticeAcknowledged"/i);
   assert.match(registrationHtml, /name="whatsappConsent"/i);
   assert.match(registrationHtml, /İsteğe bağlı/i);
   assert.match(registrationHtml, /905448708955/i);
   assert.match(registrationHtml, /href="\/kvkk#aydinlatma"/i);
+});
+
+test("publishes an honest accessibility statement and feedback channel", async () => {
+  const html = await readRoute("/erisilebilirlik");
+
+  assert.match(html, /WCAG 2\.2 A seviyesi hedeflenmektedir/i);
+  assert.match(html, /Bilinen sınırlamalar/i);
+  assert.match(html, /görüntüye gömülü Türkçe açık altyazılar/i);
+  assert.match(html, /resmî erişilebilirlik logosu kullanılmamaktadır/i);
+  assert.match(html, /href="mailto:samsun@dinamikokullari\.com\?subject=/i);
 });
 
 test("redirects unauthenticated admin requests to the login page", async () => {

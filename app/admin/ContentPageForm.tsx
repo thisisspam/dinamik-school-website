@@ -1,5 +1,6 @@
 import { Eye, ImageIcon, Save } from "lucide-react";
 import type { ContentPageDefinition, ContentPageDocument } from "@/lib/cms/types";
+import { ContentPageStructuredListEditor } from "./ContentPageStructuredListEditor";
 
 const THEME_OPTIONS = [
   { value: "original", label: "Özgün", description: "Sayfanın mevcut kurumsal tasarımı" },
@@ -45,6 +46,17 @@ export function ContentPageForm({
           <div className="admin-editor-fields">
             {definition.fields.filter((item) => item.group === group).map((item) => {
               const value = document.content[item.key] ?? item.defaultValue;
+              if (item.type === "structured-list") {
+                return (
+                  <ContentPageStructuredListEditor
+                    key={item.key}
+                    pageKey={definition.key}
+                    fieldKey={item.key}
+                    name={item.key}
+                    value={value}
+                  />
+                );
+              }
               if (item.type === "image") {
                 return (
                   <div className="admin-media-field admin-content-media-field" key={item.key}>

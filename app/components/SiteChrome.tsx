@@ -123,6 +123,8 @@ export async function SiteFooter() {
           <div className="footer-legal-links">
             <Link href="/kvkk">{chrome.content.footerLegalLabel}</Link>
             <span aria-hidden="true">•</span>
+            <Link href="/erisilebilirlik">Erişilebilirlik</Link>
+            <span aria-hidden="true">•</span>
             <span>{chrome.content.footerLocation}</span>
           </div>
         </div>

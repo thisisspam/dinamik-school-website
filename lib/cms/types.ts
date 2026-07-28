@@ -2,7 +2,7 @@ export const CONTENT_PAGE_THEMES = ["original", "light", "navy", "red"] as const
 
 export type ContentPageTheme = (typeof CONTENT_PAGE_THEMES)[number];
 
-export type ContentFieldType = "text" | "textarea" | "url" | "image" | "lines";
+export type ContentFieldType = "text" | "textarea" | "url" | "image" | "lines" | "feature-cards" | "hero-tiles" | "structured-list";
 
 export type ContentFieldDefinition = {
   key: string;
