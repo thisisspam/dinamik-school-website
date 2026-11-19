@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CheckCircle2, Keyboard, Mail, MonitorCog, PauseCircle, Phone, Subtitles } from "lucide-react";
 import { getSiteSettings } from "@/lib/content";
+import { createPhoneHref } from "@/lib/phone";
 import { InnerPageShell } from "../components/SiteChrome";
 import { PageHero } from "../components/PageHero";
 
@@ -31,7 +32,7 @@ const accessibilityFeatures = [
 
 export default async function AccessibilityPage() {
   const settings = await getSiteSettings();
-  const phoneHref = `tel:+9${settings.generalPhone.replace(/\D/g, "")}`;
+  const phoneHref = createPhoneHref(settings.generalPhone);
 
   return (
     <InnerPageShell>

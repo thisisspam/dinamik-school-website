@@ -153,12 +153,43 @@ export const CREATE_TABLE_STATEMENTS = [
     created_at TEXT NOT NULL DEFAULT '',
     updated_at TEXT NOT NULL DEFAULT ''
   )`,
+  `CREATE TABLE IF NOT EXISTS scholarship_applications (
+    id SERIAL PRIMARY KEY,
+    student_name TEXT NOT NULL,
+    guardian_phone TEXT NOT NULL,
+    current_school TEXT NOT NULL,
+    exam_session TEXT NOT NULL,
+    transport_preference TEXT NOT NULL,
+    source TEXT NOT NULL DEFAULT '/bursluluk-sinavi',
+    status TEXT NOT NULL DEFAULT 'new',
+    notes TEXT,
+    email_delivery_status TEXT NOT NULL DEFAULT 'pending',
+    email_delivery_error TEXT,
+    email_delivered_at TEXT,
+    consent_accepted BOOLEAN NOT NULL DEFAULT TRUE,
+    privacy_notice_version TEXT NOT NULL,
+    consent_accepted_at TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  )`,
 ];
 
 export const DATA_MIGRATION_STATEMENTS = [
   `UPDATE site_settings
    SET map_url = 'https://maps.app.goo.gl/4XoMtVt8tCsUKzz8A?g_st=iw'
    WHERE map_url = 'https://www.google.com/maps/search/?api=1&query=Toybelen+Mahallesi+Anadolu+Bulvar%C4%B1+No%3A225+%C4%B0lkad%C4%B1m+Samsun'`,
+  `UPDATE content_pages
+   SET content = jsonb_set(
+     jsonb_set(
+       content,
+       '{heroImage}',
+       '"/images/yks-mtok/mtok-lisans-onlisans-programlari.png"'::jsonb
+     ),
+     '{heroImageAlt}',
+     '"Elektrik-Elektronik, Kimya ve Biyomedikal Cihaz Teknolojileri alanlarıyla ilişkili MTOK lisans ve ek puanlı ön lisans programları"'::jsonb
+   )
+   WHERE page_key = 'yks-mtok-university'
+     AND content->>'heroImage' = '/images/hero-banner.png'`,
 ];
 
 const CONTENT_DIR = resolve(process.cwd(), "content");
@@ -269,6 +300,9 @@ export async function ensureContentPages(db: NeonHttpDatabase<typeof schema>): P
   const now = new Date().toISOString();
   const missingPages = CONTENT_PAGE_DEFINITIONS.filter((definition) => !existingKeys.has(definition.key));
   if (missingPages.length === 0) return;
+  const shouldAddMtokNavigationLink = missingPages.some(
+    (definition) => definition.key === "yks-mtok-university",
+  );
 
   await db.insert(schema.contentPages).values(
     missingPages.map((definition) => ({
@@ -281,6 +315,35 @@ export async function ensureContentPages(db: NeonHttpDatabase<typeof schema>): P
       updatedAt: now,
     })),
   );
+
+  if (!shouldAddMtokNavigationLink) return;
+
+  const chrome = (await db
+    .select({
+      id: schema.contentPages.id,
+      content: schema.contentPages.content,
+    })
+    .from(schema.contentPages)
+    .where(eq(schema.contentPages.pageKey, "site-chrome")))[0];
+  if (!chrome) return;
+
+  const navigation = chrome.content.navigation ?? "";
+  const mtokHref = "/yks-mtok-ve-universite";
+  if (navigation.includes(mtokHref)) return;
+
+  const guidanceLine = "- Rehberlik | /rehberlik";
+  const mtokLine = "- YKS - MTOK ve Üniversite | /yks-mtok-ve-universite";
+  const updatedNavigation = navigation.includes(guidanceLine)
+    ? navigation.replace(guidanceLine, `${guidanceLine}\n${mtokLine}`)
+    : `${navigation.trimEnd()}\nYKS - MTOK ve Üniversite | ${mtokHref}`;
+
+  await db
+    .update(schema.contentPages)
+    .set({
+      content: { ...chrome.content, navigation: updatedNavigation },
+      updatedAt: now,
+    })
+    .where(eq(schema.contentPages.id, chrome.id));
 }
 
 export async function ensureSiteTheme(db: NeonHttpDatabase<typeof schema>): Promise<void> {

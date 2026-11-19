@@ -15,6 +15,10 @@ export default async function AdminPanelLayout({ children }: { children: React.R
     .select({ value: count() })
     .from(schema.registrationApplications)
     .where(eq(schema.registrationApplications.status, "new"));
+  const [{ value: newScholarshipCount }] = await db
+    .select({ value: count() })
+    .from(schema.scholarshipApplications)
+    .where(eq(schema.scholarshipApplications.status, "new"));
 
   return (
     <div className="admin-shell">
@@ -29,7 +33,7 @@ export default async function AdminPanelLayout({ children }: { children: React.R
             <small>Samsun kampüsü</small>
           </span>
         </Link>
-        <AdminNav newApplicationCount={newApplicationCount} />
+        <AdminNav newApplicationCount={newApplicationCount} newScholarshipCount={newScholarshipCount} />
         <div className="admin-sidebar-footer">
           <div className="admin-session-info">
             <span className="admin-session-icon"><ShieldCheck aria-hidden="true" size={17} /></span>

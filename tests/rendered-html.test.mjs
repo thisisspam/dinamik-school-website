@@ -92,7 +92,10 @@ test("keeps essential navigation and accessibility contracts", async () => {
   assert.match(html, /href="\/bolumler"[^>]*>\s*Bölümler/i);
   assert.match(html, /Bölümler[\s\S]*Kimya[\s\S]*Elektrik - Elektronik[\s\S]*Biyomedikal/i);
   assert.match(html, /href="\/okulumuz"[^>]*>\s*Okulumuz/i);
-  assert.match(html, /Okulumuz[\s\S]*Hakkımızda[\s\S]*Okul Kıyafetlerimiz[\s\S]*Rehberlik/i);
+  assert.match(
+    html,
+    /Okulumuz[\s\S]*Hakkımızda[\s\S]*Okul Kıyafetlerimiz[\s\S]*Rehberlik[\s\S]*YKS - MTOK ve Üniversite/i,
+  );
   assert.match(
     html,
     /Galeri[\s\S]*Faaliyetlerimiz/i,
@@ -103,7 +106,7 @@ test("keeps essential navigation and accessibility contracts", async () => {
   assert.match(html, /href="\/basarilarimiz"/i);
   assert.match(html, /aria-label="Hızlı erişim"/i);
   assert.match(html, /aria-label="WhatsApp üzerinden iletişime geçin"/i);
-  assert.match(html, /https:\/\/wa\.me\/905448708955\?text=Merhaba%2C%20Dinamik%20Okullar%C4%B1%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum\./i);
+  assert.match(html, /https:\/\/wa\.me\/90\d{10}\?text=Merhaba%2C%20Dinamik%20Okullar%C4%B1%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum\./i);
   assert.match(html, /href="tel:\+908502182806"/i);
   assert.match(html, /href="tel:\+903624655353"/i);
   assert.match(html, /aria-expanded="false"/i);
@@ -253,8 +256,10 @@ test("exports every primary frontend route with working internal navigation", as
     "/galeri",
     "/basarilarimiz",
     "/rehberlik",
+    "/yks-mtok-ve-universite",
     "/iletisim",
     "/on-kayit",
+    "/bursluluk-sinavi",
     "/kvkk",
     "/erisilebilirlik",
   ];
@@ -265,6 +270,62 @@ test("exports every primary frontend route with working internal navigation", as
     assert.match(html, /aria-label="Ana navigasyon"/i, `${route} needs shared navigation`);
     assert.match(html, /Dinamik Okulları/i, `${route} needs the school brand`);
   }
+});
+
+test("publishes the 2027 scholarship exam campaign and application form", async () => {
+  const [homeHtml, applicationHtml, posterResponse] = await Promise.all([
+    readRoute("/"),
+    readRoute("/bursluluk-sinavi"),
+    fetch(`${BASE_URL}/images/bursluluk/bursluluk-sinavi-2027.png`),
+  ]);
+
+  assert.match(homeHtml, /2027 bursluluk sınavında yerinizi ayırın/i);
+  assert.match(homeHtml, /bursluluk-sinavi-2027\.png/i);
+  assert.match(applicationHtml, /Bursluluk sınavı başvuruları başladı/i);
+  assert.match(applicationHtml, /name="studentName"/i);
+  assert.match(applicationHtml, /name="guardianPhone"/i);
+  assert.match(applicationHtml, /name="currentSchool"/i);
+  assert.match(applicationHtml, /name="examSession"/i);
+  assert.match(applicationHtml, /9 Ocak 2027 Cumartesi, 10\.00/i);
+  assert.match(applicationHtml, /10 Ocak 2027 Pazar, 14\.00/i);
+  assert.match(applicationHtml, /name="transportPreference"/i);
+  assert.match(applicationHtml, /Servis kullanacağım/i);
+  assert.match(applicationHtml, /name="privacyNoticeAcknowledged"/i);
+  assert.equal(posterResponse.status, 200);
+});
+
+test("publishes the YKS, MTOK and university guidance page with the supplied visuals", async () => {
+  const html = await readRoute("/yks-mtok-ve-universite");
+
+  assert.match(html, /Üniversite kazanma şansını artıran meslek lisesi!/i);
+  assert.match(html, /MTOK avantajıyla lisans ve ön lisans programlarına daha güçlü bir adım/i);
+  assert.match(html, /Elektrik-Elektronik Teknolojileri/i);
+  assert.match(html, /Kimya Teknolojileri/i);
+  assert.match(html, /Biyomedikal Cihaz Teknolojileri/i);
+  assert.match(html, /MTOK kontenjanları/i);
+  assert.match(html, /Ön lisansta ek puan/i);
+  assert.match(html, /Anadolu Lisesi müfredatıyla desteklenen YKS hazırlığı/i);
+  assert.match(html, /KPSS ile teknisyen kadrolarının nitelik şartlarını karşılayan ilanlara başvuru imkânı/i);
+  assert.match(html, /Hem güçlü bir meslek hem de üniversite hedefi aynı okulda!/i);
+  assert.match(html, /2026 ÖSYM YKS kılavuzunu incele/i);
+  assert.match(
+    html,
+    /mtok-hero-poster[\s\S]*mtok-lisans-onlisans-programlari\.png/i,
+    "the program overview poster should be used in the page banner",
+  );
+  assert.doesNotMatch(
+    html,
+    /mtok-hero-poster[\s\S]*hero-banner\.png/i,
+    "the generic school banner should not be used on the MTOK page",
+  );
+  assert.match(html, /href="tel:\+903624655353"[^>]*>0362 465 53 52-53/i);
+  assert.match(html, /href="tel:\+908502182806"[^>]*>0850 218 28 06/i);
+
+  const posterResponses = await Promise.all([
+    fetch(`${BASE_URL}/images/yks-mtok/mtok-ayt-net-karsilastirmasi.png`),
+    fetch(`${BASE_URL}/images/yks-mtok/mtok-lisans-onlisans-programlari.png`),
+  ]);
+  assert.ok(posterResponses.every((response) => response.ok), "both supplied MTOK posters should be served");
 });
 
 test("publishes the supplied institutional story on the about page", async () => {
@@ -322,7 +383,7 @@ test("publishes a clear KVKK notice and separates optional WhatsApp preference",
   assert.match(registrationHtml, /name="privacyNoticeAcknowledged"/i);
   assert.match(registrationHtml, /name="whatsappConsent"/i);
   assert.match(registrationHtml, /İsteğe bağlı/i);
-  assert.match(registrationHtml, /905448708955/i);
+  assert.match(registrationHtml, /https:\/\/wa\.me\/90\d{10}/i);
   assert.match(registrationHtml, /href="\/kvkk#aydinlatma"/i);
 });
 
@@ -484,7 +545,7 @@ test("renders the cinematic homepage composition while preserving the brand logo
   assert.match(html, /src="\/images\/dinamik-logo-retina\.png"/i);
   assert.match(html, /src="\/images\/footer-logo-dinamik\.png"/i);
   assert.match(footerHtml, /href="tel:\+908502182806"[^>]*>[\s\S]*?0850 218 28 06/i);
-  assert.match(footerHtml, /href="tel:\+903624655353"[^>]*>[\s\S]*?0362 465 53 53/i);
+  assert.match(footerHtml, /href="tel:\+903624655353"[^>]*>[\s\S]*?0362 465 53 (?:53|52-53)/i);
   assert.match(html, /class="hero"/i);
   assert.doesNotMatch(html, /class="stats-section"/i);
   assert.match(html, /class="departments-footer-link"/i);

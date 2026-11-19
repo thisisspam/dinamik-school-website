@@ -7,6 +7,7 @@ import type { NavigationItem } from "./navigation";
 import { ScrollAwareHeader } from "./ScrollAwareHeader";
 import { getSiteSettings } from "../../lib/content";
 import { createWhatsappHref } from "../../lib/whatsapp";
+import { createPhoneHref } from "@/lib/phone";
 import { getContentPage } from "@/lib/cms/content";
 import { contentPageThemeClass } from "@/lib/cms/content";
 import type { ContentPageTheme } from "@/lib/cms/types";
@@ -82,8 +83,8 @@ export function InstagramIcon() {
 
 export async function SiteFooter() {
   const [settings, chrome] = await Promise.all([getSiteSettings(), getContentPage("site-chrome")]);
-  const generalPhoneTel = `tel:+9${settings.generalPhone.replace(/\D/g, "")}`;
-  const landlineTel = `tel:+9${settings.landlinePhone.replace(/\D/g, "")}`;
+  const generalPhoneTel = createPhoneHref(settings.generalPhone);
+  const landlineTel = createPhoneHref(settings.landlinePhone);
   const whatsappHref = createWhatsappHref(settings.whatsapp);
   const firstLinks = parseContentRows(chrome.content.footerFirstLinks, 2);
   const secondLinks = parseContentRows(chrome.content.footerSecondLinks, 2);

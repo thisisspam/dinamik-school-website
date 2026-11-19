@@ -34,6 +34,11 @@ değişkenleri zorunludur:
 - `ADMIN_USERNAME`: üretim yönetici kullanıcı adı
 - `ADMIN_PASSWORD_HASH`: yönetici şifresinin SHA-256 hex özeti
 - `SESSION_SECRET`: uzun ve rastgele oturum imzalama anahtarı
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`: bursluluk sınavı başvurularının e-posta bildirimi için SMTP bağlantısı
+- `SMTP_FROM`: başvuru bildirimlerinin gönderen adresi (tanımlanmazsa `SMTP_USER` kullanılır)
+- `SCHOLARSHIP_NOTIFICATION_EMAIL`: bursluluk başvurularının gönderileceği adres (tanımlanmazsa site ayarlarındaki okul e-postası kullanılır)
+
+465 portuyla doğrudan TLS kullanılıyorsa `SMTP_SECURE=true` olarak tanımlanmalıdır.
 
 Geliştirme kolaylığı için bulunan yerel yönetici bilgileri üretim modunda kabul edilmez.
 Canlıya çıkmadan önce bu değişkenler barındırma projesinde tanımlanmalıdır.

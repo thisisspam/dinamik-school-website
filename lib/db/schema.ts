@@ -145,3 +145,23 @@ export const registrationApplications = pgTable("registration_applications", {
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
+
+export const scholarshipApplications = pgTable("scholarship_applications", {
+  id: serial("id").primaryKey(),
+  studentName: text("student_name").notNull(),
+  guardianPhone: text("guardian_phone").notNull(),
+  currentSchool: text("current_school").notNull(),
+  examSession: text("exam_session").notNull(),
+  transportPreference: text("transport_preference").notNull(),
+  source: text("source").notNull().default("/bursluluk-sinavi"),
+  status: text("status").notNull().default("new"),
+  notes: text("notes"),
+  emailDeliveryStatus: text("email_delivery_status").notNull().default("pending"),
+  emailDeliveryError: text("email_delivery_error"),
+  emailDeliveredAt: text("email_delivered_at"),
+  consentAccepted: boolean("consent_accepted").notNull().default(true),
+  privacyNoticeVersion: text("privacy_notice_version").notNull(),
+  consentAcceptedAt: text("consent_accepted_at").notNull(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});

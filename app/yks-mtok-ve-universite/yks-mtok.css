@@ -1,0 +1,577 @@
+.mtok-hero {
+  position: relative;
+  overflow: hidden;
+  color: white;
+  background:
+    linear-gradient(
+      105deg,
+      color-mix(in srgb, var(--brand-navy-deep) 97%, black),
+      var(--brand-navy-deep)
+    );
+}
+
+.mtok-hero::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--brand-red);
+  content: "";
+}
+
+.mtok-hero-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(380px, 0.72fr);
+  gap: clamp(42px, 7vw, 92px);
+  align-items: center;
+  min-height: 590px;
+  padding-block: clamp(48px, 6vw, 72px);
+}
+
+.mtok-hero-copy {
+  padding-block: 16px;
+}
+
+.mtok-hero .breadcrumbs {
+  margin-bottom: 34px;
+}
+
+.mtok-hero h1 {
+  max-width: 720px;
+  margin: 0;
+  font-size: clamp(2.7rem, 5vw, 4.7rem);
+  font-weight: 880;
+  line-height: 1;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.mtok-hero-copy > p:last-of-type {
+  max-width: 690px;
+  margin: 25px 0 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: clamp(0.98rem, 1.35vw, 1.14rem);
+  line-height: 1.72;
+}
+
+.mtok-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  margin-top: 31px;
+}
+
+.mtok-hero-text-link {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: white;
+  font-size: 0.84rem;
+  font-weight: 780;
+}
+
+.mtok-hero-text-link:hover {
+  color: #ff8b8b;
+}
+
+.mtok-hero-poster {
+  width: min(100%, 500px);
+  margin: 0;
+  padding: 9px;
+  overflow: hidden;
+  justify-self: end;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 28px 72px rgba(2, 8, 31, 0.38);
+}
+
+.mtok-hero-poster img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mtok-intro {
+  overflow: hidden;
+}
+
+.mtok-intro-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.72fr);
+  gap: clamp(40px, 7vw, 100px);
+  align-items: end;
+}
+
+.mtok-intro-heading h2 {
+  max-width: 760px;
+  margin: 12px 0 0;
+  color: var(--brand-navy);
+  font-size: clamp(2rem, 3.7vw, 3.5rem);
+  line-height: 1.03;
+  letter-spacing: -0.045em;
+}
+
+.mtok-intro-heading > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.78;
+}
+
+.mtok-path {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: clamp(42px, 5vw, 64px) 0 25px;
+  padding: 7px;
+  list-style: none;
+  counter-reset: mtok-path;
+  border-radius: 18px;
+  background: var(--surface-soft);
+}
+
+.mtok-path li {
+  position: relative;
+  padding: 18px 20px 18px 50px;
+  color: var(--brand-navy);
+  border-radius: 12px;
+  background: color-mix(in srgb, white 78%, var(--surface-soft));
+  font-size: 0.86rem;
+  font-weight: 790;
+  counter-increment: mtok-path;
+}
+
+.mtok-path li + li {
+  border-left: 0;
+}
+
+.mtok-path li::before {
+  position: absolute;
+  top: 50%;
+  left: 18px;
+  color: var(--brand-red);
+  font-size: 0.7rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  content: "0" counter(mtok-path);
+  transform: translateY(-50%);
+}
+
+.mtok-field-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.mtok-field-card {
+  position: relative;
+  min-height: 252px;
+  padding: 30px 28px 62px;
+  color: var(--brand-navy);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--surface-soft) 76%, white);
+  transition:
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.mtok-field-card:hover {
+  background: white;
+  box-shadow: 0 18px 46px color-mix(in srgb, var(--brand-navy) 11%, transparent);
+  transform: translateY(-3px);
+}
+
+.mtok-field-card:focus-visible {
+  z-index: 1;
+  outline: 3px solid color-mix(in srgb, var(--brand-red) 38%, transparent);
+  outline-offset: -3px;
+}
+
+.mtok-field-card h3 {
+  max-width: 310px;
+  margin: 0 0 13px;
+  font-size: clamp(1.23rem, 1.7vw, 1.5rem);
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+}
+
+.mtok-field-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.66;
+}
+
+.mtok-field-link {
+  position: absolute;
+  bottom: 25px;
+  left: 28px;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--brand-red-accessible);
+  font-size: 0.8rem;
+  font-weight: 820;
+}
+
+.mtok-benefits {
+  border: 0;
+  background: color-mix(in srgb, var(--surface-soft) 72%, white);
+}
+
+.mtok-benefit-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(32px, 6vw, 82px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mtok-benefit-list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  min-height: 126px;
+  padding: 22px 0;
+}
+
+.mtok-benefit-mark {
+  width: 8px;
+  height: 8px;
+  margin-top: 7px;
+  border-radius: 50%;
+  background: var(--brand-red);
+}
+
+.mtok-benefit-list h3 {
+  margin: 0 0 8px;
+  color: var(--brand-navy);
+  font-size: 1.02rem;
+  line-height: 1.25;
+}
+
+.mtok-benefit-list p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.89rem;
+  line-height: 1.65;
+}
+
+.mtok-highlight {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.23fr) 1fr;
+  gap: 26px;
+  align-items: center;
+  margin-top: 28px;
+  padding: 25px 28px;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 16px 42px color-mix(in srgb, var(--brand-navy) 7%, transparent);
+}
+
+.mtok-highlight small {
+  color: var(--brand-red-accessible);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.mtok-highlight strong {
+  color: var(--brand-navy);
+  font-size: clamp(1.05rem, 1.7vw, 1.3rem);
+  line-height: 1.3;
+}
+
+.mtok-poster-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.mtok-poster-grid--single {
+  grid-template-columns: minmax(0, 840px);
+  justify-content: center;
+}
+
+.mtok-poster-card {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 22px;
+  background: white;
+  box-shadow: 0 24px 68px color-mix(in srgb, var(--brand-navy) 12%, transparent);
+}
+
+.mtok-poster-media {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--surface-soft);
+}
+
+.mtok-poster-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.mtok-poster-card figcaption {
+  display: grid;
+  gap: 7px;
+  min-height: 112px;
+  padding: 20px 22px 22px;
+}
+
+.mtok-poster-card figcaption span {
+  color: var(--brand-red-accessible);
+  font-size: 0.7rem;
+  font-weight: 850;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.mtok-poster-card figcaption p {
+  margin: 0;
+  color: var(--brand-navy);
+  font-size: 0.94rem;
+  font-weight: 650;
+  line-height: 1.55;
+}
+
+.mtok-guide-note {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: center;
+  margin-top: 24px;
+  padding: 24px 26px;
+  border-radius: 18px;
+  background: color-mix(in srgb, #1775c4 5%, white);
+}
+
+.mtok-guide-note h3 {
+  margin: 0 0 6px;
+  color: var(--brand-navy);
+  font-size: 1rem;
+}
+
+.mtok-guide-note p {
+  max-width: 860px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+.mtok-guide-note > a {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  color: #0c5e9f;
+  border: 1px solid color-mix(in srgb, #1775c4 28%, transparent);
+  border-radius: var(--button-radius);
+  background: white;
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.mtok-guide-note > a:hover {
+  border-color: #1775c4;
+}
+
+.mtok-cta {
+  overflow: hidden;
+  background: var(--brand-navy-deep);
+}
+
+.mtok-cta::after {
+  display: none;
+}
+
+.mtok-cta-panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.38fr);
+  gap: clamp(44px, 8vw, 110px);
+  align-items: center;
+}
+
+.mtok-cta-copy h2 {
+  max-width: 740px;
+  margin: 12px 0 14px;
+  color: white;
+  font-size: clamp(2rem, 3.5vw, 3.35rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.mtok-cta-copy > p:not(.inner-eyebrow) {
+  max-width: 690px;
+  margin: 0 0 26px;
+  color: color-mix(in srgb, white 74%, transparent);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.mtok-contact-card {
+  display: grid;
+  gap: 8px;
+  padding: 28px;
+  color: white;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.065);
+  font-style: normal;
+}
+
+.mtok-contact-card small {
+  margin-bottom: 8px;
+  color: color-mix(in srgb, white 60%, transparent);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mtok-contact-card a {
+  width: fit-content;
+  color: white;
+  font-size: clamp(1.08rem, 1.6vw, 1.28rem);
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.mtok-contact-card a:hover {
+  color: color-mix(in srgb, white 75%, var(--brand-red));
+}
+
+@media (max-width: 960px) {
+  .mtok-hero-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 0.74fr);
+    gap: 38px;
+    min-height: 560px;
+  }
+
+  .mtok-field-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mtok-field-card {
+    min-height: 0;
+  }
+
+}
+
+@media (max-width: 800px) {
+  .mtok-hero-layout,
+  .mtok-intro-heading,
+  .mtok-poster-grid,
+  .mtok-cta-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .mtok-hero-layout {
+    min-height: 0;
+    gap: 26px;
+    padding-block: 38px 52px;
+  }
+
+  .mtok-hero-poster {
+    width: min(100%, 580px);
+    justify-self: center;
+  }
+
+  .mtok-intro-heading {
+    gap: 20px;
+  }
+
+  .mtok-path {
+    grid-template-columns: 1fr;
+  }
+
+  .mtok-path li + li {
+    border-top: 0;
+    border-left: 0;
+  }
+
+  .mtok-benefit-list {
+    grid-template-columns: 1fr;
+  }
+
+  .mtok-highlight {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .mtok-guide-note {
+    grid-template-columns: 1fr;
+  }
+
+  .mtok-guide-note > a {
+    justify-self: start;
+  }
+
+  .mtok-contact-card {
+    max-width: 430px;
+    padding: 24px;
+  }
+}
+
+@media (max-width: 520px) {
+  .mtok-hero h1 {
+    font-size: clamp(2.2rem, 10.4vw, 3rem);
+  }
+
+  .mtok-hero .breadcrumbs {
+    margin-bottom: 25px;
+  }
+
+  .mtok-hero-actions {
+    align-items: flex-start;
+  }
+
+  .mtok-hero-actions .button {
+    width: 100%;
+  }
+
+  .mtok-field-card {
+    padding: 25px 20px 58px;
+  }
+
+  .mtok-field-link {
+    left: 20px;
+  }
+
+  .mtok-benefit-list li,
+  .mtok-guide-note {
+    padding-inline: 20px;
+  }
+
+  .mtok-highlight {
+    padding: 22px;
+  }
+
+  .mtok-guide-note > a {
+    justify-self: stretch;
+    white-space: normal;
+  }
+
+  .mtok-poster-card figcaption {
+    min-height: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mtok-field-card {
+    transition: none;
+  }
+}

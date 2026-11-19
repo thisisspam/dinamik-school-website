@@ -13,7 +13,7 @@ import { getContentPage } from "@/lib/cms/content";
 
 export const metadata: Metadata = {
   title: "KVKK Aydınlatma ve Veri Güvenliği",
-  description: "Dinamik Samsun ön kayıt sürecinde kişisel verilerin işlenmesi, aktarılması, korunması ve ilgili kişi hakları.",
+  description: "Dinamik Samsun ön kayıt ve bursluluk sınavı başvuru süreçlerinde kişisel verilerin işlenmesi, aktarılması, korunması ve ilgili kişi hakları.",
   alternates: { canonical: "/kvkk" },
 };
 
@@ -51,14 +51,14 @@ export default async function KvkkPage() {
               <h2 id="privacy-document-title">{content.noticeTitle}</h2>
               <div className="privacy-document-version" role="note" aria-label={`Aydınlatma metni sürümü ${PRIVACY_NOTICE_VERSION}`}>
                 <FileCheck2 aria-hidden="true" size={18} />
-                <span>Yürürlük tarihi: 17 Temmuz 2026 · Sürüm {PRIVACY_NOTICE_VERSION}</span>
+                <span>Yürürlük tarihi: 19 Kasım 2026 · Sürüm {PRIVACY_NOTICE_VERSION}</span>
               </div>
             </header>
 
             <div className="privacy-document-body">
               <section className="privacy-document-section" id="veri-sorumlusu">
                 <h3>1. Veri sorumlusu</h3>
-                <p><strong>{DATA_CONTROLLER_NAME}</strong>, ön kayıt formu aracılığıyla elde edilen kişisel veriler bakımından veri sorumlusu sıfatıyla hareket eder.</p>
+                <p><strong>{DATA_CONTROLLER_NAME}</strong>, ön kayıt ve bursluluk sınavı başvuru formları aracılığıyla elde edilen kişisel veriler bakımından veri sorumlusu sıfatıyla hareket eder.</p>
                 <dl className="privacy-document-contact">
                   <div>
                     <dt><Mail aria-hidden="true" size={16} /> E-posta</dt>
@@ -73,13 +73,14 @@ export default async function KvkkPage() {
 
               <section className="privacy-document-section" id="islenen-veriler">
                 <h3>2. İşlenen kişisel veriler</h3>
-                <p>Ön kayıt başvurusunun alınması ve değerlendirilmesi için aşağıdaki bilgiler işlenebilir:</p>
+                <p>Ön kayıt veya bursluluk sınavı başvurusunun alınması ve değerlendirilmesi için aşağıdaki bilgiler işlenebilir:</p>
                 <ul>
                   <li>Öğrenci ve veli adı soyadı</li>
                   <li>Telefon numarası ve mevcut sınıf</li>
                   <li>İlgilenilen eğitim alanı</li>
                   <li>Başvuru kaynağı, tarihi ve iletişim süreci notları</li>
                   <li>Aydınlatma metni sürümü ve tercih kayıtları</li>
+                  <li>Bursluluk başvurularında mevcut okul, seçilen sınav oturumu ve servis tercihi</li>
                 </ul>
               </section>
 
@@ -91,18 +92,19 @@ export default async function KvkkPage() {
                   <li>Veli veya öğrenciyle iletişime geçmek</li>
                   <li>Bölüm, kampüs ziyareti ve kayıt süreci hakkında bilgi vermek</li>
                   <li>Başvurunun sonucunu ve iletişim geçmişini takip etmek</li>
+                  <li>Bursluluk sınavı oturum ve servis planlamasını yürütmek</li>
                   <li>Hukuki yükümlülükleri yerine getirmek ve hakları korumak</li>
                 </ul>
               </section>
 
               <section className="privacy-document-section">
                 <h3>4. Veri toplama yöntemi ve hukuki sebep</h3>
-                <p>Veriler doğrudan sizden, ön kayıt formu aracılığıyla elektronik ortamda elde edilir. Başvurunun değerlendirilmesi; KVKK m.5/2 kapsamında bir sözleşmenin kurulmasıyla doğrudan ilgili olma, hukuki yükümlülüklerin yerine getirilmesi ve temel haklarınıza zarar vermemek kaydıyla meşru menfaat hukuki sebeplerine dayanır. Ayrı bir tercihe bağlı işlemler gerektiğinde açık rızanız esas alınır.</p>
+                <p>Veriler doğrudan sizden, ön kayıt veya bursluluk sınavı başvuru formu aracılığıyla elektronik ortamda elde edilir. Başvurunun değerlendirilmesi; KVKK m.5/2 kapsamında bir sözleşmenin kurulmasıyla doğrudan ilgili olma, hukuki yükümlülüklerin yerine getirilmesi ve temel haklarınıza zarar vermemek kaydıyla meşru menfaat hukuki sebeplerine dayanır. Ayrı bir tercihe bağlı işlemler gerektiğinde açık rızanız esas alınır.</p>
               </section>
 
               <section className="privacy-document-section" id="aktarim">
                 <h3>5. Kişisel verilerin aktarılması</h3>
-                <p>Veriler; görevleriyle sınırlı okul yöneticileri ve kayıt birimi, güvenli barındırma hizmeti sağlayıcıları ile kanunen yetkili kamu kurumlarıyla, yalnızca gerekli olduğu ölçüde paylaşılabilir.</p>
+                <p>Veriler; görevleriyle sınırlı okul yöneticileri ve kayıt birimi, güvenli barındırma ve e-posta iletim hizmeti sağlayıcıları ile kanunen yetkili kamu kurumlarıyla, yalnızca gerekli olduğu ölçüde paylaşılabilir.</p>
                 <p className="privacy-document-note"><strong>WhatsApp tercihi:</strong> Formdaki ayrı ve isteğe bağlı seçeneği işaretlerseniz, bilgileriniz hazır mesajın açılması için WhatsApp/Meta hizmetine aktarılabilir ve bu hizmet kapsamında yurt dışı aktarım gündeme gelebilir. Mesajı gönderdiğinizde bilgiler ayrıca okulun WhatsApp hattına iletilir. Bu tercihi vermeden de başvurunuzu tamamlayabilirsiniz.</p>
               </section>
 
@@ -139,7 +141,7 @@ export default async function KvkkPage() {
                 <h3>8. {content.securityTitle}</h3>
                 <p>{content.securityDescription}</p>
                 <ul className="privacy-document-security">
-                  <li><strong>Yetkili erişim:</strong> Başvurular yalnızca oturum doğrulaması yapılan yönetim panelinde, görevli kullanıcılar tarafından görüntülenir.</li>
+                  <li><strong>Yetkili erişim:</strong> Ön kayıt ve bursluluk başvuruları yalnızca oturum doğrulaması yapılan yönetim panelinde, görevli kullanıcılar tarafından görüntülenir.</li>
                   <li><strong>Veri minimizasyonu:</strong> Ön kayıt için zorunlu olmayan özel nitelikli kişisel veriler istenmez; tercihler ayrıca kaydedilir.</li>
                   <li><strong>Saklama kontrolü:</strong> Yönetim paneli, amacı sona eren veya ilgili kişi talebine konu olan başvuruların kalıcı olarak silinmesine imkân verir.</li>
                   <li><strong>Güvenli işletim:</strong> Canlı ortamda HTTPS, güçlü yönetici bilgileri, güvenli oturum anahtarı, düzenli yedekleme ve erişim denetimleri uygulanmalıdır.</li>

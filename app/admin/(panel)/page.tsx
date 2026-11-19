@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ClipboardList, ContactRound, FileText, Images, Layers3, LayoutTemplate, Palette, Settings2, Shapes } from "lucide-react";
+import { ArrowRight, Award, ClipboardList, ContactRound, FileText, Images, Layers3, LayoutTemplate, Palette, Settings2, Shapes } from "lucide-react";
 import { getDb, schema } from "@/lib/db/client";
 import { AdminPageHeader } from "../AdminPageHeader";
 
@@ -40,6 +40,13 @@ const QUICK_LINKS = [
     tone: "red",
   },
   {
+    href: "/admin/bursluluk-basvurulari",
+    title: "Bursluluk Başvuruları",
+    description: "Sınav oturumu, servis tercihi ve e-posta bildirim durumunu takip edin.",
+    icon: Award,
+    tone: "indigo",
+  },
+  {
     href: "/admin/kadromuz",
     title: "Kadromuz",
     description: "Öğretmen ekleyin, bilgileri güncelleyin veya kayıt kaldırın.",
@@ -71,7 +78,7 @@ const QUICK_LINKS = [
 
 export default async function AdminHomePage() {
   const db = await getDb();
-  const [departments, staff, gallery, albums, homepageSections, contentPages, applications] = await Promise.all([
+  const [departments, staff, gallery, albums, homepageSections, contentPages, applications, scholarshipApplications] = await Promise.all([
     db.select({ id: schema.departments.id }).from(schema.departments),
     db.select({ id: schema.staff.id }).from(schema.staff),
     db.select({ id: schema.galleryImages.id }).from(schema.galleryImages),
@@ -79,6 +86,7 @@ export default async function AdminHomePage() {
     db.select({ id: schema.homepageSections.id }).from(schema.homepageSections),
     db.select({ id: schema.contentPages.id }).from(schema.contentPages),
     db.select({ id: schema.registrationApplications.id, status: schema.registrationApplications.status }).from(schema.registrationApplications),
+    db.select({ id: schema.scholarshipApplications.id, status: schema.scholarshipApplications.status }).from(schema.scholarshipApplications),
   ]);
 
   const stats = [
@@ -89,6 +97,7 @@ export default async function AdminHomePage() {
     { label: "Sayfa bileşeni", value: homepageSections.length, icon: LayoutTemplate, tone: "amber" },
     { label: "Yönetilen sayfa", value: contentPages.length, icon: FileText, tone: "cyan" },
     { label: "Yeni başvuru", value: applications.filter((item) => item.status === "new").length, icon: ClipboardList, tone: "red" },
+    { label: "Yeni bursluluk", value: scholarshipApplications.filter((item) => item.status === "new").length, icon: Award, tone: "indigo" },
   ] as const;
 
   return (

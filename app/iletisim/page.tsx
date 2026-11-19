@@ -7,6 +7,7 @@ import { PageHero } from "../components/PageHero";
 import { getSiteSettings } from "../../lib/content";
 import { createWhatsappHref } from "../../lib/whatsapp";
 import { getContentPage } from "@/lib/cms/content";
+import { createPhoneHref } from "@/lib/phone";
 
 export const metadata: Metadata = {
   title: "İletişim",
@@ -17,8 +18,8 @@ export const metadata: Metadata = {
 export default async function ContactPage() {
   const [settings, page] = await Promise.all([getSiteSettings(), getContentPage("contact")]);
   const content = page.content;
-  const generalPhoneTel = `tel:+9${settings.generalPhone.replace(/\D/g, "")}`;
-  const landlinePhoneTel = `tel:+9${settings.landlinePhone.replace(/\D/g, "")}`;
+  const generalPhoneTel = createPhoneHref(settings.generalPhone);
+  const landlinePhoneTel = createPhoneHref(settings.landlinePhone);
   const whatsappHref = createWhatsappHref(settings.whatsapp);
 
   return (

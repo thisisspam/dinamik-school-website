@@ -91,6 +91,16 @@ export const CONTENT_PAGE_STRUCTURED_FIELDS: Record<string, ContentPageStructure
   },
   "departments.modelCards": titleDescriptionField("Eğitim modeli kartı", "Kart ekle"),
   "guidance.topics": titleDescriptionField("Destek kartı", "Kart ekle"),
+  "yks-mtok-university.activeFields": {
+    singularLabel: "Eğitim alanı",
+    addLabel: "Alan ekle",
+    columns: [
+      { key: "title", label: "Alan adı", type: "text" },
+      { key: "description", label: "Açıklama", type: "textarea" },
+      { key: "href", label: "Bağlantı", type: "url", placeholder: "/bolumler/..." },
+    ],
+  },
+  "yks-mtok-university.benefits": titleDescriptionField("Avantaj kartı", "Avantaj ekle"),
   "uniforms.features": titleDescriptionField("Özellik kartı", "Kart ekle"),
   "staff.features": titleDescriptionField("Yaklaşım kartı", "Kart ekle"),
   "achievements.areas": titleDescriptionField("Başarı alanı", "Alan ekle"),

@@ -4,6 +4,7 @@ import { siteThemeStyle } from "@/lib/cms/theme";
 import "./globals.css";
 import "./homepage-redesign.css";
 import "./interior.css";
+import "./bursluluk-sinavi/scholarship.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const chrome = await getContentPage("site-chrome");

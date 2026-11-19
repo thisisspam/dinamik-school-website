@@ -4,9 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { InstagramIcon, SiteFooter, SiteHeader } from "./components/SiteChrome";
 import { RegistrationForm } from "./components/RegistrationForm";
+import { ScholarshipAnnouncement } from "./components/ScholarshipAnnouncement";
 import { getDepartments } from "./data/departments";
 import { getHomepageSections, getSiteSettings, type HomepageSection } from "../lib/content";
 import { createWhatsappHref } from "../lib/whatsapp";
+import { createPhoneHref } from "../lib/phone";
 import { parseContentList, parseContentRows, safeContentHref } from "@/lib/cms/helpers";
 import { getContentPage } from "@/lib/cms/content";
 import {
@@ -245,8 +247,8 @@ export default async function Home() {
       accent: teaser?.accent ?? theme.accent,
     };
   });
-  const generalPhoneTel = `tel:+9${settings.generalPhone.replace(/\D/g, "")}`;
-  const landlineTel = `tel:+9${settings.landlinePhone.replace(/\D/g, "")}`;
+  const generalPhoneTel = createPhoneHref(settings.generalPhone);
+  const landlineTel = createPhoneHref(settings.landlinePhone);
   const whatsappHref = createWhatsappHref(settings.whatsapp);
   const sectionByKey = new Map(homepageSections.map((section) => [section.sectionKey, section]));
   const heroSection = sectionByKey.get("hero");
@@ -363,6 +365,7 @@ export default async function Home() {
           </div>
         </section>
         ) : null}
+        <ScholarshipAnnouncement />
         </HomepageSectionSlot>
 
         <HomepageSectionSlot sectionKey="benefits">

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ClipboardList, ContactRound, FileText, Images, Layers3, LayoutDashboard, LayoutTemplate, Palette, Settings2, Shapes } from "lucide-react";
+import { Award, ClipboardList, ContactRound, FileText, Images, Layers3, LayoutDashboard, LayoutTemplate, Palette, Settings2, Shapes } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Genel Bakış", icon: LayoutDashboard },
@@ -11,13 +11,20 @@ const NAV_ITEMS = [
   { href: "/admin/tema", label: "Genel Tema", icon: Palette },
   { href: "/admin/bolumler", label: "Bölümler", icon: Shapes },
   { href: "/admin/basvurular", label: "Ön Kayıtlar", icon: ClipboardList },
+  { href: "/admin/bursluluk-basvurulari", label: "Bursluluk Sınavı", icon: Award },
   { href: "/admin/kadromuz", label: "Kadromuz", icon: ContactRound },
   { href: "/admin/galeri", label: "Galeri ve Albümler", icon: Images },
   { href: "/admin/faaliyetler", label: "Faaliyet Albümleri", icon: Layers3 },
   { href: "/admin/ayarlar", label: "Site Ayarları", icon: Settings2 },
 ];
 
-export function AdminNav({ newApplicationCount = 0 }: { newApplicationCount?: number }) {
+export function AdminNav({
+  newApplicationCount = 0,
+  newScholarshipCount = 0,
+}: {
+  newApplicationCount?: number;
+  newScholarshipCount?: number;
+}) {
   const pathname = usePathname();
 
   return (
@@ -37,6 +44,9 @@ export function AdminNav({ newApplicationCount = 0 }: { newApplicationCount?: nu
             <span>{item.label}</span>
             {item.href === "/admin/basvurular" && newApplicationCount > 0 ? (
               <span className="admin-nav-count" aria-label={`${newApplicationCount} yeni başvuru`}>{newApplicationCount > 99 ? "99+" : newApplicationCount}</span>
+            ) : null}
+            {item.href === "/admin/bursluluk-basvurulari" && newScholarshipCount > 0 ? (
+              <span className="admin-nav-count" aria-label={`${newScholarshipCount} yeni bursluluk başvurusu`}>{newScholarshipCount > 99 ? "99+" : newScholarshipCount}</span>
             ) : null}
           </Link>
         );
